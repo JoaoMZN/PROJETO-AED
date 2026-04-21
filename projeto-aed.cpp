@@ -14,6 +14,1378 @@
 
 using namespace std;
 
+class UsuarioNovo
+{
+private:
+    string nome, cpf, email, senha;
+    
+    public:
+    vector<CarroNovo> carros;
+    vector<Usuario> usuarios;
+
+    void setNome(string n)
+    {
+        this->nome = n;
+    }
+    string getNome()
+    {
+        return this->nome;
+    }
+
+    void setCpf(string c)
+    {
+        this->cpf = c;
+    }
+    string getCpf()
+    {
+        return this->cpf;
+    }
+
+    void setEmail(string e)
+    {
+        this->email = e;
+    }
+    string getEmail()
+    {
+        return this->email;
+    }
+
+    void setSenha(string s)
+    {
+        this->senha = s;
+    }
+    string getSenha()
+    {
+        return this->senha;
+    }
+
+    void cadastrarCPF(UsuarioNovo &usuario_novo, vector<Usuario> &usuarios)
+    {
+        system("clear");
+
+        bool cadastrarCPF = false;
+
+        string cpf_novo_temp;
+
+        while (!cadastrarCPF)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "----------------------------------------------CPF-------------------------------------------------" << endl;
+            cout << endl;
+            cout << "Digite o seu CPF (ou digite MENU para voltar ao MENU DE CADASTRO):  ";
+
+            getline(cin, cpf_novo_temp);
+
+            cout << endl;
+            cout << "-------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < cpf_novo_temp.length(); i++)
+            {
+                cpf_novo_temp[i] = toupper((unsigned char)cpf_novo_temp[i]);
+            }
+
+            if (cpf_novo_temp == "MENU")
+            {
+                if (RetornarAoMenuDeCadastro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    cpf_novo_temp = "";
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    cpf_novo_temp = "";
+
+                    continue;
+                }
+            }
+
+            // CHECA SE O CPF JA ESTA CADASTRADO
+            bool cpf_registrado = false;
+
+            for (size_t i = 0; i < usuarios.size(); i++)
+            {
+                if (usuarios[i].cpf == cpf_novo_temp)
+                {
+                    cpf_registrado = true;
+
+                    break;
+                }
+            }
+
+            if (cpf_registrado)
+            {
+                cout << endl;
+                cout << "CPF ja REGISTRADO!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            bool somente_numeros = true;
+
+            for (int i = 0; i < cpf_novo_temp.length(); i++)
+            {
+                if (!isdigit(cpf_novo_temp[i]))
+                {
+                    somente_numeros = false;
+
+                    system("pause");
+
+                    break;
+                }
+            }
+
+            if (!somente_numeros)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Somente numeros sao aceitos!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            if (cpf_novo_temp.length() != 11)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Deve conter 11 numeros!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+            else
+            {
+                // CPF CONDIZ COM AS CONDICOES E PODE SER CADASTRADO
+
+                usuario_novo.setCpf(cpf_novo_temp);
+
+                cout << endl;
+                cout << "CPF cadastrado com sucesso!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                // SAI DO WHILE DO CPF
+                cadastrarCPF = true;
+            }
+        }
+    }
+
+    void cadastrarNome(UsuarioNovo &usuario_novo)
+    {
+        system("clear");
+
+        bool sair_cadastrar_nome = false;
+
+        string nome_novo_temp;
+
+        while (!sair_cadastrar_nome)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "------------------------------------------CADASTRAR NOME-------------------------------------------------" << endl;
+            cout << endl;
+            cout << "Digite seu NOME COMPLETO (ou MENU para voltar ao MENU DE CADASTRO):  ";
+
+            getline(cin, nome_novo_temp);
+
+            cout << endl;
+            cout << "---------------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < nome_novo_temp.length(); i++)
+            {
+                nome_novo_temp[i] = toupper((unsigned char)nome_novo_temp[i]);
+            }
+
+            if (nome_novo_temp == "MENU")
+            {
+                if (RetornarAoMenuDeCadastro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    nome_novo_temp = "";
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    nome_novo_temp = "";
+
+                    continue;
+                }
+            }
+
+            bool somente_letras = true;
+
+            // CHECAR SE SAO APENAS LETRAS E ESPACOS
+            for (int i = 0; i < nome_novo_temp.length(); i++)
+            {
+                if (!isalpha(nome_novo_temp[i]) && nome_novo_temp[i] != ' ')
+                {
+                    somente_letras = false;
+                    break;
+                }
+            }
+
+            if (!somente_letras)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Deve conter apenas letras!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            // SEGUNDO A LEGISLACAO BRASILEIRA, TODAS AS PESSOAS TEM DE TER UM NOME PROPRIO E UM SOBRENOME NO MINIMO
+            int conta_espacos = 0;
+
+            for (int i = 0; i < nome_novo_temp.length(); i++)
+            {
+                if (nome_novo_temp[i] == ' ')
+                {
+                    conta_espacos++;
+                }
+            }
+
+            if (conta_espacos < 1)
+            {
+                cout << endl;
+                cout << "Nome INCOMPLETO! Digite seu NOME e SOBRENOME!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            // NOME CORRETO
+
+            usuario_novo.setNome(nome_novo_temp);
+
+            cout << endl;
+            cout << "Nome CADASTRADO com sucesso!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            sair_cadastrar_nome = true;
+        }
+    }
+
+    void cadastrarEmail(UsuarioNovo &usuario_novo, vector<Usuario> &usuarios)
+    {
+        system("clear");
+
+        bool sair_cadastrar_email = false;
+
+        string email_novo_temp;
+
+        while (!sair_cadastrar_email)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "-----------------------------------------CADASTRAR EMAIL--------------------------------------------" << endl;
+            cout << endl;
+            cout << "Digite o seu EMAIL (ou MENU para voltar ao MENU DE CADASTRO):  ";
+
+            getline(cin, email_novo_temp);
+
+            cout << endl;
+            cout << "----------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < email_novo_temp.length(); i++)
+            {
+                email_novo_temp[i] = toupper((unsigned char)email_novo_temp[i]);
+            }
+
+            if (email_novo_temp == "MENU")
+            {
+                if (RetornarAoMenuDeCadastro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    email_novo_temp = "";
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    email_novo_temp = "";
+
+                    continue;
+                }
+            }
+
+            // TRANSFORMA TODAS AS LETRAS PARA MINUSCULO
+            for (int i = 0; i < email_novo_temp.length(); i++)
+            {
+                email_novo_temp[i] = tolower((unsigned char)email_novo_temp[i]);
+            }
+
+            // CHECA SE O EMAIL JA FOI REGISTRADO
+            bool email_registrado = false;
+
+            for (size_t i = 0; i < usuarios.size(); i++)
+            {
+                if (usuarios[i].email == email_novo_temp)
+                {
+                    email_registrado = true;
+
+                    break;
+                }
+            }
+
+            if (email_registrado)
+            {
+                cout << endl;
+                cout << "EMAIL ja REGISTRADO!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            // CHECAR SE REALEMENTE E UM EMAIL
+            bool emailValido = false;
+
+            // O -1 INDICA QUE NADA FOI ENCONTRADO
+            int posArroba = -1;
+            int posPonto = -1;
+
+            // PROCURA O @
+            for (int i = 0; i < email_novo_temp.length(); i++)
+            {
+                if (email_novo_temp[i] == '@')
+                {
+                    posArroba = i;
+
+                    break;
+                }
+            }
+
+            // SE ENCONTROU O @
+            if (posArroba != -1)
+            {
+                // PROUCURA UM PONTO APOS O @
+                for (int i = posArroba + 1; i < email_novo_temp.length(); i++)
+                {
+                    if (email_novo_temp[i] == '.')
+                    {
+                        posPonto = i;
+
+                        break;
+                    }
+                }
+            }
+
+            // VALIDA O EMAIL, O .LENGTH APARECE DENOVO, PORQUE ELE GARANTE QUE O PONTO NAO VA APARECER COMO ULTIMO CARACTERE DO EMAIL
+            if (posArroba != -1 && posPonto != -1 && posPonto < email_novo_temp.length() - 1)
+            {
+                emailValido = true;
+            }
+
+            if (emailValido == false)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Cheque novamente o email digitado: " << email_novo_temp << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+            else
+            {
+                // EMAIL CADASTRADO
+
+                usuario_novo.setEmail(email_novo_temp);
+
+                cout << endl;
+                cout << "EMAIL cadastrado com sucesso!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                sair_cadastrar_email = true;
+            }
+        }
+    }
+
+    void cadastrarSenha(UsuarioNovo &usuario_novo)
+    {
+        system("clear");
+
+        bool sair_cadastrar_senha = false;
+
+        string senha_nova_temp;
+
+        while (!sair_cadastrar_senha)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "-----------------------------------CADASTRAR SENHA-----------------------------------------------" << endl;
+            cout << endl;
+            cout << "Digite sua SENHA (ou MENU para voltar ao MENU DE CADASTRO):  ";
+
+            getline(cin, senha_nova_temp);
+
+            cout << endl;
+            cout << "------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // COMO E UMA SENHA E ELA E ESPECIFICA, CRIA-SE UMA OUTRA STRING QUE RECEBE ELA, PARA ALTERAR ELA E NAO A SENHA
+            string menu = senha_nova_temp;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < menu.length(); i++)
+            {
+                menu[i] = toupper((unsigned char)menu[i]);
+            }
+
+            if (menu == "MENU")
+            {
+                if (RetornarAoMenuDeCadastro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    senha_nova_temp = "";
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    senha_nova_temp = "";
+
+                    continue;
+                }
+            }
+
+            // A SENHA DEVE TER NO MINIMO 8 CARACTERES
+            if (senha_nova_temp.length() < 8)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! A senha deve ter no minimo 8 caracteres, essa tem apenas " << senha_nova_temp.length() << "!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            // CRIAR UMA REGRA PARA MONTAR A SENHA
+            bool temLetras = false;
+
+            bool temNumeros = false;
+
+            for (int i = 0; i < senha_nova_temp.length(); i++)
+            {
+                if (isalpha(senha_nova_temp[i]))
+                {
+                    temLetras = true;
+                }
+
+                if (isdigit(senha_nova_temp[i]))
+                {
+                    temNumeros = true;
+                }
+            }
+
+            if (temLetras != true || temNumeros != true)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! A senha deve conter LETRAS E NUMEROS!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+            else
+            {
+                // SENHA VALIDA
+
+                usuario_novo.setSenha(senha_nova_temp);
+
+                cout << endl;
+                cout << "Senha cadastrada com sucesso!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                sair_cadastrar_senha = true;
+            }
+        }
+    }
+};
+
+class Policial : public UsuarioNovo
+{
+public:
+    Policial()
+    {
+        setNome("Policia");
+        setCpf("11111111111");
+        setEmail("policiarodoviaria@detran.com");
+        setSenha("PoliciaRodoviaria-Detran");
+    }
+};
+
+class CarroNovo
+{
+private:
+    string placa_cinza, placa_mercosul;
+    string ano, cor, modelo;
+    string renavam, status_crlv;
+
+public:
+    CarroNovo() {}
+
+    CarroNovo(string placa_cinza, string placa_mercosul, string ano, string cor, string modelo, string renavam, string status_crlv)
+        : placa_cinza(placa_cinza), placa_mercosul(placa_mercosul), ano(ano), cor(cor), modelo(modelo), renavam(renavam), status_crlv(status_crlv) {}
+    // os dois acima sao contrutores, usados para, : usado para a incializacao, se tirar vai dar erro na hora de salvar o carro
+
+    void setPlacaCinza(string pc)
+    {
+        this->placa_cinza = pc;
+    }
+    string getPlacaCinza() const
+    {
+        return this->placa_cinza;
+    }
+
+    void setPlacaMercosul(string pm)
+    {
+        this->placa_mercosul = pm;
+    }
+    string getPlacaMercosul() const
+    {
+        return this->placa_mercosul;
+    }
+
+    void setAno(string a)
+    {
+        this->ano = a;
+    }
+    string getAno() const
+    {
+        return this->ano;
+    }
+
+    void setCor(string c)
+    {
+        this->cor = c;
+    }
+    string getCor() const
+    {
+        return this->cor;
+    }
+
+    void setModelo(string m)
+    {
+        this->modelo = m;
+    }
+    string getModelo() const
+    {
+        return this->modelo;
+    }
+
+    void setRenavam(string r)
+    {
+        this->renavam = r;
+    }
+    string getRenavam() const
+    {
+        return this->renavam;
+    }
+
+    void setCrlv(string cr)
+    {
+        this->status_crlv = cr;
+    }
+    string getCrlv() const
+    {
+        return this->status_crlv;
+    }
+
+    void cadastrarPlacaCinza(CarroNovo &carro_novo)
+    {
+        system("clear");
+
+        string placa_cinza_temp;
+
+        bool registrar_placa_cinza = false; // PLACA CINZA E O NOME DADO AS PLACAS CONVENCIONAIS
+
+        while (!registrar_placa_cinza)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "------------------------------------------------------------------REGISTRO DE PLACA CINZA---------------------------------------------------------" << endl;
+            cout << endl;
+
+            cout << "Digite a placa CINZA / NORMAL sem o hifen (ou digite MENU para voltar ao MENU DE REGISTRO!):  ";
+
+            getline(cin, placa_cinza_temp);
+
+            cout << endl;
+            cout << "--------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < placa_cinza_temp.length(); i++)
+            {
+                placa_cinza_temp[i] = toupper((unsigned char)placa_cinza_temp[i]);
+            }
+
+            // RETORNA AO MENU DE REGISTRO DE PLACA
+            if (placa_cinza_temp == "MENU")
+            {
+                if (RetornarAoMenuDeRegistro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    placa_cinza_temp = "";
+
+                    // SE ELE QUISER VOLTAR RETORNA, MAS NAO UM VALOR INTEIRO POR ESTAR EM UM VOID E OS VOIDS NAO RETORNAM NADA
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    placa_cinza_temp = "";
+
+                    // CONITNUA NA LOGICA DE ANO
+                    continue;
+                }
+            }
+
+            // CHECAR SE A PLACA TEM 7 CARACTERES OU DIGITOS
+            if (placa_cinza_temp.length() != 7)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! (deve possuir 7 caracteres)" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            // CHECAR SE SEGUE O PADRAO CINZA / NORMAL: LLL - NNNN
+            bool cinza = true;
+
+            if (!isalpha(placa_cinza_temp[0]))
+                cinza = false; // CHECA SE O PRIMEIRO DIGITO E UMA LETRA
+
+            if (!isalpha(placa_cinza_temp[1]))
+                cinza = false; // CHECA SE O SEGUNDO DIGITO E UMA LETRA
+
+            if (!isalpha(placa_cinza_temp[2]))
+                cinza = false; // CHECA SE O TERCEIRO DIGITO E UMA LETRA
+
+            if (!isdigit(placa_cinza_temp[3]))
+                cinza = false; // CHECA SE O QUARTO DIGITO E UM NUMERO
+
+            if (!isdigit(placa_cinza_temp[4]))
+                cinza = false; // CHECA SE O QUINTO DIGITO E UM NUMERO
+
+            if (!isdigit(placa_cinza_temp[5]))
+                cinza = false; // CHECA SE O SEXTO DIGITO E UM NUMERO
+
+            if (!isdigit(placa_cinza_temp[6]))
+                cinza = false; // CHECA SE O SETIMO DIGITO E UM NUMERO
+
+            if (!cinza)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! A placa deve seguir o padrao NORMAL / CINZA!" << endl;
+                cout << endl;
+
+                cout << "PADRAO CINZA / NORMAL : LLL - NNNN" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            carro_novo.setPlacaCinza(placa_cinza_temp);
+
+            // PLACA REGISTRADA
+            cout << endl;
+            cout << "Placa registrada com sucesso: " << placa_cinza_temp.substr(0, 3) << " - " << placa_cinza_temp.substr(3, 4); // COLOCA O HIFEN NA PLACA E MOSTRA NA TELA COM HIFEN, MAS NAO SALVA O HIFEN NO VETOR
+            cout << endl;
+            // SUBSTR E UMA FUNCAO DA CLASEE STRING QUE INDICA (POSICAO INICIAL, QUANTAS CASAS PARA FRENTE), NESSE CASO, COMECA NO 0 E ANDA 3 CASAS E DEPOIS COMECA NO 3 E ANDA 4 CASAS
+
+            cout << endl;
+
+            system("pause");
+
+            // SAI DO REGISTRO DA PLACA MERCOSUL
+            registrar_placa_cinza = true;
+        }
+    }
+
+    void cadastrarPlacaMercosul(CarroNovo &carro_novo)
+    {
+        system("clear");
+
+        string placa_mercosul_temp;
+
+        bool registrar_placa_mercosul = false;
+
+        while (!registrar_placa_mercosul)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "------------------------------------------------------REGISTRO DE PLACA MERCOSUL---------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            cout << "Digite a placa MERCOSUL (ou digite MENU para voltar ao MENU DE REGISTRO!):  ";
+
+            getline(cin, placa_mercosul_temp);
+
+            cout << endl;
+            cout << "------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < placa_mercosul_temp.length(); i++)
+            {
+                placa_mercosul_temp[i] = toupper((unsigned char)placa_mercosul_temp[i]);
+            }
+
+            // RETORNA AO MENU DE REGISTRO DE PLACA
+            if (placa_mercosul_temp == "MENU")
+            {
+                if (RetornarAoMenuDeRegistro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    placa_mercosul_temp = "";
+
+                    // SE ELE QUISER VOLTAR RETORNA, MAS NAO UM VALOR INTEIRO POR ESTAR EM UM VOID E OS VOIDS NAO RETORNAM NADA
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    placa_mercosul_temp = "";
+
+                    // CONITNUA NA LOGICA DE ANO
+                    continue;
+                }
+            }
+
+            // CHECAR SE A PLACA TEM 7 CARACTERES OU DIGITOS
+            if (placa_mercosul_temp.length() != 7)
+            {
+                cout << "Formato INVALIDO! (deve possuir 7 caracteres)" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            // CHECAR SE SEGUE O PADRAO MERCOSUL: LLLNLNN
+            bool mercosul = true;
+
+            if (!isalpha(placa_mercosul_temp[0]))
+                mercosul = false; // CHECA SE O PRIMEIRO DIGITO E UMA LETRA
+
+            if (!isalpha(placa_mercosul_temp[1]))
+                mercosul = false; // CHECA SE O SEGUNDO DIGITO E UMA LETRA
+
+            if (!isalpha(placa_mercosul_temp[2]))
+                mercosul = false; // CHECA SE O TERCEIRO DIGITO E UMA LETRA
+
+            if (!isdigit(placa_mercosul_temp[3]))
+                mercosul = false; // CHECA SE O QUARTO DIGITO E UM NUMERO
+
+            if (!isalpha(placa_mercosul_temp[4]))
+                mercosul = false; // CHECA SE O QUINTO DIGITO E UMA LETRA
+
+            if (!isdigit(placa_mercosul_temp[5]))
+                mercosul = false; // CHECA SE O SEXTO DIGITO E UM NUMERO
+
+            if (!isdigit(placa_mercosul_temp[6]))
+                mercosul = false; // CHECA SE O SETIMO DIGITO E UM NUMERO
+
+            if (!mercosul)
+            {
+                cout << "Formato INVALIDO! A placa deve seguir o padrao MERCOSUL!" << endl;
+                cout << endl;
+
+                cout << "PADRAO MERCOSUL: LLLNLNN" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            carro_novo.setPlacaMercosul(placa_mercosul_temp);
+
+            // PLACA REGISTRADA
+            cout << "Placa registrada com sucesso: " << placa_mercosul_temp;
+            cout << endl;
+
+            cout << endl;
+
+            system("pause");
+
+            // SAI DO REGISTRO DA PLACA MERCOSUL
+            registrar_placa_mercosul = true;
+        }
+    }
+
+    void cadastrarAno(CarroNovo &carro_novo)
+    {
+        system("clear");
+
+        string ano_temp;
+
+        bool ano_de_fabricacao = false;
+
+        while (!ano_de_fabricacao)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "------------------------------------------------ANO DE FABRICACAO---------------------------------------------------------" << endl;
+            cout << endl;
+            cout << "Digite o ano de FABRICACAO do veiculo (ou MENU para voltar ao MENU DE REGISTRO):  ";
+
+            getline(cin, ano_temp);
+
+            cout << endl;
+            cout << "--------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < ano_temp.length(); i++)
+            {
+                ano_temp[i] = toupper((unsigned char)ano_temp[i]);
+            }
+
+            if (ano_temp == "MENU")
+            {
+                if (RetornarAoMenuDeRegistro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    ano_temp = "";
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    ano_temp = "";
+
+                    continue;
+                }
+            }
+
+            bool apenas_numeros = true;
+
+            for (int i = 0; i < ano_temp.length(); i++)
+            {
+                if (!isdigit(ano_temp[i]))
+                {
+                    apenas_numeros = false;
+
+                    break;
+                }
+            }
+
+            if (!apenas_numeros)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Digite apenas NUMEROS!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            if (ano_temp.empty())
+            {
+                continue;
+            }
+
+            // CONVERTE A STRING ANO PARA INTEIRO, PARA SEGUIR A LOGICA DE COMPARACAO E EXISTENCIA
+            int ano_fabricacao = stoi(ano_temp);
+
+            // PEGA O ANO EM QUE ESTAMOS +1 COMO MAXIMO, ESSE COMANDO PEGA AUTOMATICAMENTE O ANO DO COMPUTADOR, JA FOI PROGRAMADO POR ALGUEM DESSA MANEIRA
+            time_t t = time(nullptr);
+            tm *data = localtime(&t);
+            int ano_atual = data->tm_year + 1900;
+
+            int ano_maximo = ano_atual + 1;
+
+            if (ano_fabricacao < 1886)
+            {
+                cout << endl;
+                cout << "Data INVALIDA!" << endl;
+                cout << endl;
+                cout << "--------------------------------------INVENCAO DO AUTOMOVEL--------------------------------------" << endl;
+                cout << endl;
+                cout << "Os carros como os conhecemos hoje foram inventados em 1886, quando o engenheiro alemao \nKarl Benz patenteou o Benz-Patent Motorwagen, o primeiro veiculo \na ser produzido comercialmente movida a gasolina" << endl;
+                cout << "------------------------------------------------------------------------------------------------";
+
+                cout << endl;
+                system("pause");
+            }
+            else if (ano_fabricacao > ano_maximo)
+            {
+                cout << endl;
+                cout << "Ano INVALIDO!" << endl;
+
+                cout << "O ano maximo permitido e: " << ano_maximo << endl;
+                cout << endl;
+
+                system("pause");
+            }
+            else
+            {
+                carro_novo.setAno(ano_temp);
+
+                cout << endl;
+                cout << "Ano REGISTRADO com sucesso" << endl;
+                cout << endl;
+
+                system("pause");
+
+                ano_de_fabricacao = true;
+            }
+        }
+    }
+
+    void cadastrarCor(CarroNovo &carro_novo)
+    {
+        system("clear");
+
+        string cor_nova_temp;
+
+        bool cadastrar_cor = false;
+
+        while (!cadastrar_cor)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "--------------------------------------------------CADASTRAR COR-------------------------------------------------" << endl;
+            cout << endl;
+
+            cout << "Digite a cor do seu veiculo (ou digite MENU para retornar ao MENU DE REGISTRO):  ";
+
+            getline(cin, cor_nova_temp);
+
+            cout << endl;
+            cout << "----------------------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < cor_nova_temp.length(); i++)
+            {
+                cor_nova_temp[i] = toupper((unsigned char)cor_nova_temp[i]);
+            }
+
+            if (cor_nova_temp == "MENU")
+            {
+                if (RetornarAoMenuDeRegistro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    cor_nova_temp = "";
+
+                    // SE ELE QUISER VOLTAR RETORNA, MAS NAO UM VALOR INTEIRO POR ESTAR EM UM VOID E OS VOIDS NAO RETORNAM NADA
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    cor_nova_temp = "";
+
+                    // CONITNUA NA LOGICA DE ANO
+                    continue;
+                }
+            }
+
+            // CHECAR SE SAO APENAS LETRAS
+            bool so_letras = true;
+
+            for (int i = 0; i < cor_nova_temp.length(); i++)
+            {
+                if (!isalpha(cor_nova_temp[i]) && cor_nova_temp[i] != ' ')
+                {
+                    so_letras = false;
+
+                    break;
+                }
+            }
+
+            if (!so_letras)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Digite apenas LETRAS!" << endl;
+                cout << endl;
+
+                system("pause");
+            }
+            else
+            {
+                carro_novo.setCor(cor_nova_temp);
+
+                cout << endl;
+                cout << "Cor REGISTRADA com sucesso!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                cadastrar_cor = true;
+
+                break;
+            }
+        }
+    }
+
+    void cadastrarModelo(CarroNovo &carro_novo)
+    {
+        system("clear");
+
+        bool cadastrar_modelo = false;
+
+        string modelo_novo_temp;
+
+        while (!cadastrar_modelo)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "---------------------------------------------------CADASTRAR MODELO------------------------------------------------------" << endl;
+            cout << endl;
+
+            cout << "Digite o MODELO do seu veiculo (ou digite MENU para retornar ao MENU DE REGISTRO):  ";
+
+            getline(cin, modelo_novo_temp);
+
+            cout << endl;
+            cout << "------------------------------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < modelo_novo_temp.length(); i++)
+            {
+                modelo_novo_temp[i] = toupper((unsigned char)modelo_novo_temp[i]);
+            }
+
+            if (modelo_novo_temp == "MENU")
+            {
+                if (RetornarAoMenuDeRegistro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    modelo_novo_temp = "";
+
+                    // SE ELE QUISER VOLTAR RETORNA, MAS NAO UM VALOR INTEIRO POR ESTAR EM UM VOID E OS VOIDS NAO RETORNAM NADA
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    modelo_novo_temp = "";
+
+                    continue;
+                }
+            }
+            else
+            {
+                carro_novo.setModelo(modelo_novo_temp);
+
+                cout << endl;
+                cout << "Modelo REGISTRADO com sucesso!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                cadastrar_modelo = true;
+            }
+        }
+    }
+
+    void cadastrarRenavam(CarroNovo &carro_novo)
+    {
+        system("clear");
+
+        bool cadastrar_renavam = false;
+
+        string renavam_novo_temp;
+
+        while (!cadastrar_renavam)
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "--------------------------------------------------------RENAVAM------------------------------------------------" << endl;
+            cout << endl;
+            cout << "Digite o RENAVAM do veiculo (ou MENU para voltar ao MENU DE REGISTRO):  ";
+
+            getline(cin, renavam_novo_temp);
+
+            cout << endl;
+            cout << "--------------------------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+            for (int i = 0; i < renavam_novo_temp.length(); i++)
+            {
+                renavam_novo_temp[i] = toupper((unsigned char)renavam_novo_temp[i]);
+            }
+
+            if (renavam_novo_temp == "MENU")
+            {
+                if (RetornarAoMenuDeRegistro())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    renavam_novo_temp = "";
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    renavam_novo_temp = "";
+
+                    continue;
+                }
+            }
+
+            bool apenas_numeros = true;
+
+            for (int i = 0; i < renavam_novo_temp.length(); i++)
+            {
+                if (!isdigit(renavam_novo_temp[i]))
+                {
+                    apenas_numeros = false;
+
+                    break;
+                }
+            }
+
+            if (!apenas_numeros)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Digite apenas NUMEROS!" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+
+            if (renavam_novo_temp.empty())
+            {
+                continue;
+            }
+
+            if (renavam_novo_temp.length() != 11)
+            {
+                cout << endl;
+                cout << "Formato INVALIDO! Deve ter 11 digitos numericos" << endl;
+                cout << endl;
+
+                system("pause");
+
+                continue;
+            }
+            else
+            {
+                carro_novo.setRenavam(renavam_novo_temp);
+
+                cout << endl;
+                cout << "Renavam REGISTRADO com sucesso" << endl;
+                cout << endl;
+
+                system("pause");
+
+                cadastrar_renavam = true;
+            }
+        }
+    }
+
+    bool SalvarCarro(Usuario *usuario_logado, CarroNovo &carro_novo)
+    {
+        bool valido = true;
+
+        // CHECAR SE TODOS OS CAMPOS DO CADASTRO FORAM PREENCHIDOS
+        if (carro_novo.getPlacaCinza().empty() && carro_novo.getPlacaMercosul().empty())
+        {
+            cout << endl;
+            cout << "Preencha a PLACA antes de salvar!" << endl;
+            cout << endl;
+
+            valido = false;
+        }
+
+        if (carro_novo.getAno().empty())
+        {
+            cout << endl;
+            cout << "Preencha o ANO antes de salvar!" << endl;
+            cout << endl;
+
+            valido = false;
+        }
+
+        if (carro_novo.getCor().empty())
+        {
+            cout << endl;
+            cout << "Preencha a COR antes de salvar!" << endl;
+            cout << endl;
+
+            valido = false;
+        }
+
+        if (carro_novo.getModelo().empty())
+        {
+            cout << endl;
+            cout << "Preencha o MODELO antes de salvar!" << endl;
+            cout << endl;
+
+            valido = false;
+        }
+
+        if (carro_novo.getRenavam().empty())
+        {
+            cout << endl;
+            cout << "Preencha o RENAVAM antes de salvar!" << endl;
+            cout << endl;
+
+            valido = false;
+        }
+
+        // COPIA NAO CONSTANTE PARA DAR CERTO LIMPAR A STRING
+        // O CONST SIGINFICA APENAS LEITURA, RECEBE POR ENDERECO E NAO ALTERA NADA, O QUE IMPEDE LIMPAR A PLACA
+        CarroNovo carro_a_salvar = carro_novo;
+
+        if (!carro_novo.getPlacaCinza().empty() && !carro_novo.getPlacaMercosul().empty())
+        {
+            cout << endl;
+            cout << "Preencha apenas UM TIPO DE PLACA!" << endl;
+            cout << endl;
+
+            carro_a_salvar.placa_cinza = "";
+
+            carro_a_salvar.placa_mercosul = "";
+
+            valido = false;
+        }
+
+        if (!valido)
+        {
+            return false;
+        }
+
+        usuario_logado->carros.push_back(Carro{// arrumar isso depois, esta colocando com o struct e nao com o class
+                                               carro_novo.getPlacaCinza(),
+                                               carro_novo.getPlacaMercosul(),
+                                               carro_novo.getAno(),
+                                               carro_novo.getCor(),
+                                               carro_novo.getModelo(),
+                                               carro_novo.getRenavam(),
+                                               carro_novo.getCrlv()});
+
+        return true;
+    }
+
+    void ExportarVeiculo(Usuario *usuario_logado)
+    {
+        // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
+        system("clear");
+
+        // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
+        ofstream arquivoVeiculos("ArquivoVeiculos.txt");
+
+        if (!arquivoVeiculos.is_open())
+        {
+            system("clear");
+
+            cout << endl;
+            cout << "ERRO ao abrir o arquivo!" << endl;
+            cout << endl;
+
+            system("pause");
+        }
+        else
+        {
+            for (size_t i = 0; i < usuario_logado->carros.size(); i++)
+            {
+                // CRIA UMA REFERENCIA QUE PERCORRA DENTRO DO STRUCT CARRO SALVANDO TODOS OS CARROS
+                const CarroNovo &carro_novo = usuario_logado->carros_novo[i];
+
+                arquivoVeiculos << "NOME: " << usuario_logado->nome << endl;
+                arquivoVeiculos << "CPF: " << usuario_logado->cpf << endl;
+                if (!carro_novo.getPlacaCinza().empty())
+                {
+                    arquivoVeiculos << "PLACA CINZA: " << carro_novo.getPlacaCinza() << endl;
+                }
+                else if (!carro_novo.getPlacaMercosul().empty())
+                {
+                    arquivoVeiculos << "PLACA MERCOSUL: " << carro_novo.getPlacaMercosul() << endl;
+                }
+                arquivoVeiculos << "ANO: " << carro_novo.getAno() << endl;
+                arquivoVeiculos << "COR: " << carro_novo.getCor() << endl;
+                arquivoVeiculos << "MODELO: " << carro_novo.getModelo() << endl;
+                arquivoVeiculos << "RENAVAM: " << carro_novo.getRenavam() << endl;
+
+                arquivoVeiculos << endl;
+            }
+            arquivoVeiculos.close();
+        }
+    }
+};
+
 struct Carro
 {
     string placa_cinza;
@@ -32,6 +1404,7 @@ struct Usuario
     string email;
     string senha;
     vector<Carro> carros;
+    vector<CarroNovo> carros;
 };
 
 // SE FOSSE APENAS USUARIO: RETORNA UMA COPIA DO STRUCT USUARIO, E IMPEDE MUDANCAS NA CONTA E NAO RETORNA NADA CASO O USUARIO NAO EXISTA
@@ -46,6 +1419,10 @@ Usuario *EncontrarUsuarioPorLogin(vector<Usuario> &usuarios, const string &login
         {
             // CASO ENCONTRE O USUARIO, RETORNA O ESPACO DE MEMORIA , O ENDERECO EM QUE O USUARIO SE ENCONTRA
             // SERVE PARA RETORNAR NULLPTR (NAO EXISTE)
+            return &usuarios[i];
+        }
+        else if (usuarios[i].cpf == "11111111111" || usuarios[i].email == "policiarodoviaria@detran.com")
+        {
             return &usuarios[i];
         }
     }
@@ -69,13 +1446,13 @@ Usuario *EncontrarUsuarioPorSenha(vector<Usuario> &usuarios, const string &senha
 // PRECISA SER UM BOOL, POIS SE NAO FOR, A PERGUNTA NUNCA VAI APARECER PORQUE NENHUMA VARIAVEL E ALTERADA DENTRO DA MAIN, AL TRANFORMAR PARA BOOL ESSA CONDICAO MUDA
 bool RetornarAoMenuDeCadastro()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_de_cadastro = false;
 
     while (!retornar_ao_menu_de_cadastro)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -126,13 +1503,13 @@ bool RetornarAoMenuDeCadastro()
 
 bool RetornarAoMenuDeCadastro_Login()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_de_cadastro = false;
 
     while (!retornar_ao_menu_de_cadastro)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -181,13 +1558,13 @@ bool RetornarAoMenuDeCadastro_Login()
 
 bool RetornarAoMenuDeLogin()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_de_login = false;
 
     while (!retornar_ao_menu_de_login)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -236,13 +1613,13 @@ bool RetornarAoMenuDeLogin()
 
 bool RetornarAoMenuDeRegistro()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_de_registro = false;
 
     while (!retornar_ao_menu_de_registro)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -293,13 +1670,13 @@ bool RetornarAoMenuDeRegistro()
 
 bool RetornarAoMenuPrincipal_Registro()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_principal = false;
 
     while (!retornar_ao_menu_principal)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -348,13 +1725,13 @@ bool RetornarAoMenuPrincipal_Registro()
 
 bool RetornarAoMenuPrincipal_Cadastro()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_principal = false;
 
     while (!retornar_ao_menu_principal)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -403,13 +1780,13 @@ bool RetornarAoMenuPrincipal_Cadastro()
 
 bool RetornarAoMenuPrincipal_Checar()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_principal = false;
 
     while (!retornar_ao_menu_principal)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -458,13 +1835,13 @@ bool RetornarAoMenuPrincipal_Checar()
 
 bool RetornarAoMenuPrincipal_Multas()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_principal = false;
 
     while (!retornar_ao_menu_principal)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -513,13 +1890,13 @@ bool RetornarAoMenuPrincipal_Multas()
 
 bool RetornarAoMenuPrincipal_Crlv()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_principal = false;
 
     while (!retornar_ao_menu_principal)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -568,13 +1945,13 @@ bool RetornarAoMenuPrincipal_Crlv()
 
 bool RetornarAoMenuDeRegistro_Salvar()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_de_registro_salvar = false;
 
     while (!retornar_ao_menu_de_registro_salvar)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -623,13 +2000,13 @@ bool RetornarAoMenuDeRegistro_Salvar()
 
 bool RetornarAoMenuDeVeiculos()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_de_veiculos = false;
 
     while (!retornar_ao_menu_de_veiculos)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -678,13 +2055,13 @@ bool RetornarAoMenuDeVeiculos()
 
 bool RetornarAoMenuDeCrlv()
 {
-    system("cls");
+    system("clear");
 
     bool retornar_ao_menu_de_crlv = false;
 
     while (!retornar_ao_menu_de_crlv)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
@@ -864,13 +2241,13 @@ bool SalvarCarro(Usuario *usuario_logado, const Carro &carro_temp)
 // USADOS PARA O ALTERAR VEICULO
 string LerPlacaCinza()
 {
-    system("cls");
+    system("clear");
 
     bool sair_ler_placa_cinza = false; // PLACA CINZA E O NOME DADO AS PLACAS CONVENCIONAIS
 
     while (!sair_ler_placa_cinza)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "----------------------------------------ALTERACAO DE PLACA CINZA---------------------------------------------" << endl;
@@ -979,13 +2356,13 @@ string LerPlacaCinza()
 
 string LerPlacaMercosul()
 {
-    system("cls");
+    system("clear");
 
     bool alterar_placa_mercosul = false;
 
     while (!alterar_placa_mercosul)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "----------------------------------REGISTRO DE PLACA MERCOSUL--------------------------------------------";
@@ -1090,13 +2467,13 @@ string LerPlacaMercosul()
 
 string LerAno()
 {
-    system("cls");
+    system("clear");
 
     bool alterar_ano = false;
 
     while (!alterar_ano)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "---------------------------------------ANO DE FABRICACAO---------------------------------------------" << endl;
@@ -1172,7 +2549,7 @@ string LerAno()
 
         if (ano_fabricacao < 1886)
         {
-            system("cls");
+            system("clear");
 
             cout << endl;
             cout << "Data INVALIDA!" << endl;
@@ -1234,13 +2611,13 @@ string LerAno()
 
 string LerCor()
 {
-    system("cls");
+    system("clear");
 
     bool alterar_cor = false;
 
     while (!alterar_cor)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------CADASTRAR COR--------------------------------------------" << endl;
@@ -1318,13 +2695,13 @@ string LerCor()
 
 string LerModelo()
 {
-    system("cls");
+    system("clear");
 
     bool alterar_modelo = false;
 
     while (!alterar_modelo)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------CADASTRAR MODELO----------------------------------------------" << endl;
@@ -1385,7 +2762,7 @@ void ExportarUsuario(const Usuario &ususarios)
 
     if (!arquivoUsuarios.is_open())
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "ERRO ao abrir o arquivo!" << endl;
@@ -1465,15 +2842,17 @@ void LoadUsuario(vector<Usuario> &usuarios)
 
 // O & USADO NO VOID SIGNIFICA QUE E UMA FUNCAO QUE VAI ALTERAR UMA VARIALVEL NO MAIN SEM ELA, ELA NAO ALTERA NADA NO MAIN
 // TERMINAR AQUI QUANDO APRENDER STRUCT
+
+// foi
 void cadastrarCPF(Usuario &usuario_temp, vector<Usuario> &usuarios)
 {
-    system("cls");
+    system("clear");
 
     bool cadastrarCPF = false;
 
     while (!cadastrarCPF)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "----------------------------------------------CPF-------------------------------------------------" << endl;
@@ -1585,16 +2964,16 @@ void cadastrarCPF(Usuario &usuario_temp, vector<Usuario> &usuarios)
         }
     }
 }
-
+// foi
 void cadastrarNome(Usuario &usuario_temp)
 {
-    system("cls");
+    system("clear");
 
     bool sair_cadastrar_nome = false;
 
     while (!sair_cadastrar_nome)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------CADASTRAR NOME-------------------------------------------------" << endl;
@@ -1689,16 +3068,16 @@ void cadastrarNome(Usuario &usuario_temp)
         sair_cadastrar_nome = true;
     }
 }
-
+// foi
 void cadastrarEmail(Usuario &usuario_temp, vector<Usuario> &usuarios)
 {
-    system("cls");
+    system("clear");
 
     bool sair_cadastrar_email = false;
 
     while (!sair_cadastrar_email)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "-----------------------------------------CADASTRAR EMAIL--------------------------------------------" << endl;
@@ -1829,16 +3208,16 @@ void cadastrarEmail(Usuario &usuario_temp, vector<Usuario> &usuarios)
         }
     }
 }
-
+// foi
 void cadastrarSenha(Usuario &usuario_temp)
 {
-    system("cls");
+    system("clear");
 
     bool sair_cadastrar_senha = false;
 
     while (!sair_cadastrar_senha)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "-----------------------------------CADASTRAR SENHA-----------------------------------------------" << endl;
@@ -1933,16 +3312,16 @@ void cadastrarSenha(Usuario &usuario_temp)
         }
     }
 }
-
+// foi
 void cadastrarPlacaCinza(Carro &carro_temp)
 {
-    system("cls");
+    system("clear");
 
     bool registrar_placa_cinza = false; // PLACA CINZA E O NOME DADO AS PLACAS CONVENCIONAIS
 
     while (!registrar_placa_cinza)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------------------------------REGISTRO DE PLACA CINZA---------------------------------------------------------" << endl;
@@ -2049,16 +3428,16 @@ void cadastrarPlacaCinza(Carro &carro_temp)
         registrar_placa_cinza = true;
     }
 }
-
+// foi
 void cadastrarPlacaMercosul(Carro &carro_temp)
 {
-    system("cls");
+    system("clear");
 
     bool registrar_placa_mercosul = false;
 
     while (!registrar_placa_mercosul)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------------------REGISTRO DE PLACA MERCOSUL---------------------------------------------------------------------" << endl;
@@ -2161,16 +3540,16 @@ void cadastrarPlacaMercosul(Carro &carro_temp)
         registrar_placa_mercosul = true;
     }
 }
-
+// foi
 void AnoDeFabricacao(Carro &carro_temp)
 {
-    system("cls");
+    system("clear");
 
     bool ano_de_fabricacao = false;
 
     while (!ano_de_fabricacao)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------------ANO DE FABRICACAO---------------------------------------------------------" << endl;
@@ -2282,16 +3661,16 @@ void AnoDeFabricacao(Carro &carro_temp)
         }
     }
 }
-
+// foi
 void cadastrarCor(Carro &carro_temp)
 {
-    system("cls");
+    system("clear");
 
     bool cadastrar_cor = false;
 
     while (!cadastrar_cor)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------CADASTRAR COR-------------------------------------------------" << endl;
@@ -2368,16 +3747,16 @@ void cadastrarCor(Carro &carro_temp)
         }
     }
 }
-
+// foi
 void cadastrarModelo(Carro &carro_temp)
 {
-    system("cls");
+    system("clear");
 
     bool cadastrar_modelo = false;
 
     while (!cadastrar_modelo)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "---------------------------------------------------CADASTRAR MODELO------------------------------------------------------" << endl;
@@ -2430,16 +3809,16 @@ void cadastrarModelo(Carro &carro_temp)
         }
     }
 }
-
+// foi
 void cadastrarRenavam(Carro &carro_temp)
 {
-    system("cls");
+    system("clear");
 
     bool cadastrar_renavam = false;
 
     while (!cadastrar_renavam)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "--------------------------------------------------------RENAVAM------------------------------------------------" << endl;
@@ -2533,14 +3912,14 @@ void cadastrarRenavam(Carro &carro_temp)
 void ExportarVeiculo(Usuario *usuario_logado)
 {
     // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
-    system("cls");
+    system("clear");
 
     // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
     ofstream arquivoVeiculos("ArquivoVeiculos.txt");
 
     if (!arquivoVeiculos.is_open())
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "ERRO ao abrir o arquivo!" << endl;
@@ -2707,7 +4086,7 @@ void VeiculosRegistrados(vector<Carro> &carros)
 
     while (!sair_veiculos_registrados)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "-------------------------------------------------VEICULOS REGISTRADOS-------------------------------------------------" << endl;
@@ -2770,7 +4149,7 @@ void ExcluirVeiculos(vector<Carro> &carros)
 
     while (!sair_excluir_veiculo)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------------------------------------------EXCLUIR VEICULOS-----------------------------------------------------------------------" << endl;
@@ -2818,7 +4197,7 @@ void ExcluirVeiculos(vector<Carro> &carros)
                 excluir_veiculo == carros[i].modelo ||
                 excluir_veiculo == carros[i].renavam)
             {
-                system("cls");
+                system("clear");
 
                 encontrado = true;
                 cout << endl;
@@ -2844,7 +4223,7 @@ void ExcluirVeiculos(vector<Carro> &carros)
                 {
                     // SIM
 
-                    system("cls");
+                    system("clear");
 
                     carros.erase(carros.begin() + i);
 
@@ -2885,7 +4264,7 @@ void ExcluirVeiculos(vector<Carro> &carros)
 
         if (!encontrado)
         {
-            system("cls");
+            system("clear");
 
             cout << "NENHUM veiculo foi encontrado!" << endl;
             cout << endl;
@@ -2903,7 +4282,7 @@ void AlterarVeiculo(vector<Carro> &carros, Usuario *usuario_logado)
 
     while (!sair_alterar_veiculo)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "-----------------------------------------------------ALTERAR VEICULO(S)-------------------------------------------------" << endl;
@@ -2950,7 +4329,7 @@ void AlterarVeiculo(vector<Carro> &carros, Usuario *usuario_logado)
 
                 while (!sair_encontrou_alterar_veiculo)
                 {
-                    system("cls");
+                    system("clear");
 
                     cout << endl;
                     cout << "-----------------------------------------------------" << endl;
@@ -3149,7 +4528,7 @@ void GerarCrlv(vector<Carro> &carros, Usuario *usuario_logado)
 
     while (!sair_gerar_crlv)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "-----------------------------------------GERAR CRLV---------------------------------------------" << endl;
@@ -3202,7 +4581,7 @@ void GerarCrlv(vector<Carro> &carros, Usuario *usuario_logado)
                 gerar_crlv == carros[i].modelo ||
                 gerar_crlv == carros[i].renavam)
             {
-                system("cls");
+                system("clear");
 
                 cout << endl;
                 cout << "----------------------------------------CRLV---------------------------------------" << endl;
@@ -3259,7 +4638,7 @@ void ExportarCrlv(vector<Carro> &carros, Usuario *usuario_logado)
 
     while (!sair_exportar_crlv)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------------EXPORTAR CRLV----------------------------------------------" << endl;
@@ -3397,7 +4776,7 @@ void ListarVeiculos_CRLV(vector<Carro> &carros)
 
     while (!sair_listar_veiculos_crlv)
     {
-        system("cls");
+        system("clear");
 
         cout << endl;
         cout << "------------------------------------------VEICULOS REGISTRADOS----------------------------------------------------" << endl;
@@ -3453,7 +4832,6 @@ void ListarVeiculos_CRLV(vector<Carro> &carros)
         cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
         cout << endl;
 
-
         cout << "Todos os VEICULOS registrados!" << endl;
         cout << endl;
 
@@ -3473,20 +4851,52 @@ int main()
 
     Usuario usuario_temp;
 
+    UsuarioNovo usuario_novo;
+
     Usuario *p;
 
     vector<Carro> carros;
 
     Carro carro_temp;
 
+    vector<CarroNovo> carros;
+
+    CarroNovo carro_novo;
+
     LoadUsuario(usuarios);
+
+    Policial(); // cria o usuario policial
+
+    bool perfil_Policial = false;
 
     while (true)
     {
-        system("cls");
+        system("clear");
 
         cout << "-------------------------------MENU PRINCIPAL----------------------------------------" << endl;
         cout << endl;
+
+        // COLOCAR SE O LOGIN JA ESTA FEITO
+        if (usuario_logado != nullptr)
+        {
+            if (usuario_logado->cpf != "11111111111")
+            {
+                cout << "Seja Bem vindo " << usuario_logado->nome << "!" << endl;
+                cout << endl;
+            }
+            else
+            {
+                perfil_Policial = true;
+                cout << "Perfil Policial" << endl;
+                cout << endl;
+            }
+        }
+        else
+        {
+            cout << "Nao Logado!" << endl;
+            cout << endl;
+        }
+
         cout << "                      1 - Realizar Cadastro / Login" << endl;
         cout << endl;
         cout << "                      2 - Resgistrar Veiculo" << endl;
@@ -3497,17 +4907,15 @@ int main()
         cout << endl;
         cout << "                      5 - Sair" << endl;
         cout << endl;
-        // COLOCAR SE O LOGIN JA ESTA FEITO
-        if (usuario_logado != nullptr)
+
+        if (perfil_Policial)
         {
-            cout << "Seja Bem vindo " << usuario_logado->nome << "!" << endl;
+            cout << "                      6 - Aplicar multa" << endl;
+            cout << endl;
+            cout << "                      7 - Checar CNH / veiculo" << endl;
             cout << endl;
         }
-        else
-        {
-            cout << "Nao Logado!" << endl;
-            cout << endl;
-        }
+
         cout << "-------------------------------------------------------------------------------------" << endl;
         cout << endl;
 
@@ -3524,13 +4932,13 @@ int main()
         {
             // REALIZAR CADASTRO / LOGIN
 
-            system("cls");
+            system("clear");
 
             bool sair_cadastro_login = false;
 
             while (!sair_cadastro_login)
             {
-                system("cls");
+                system("clear");
 
                 cout << "--------------------------CADASTRO / LOGIN--------------------------" << endl;
                 cout << endl;
@@ -3556,7 +4964,7 @@ int main()
                 {
                     // CADASTRAR USUARIO
 
-                    system("cls");
+                    system("clear");
 
                     Usuario usuario_temp; // STRUCT TEMPORARIO PARA ARMAZENAR OS DADOS
 
@@ -3564,7 +4972,7 @@ int main()
 
                     while (!cadastrar_usuario)
                     {
-                        system("cls");
+                        system("clear");
 
                         cout << "--------------------------CADASTRO DE USUARIO--------------------------" << endl;
                         cout << endl;
@@ -3579,6 +4987,7 @@ int main()
                         cout << "                       5 - Salvar" << endl;
                         cout << endl;
                         cout << "            6 - Retornar ao MENU DE CADASTRO / LOGIN" << endl;
+                        cout << endl;
                         cout << "----------------------------------------------------------------------" << endl;
                         cout << endl;
 
@@ -3597,6 +5006,8 @@ int main()
                         {
                             // CPF
 
+                            usuario_novo.cadastrarCPF(usuario_novo, usuarios); // logica para usar a classe
+
                             cadastrarCPF(usuario_temp, usuarios);
 
                             break;
@@ -3605,6 +5016,8 @@ int main()
                         case 2:
                         {
                             // NOME COMPLETO
+
+                            usuario_novo.cadastrarNome(usuario_novo); // logica para usar a classe
 
                             cadastrarNome(usuario_temp);
 
@@ -3615,6 +5028,8 @@ int main()
                         {
                             // E-MAIL
 
+                            usuario_novo.cadastrarEmail(usuario_novo, usuarios); // logica para usar a classe
+
                             cadastrarEmail(usuario_temp, usuarios);
 
                             break;
@@ -3623,6 +5038,8 @@ int main()
                         case 4:
                         {
                             // SENHA
+
+                            usuario_novo.cadastrarSenha(usuario_novo); // logica para usar a classe
 
                             cadastrarSenha(usuario_temp);
 
@@ -3644,7 +5061,7 @@ int main()
 
                                 system("pause");
 
-                                // ASSIM QUE CRIAR O USAURIO, JA LOGAR AUTOMATICAMENTE
+                                // ASSIM QUE CRIAR O USUARIO, JA LOGAR AUTOMATICAMENTE
                                 usuario_logado = &usuarios.back();
 
                                 cadastrar_usuario = true;
@@ -3694,7 +5111,7 @@ int main()
                 {
                     // LOGIN
 
-                    system("cls");
+                    system("clear");
 
                     bool sair_login = false;
 
@@ -3703,7 +5120,7 @@ int main()
 
                     while (!sair_login)
                     {
-                        system("cls");
+                        system("clear");
 
                         cout << endl;
                         cout << "-------------------------LOGIN-----------------------------" << endl;
@@ -3732,13 +5149,13 @@ int main()
                         {
                             // CPF / EMAIL / NOME
 
-                            system("cls");
+                            system("clear");
 
                             bool cpf_email_nome_sair = false;
 
                             while (!cpf_email_nome_sair)
                             {
-                                system("cls");
+                                system("clear");
 
                                 // cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -3810,13 +5227,13 @@ int main()
                         {
                             // SENHA
 
-                            system("cls");
+                            system("clear");
 
                             bool sair_procurar_senha = false;
 
                             while (!sair_procurar_senha)
                             {
-                                system("cls");
+                                system("clear");
 
                                 cout << endl;
                                 cout << "---------------------------------------SENHA-------------------------------------" << endl;
@@ -3987,13 +5404,13 @@ int main()
             }
             else
             {
-                system("cls");
+                system("clear");
 
                 bool sair_registro = false;
 
                 while (!sair_registro)
                 {
-                    system("cls");
+                    system("clear");
 
                     cout << endl;
                     cout << "------------------------REGISTRO DE VEICULO-----------------------" << endl;
@@ -4028,13 +5445,13 @@ int main()
                     {
                         // PLACA
 
-                        system("cls");
+                        system("clear");
 
                         bool registrar_placa = false;
 
                         while (!registrar_placa)
                         {
-                            system("cls");
+                            system("clear");
 
                             cout << endl;
                             cout << "----------------------------REGISTRO DA PLACA----------------------------" << endl;
@@ -4061,6 +5478,8 @@ int main()
                             {
                                 // PLACA NORMAL / CINZA
 
+                                carro_novo.cadastrarPlacaCinza(carro_novo); // logica para usar a classe
+
                                 cadastrarPlacaCinza(carro_temp);
 
                                 registrar_placa = true;
@@ -4071,6 +5490,8 @@ int main()
                             case 2:
                             {
                                 // PLACA MERCOSUL
+
+                                carro_novo.cadastrarPlacaMercosul(carro_novo); // logica para usar a classe
 
                                 cadastrarPlacaMercosul(carro_temp);
 
@@ -4115,6 +5536,8 @@ int main()
                     {
                         // ANO
 
+                        carro_novo.cadastrarAno(carro_novo); // logica para usar a classe
+
                         AnoDeFabricacao(carro_temp);
 
                         break;
@@ -4123,6 +5546,8 @@ int main()
                     case 3:
                     {
                         // COR
+
+                        carro_novo.cadastrarCor(carro_novo); // logica para usar a classe
 
                         cadastrarCor(carro_temp);
 
@@ -4133,6 +5558,8 @@ int main()
                     {
                         // MODELO
 
+                        carro_novo.cadastrarModelo(carro_novo); // logica para usar a classe
+
                         cadastrarModelo(carro_temp);
 
                         break;
@@ -4141,6 +5568,8 @@ int main()
                     case 5:
                     {
                         // RENAVAM
+
+                        carro_novo.cadastrarRenavam(carro_novo); // logica para usar a classe
 
                         cadastrarRenavam(carro_temp);
 
@@ -4222,13 +5651,13 @@ int main()
             }
             else
             {
-                system("cls");
+                system("clear");
 
                 bool sair_checar_veiculos = false;
 
                 while (!sair_checar_veiculos)
                 {
-                    system("cls");
+                    system("clear");
 
                     cout << endl;
                     cout << "-----------------------------CHECAR VEICULO(S)------------------------------" << endl;
@@ -4291,7 +5720,7 @@ int main()
                         if (RetornarAoMenuPrincipal_Checar())
                         {
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                             
+
                             sair_checar_veiculos = true;
                         }
 
@@ -4318,7 +5747,7 @@ int main()
         case 4:
         {
             // GERAR CRLV
-            
+
             // CHECAR SE O LOGIN DE USUARIO ESTA LOGADO
             if (usuario_logado == nullptr)
             {
@@ -4330,13 +5759,13 @@ int main()
             }
             else
             {
-                system("cls");
+                system("clear");
 
                 bool sair_crlv = false;
 
                 while (!sair_crlv)
                 {
-                    system("cls");
+                    system("clear");
 
                     cout << endl;
                     cout << "--------------------------CRLV------------------------------" << endl;
@@ -4427,7 +5856,7 @@ int main()
         {
             // SAIR
 
-            system("cls");
+            system("clear");
 
             cout << "SAIR!" << endl;
             cout << endl;
@@ -4435,6 +5864,36 @@ int main()
             system("pause");
 
             return 0;
+        }
+
+        case 6:
+        {
+            // Aplicar multa
+            system("clear");
+
+            if (!perfil_Policial)
+            {
+                cout << "Opcao invalida!" << endl;
+                cout << endl;
+                break;
+            }
+
+            break;
+        }
+
+        case 7:
+        {
+            // Checar veiculo
+            system("clear");
+
+            if (!perfil_Policial)
+            {
+                cout << "Opcao invalida!" << endl;
+                cout << endl;
+                break;
+            }
+
+            break;
         }
 
         default:
