@@ -1339,7 +1339,7 @@ public:
         return true;
     }
 
-    void ExportarVeiculo(Usuario *usuario_logado)
+    void ExportarVeiculo(UsuarioNovo *usuario_novo_logado)
     {
         // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
         system("clear");
@@ -1359,10 +1359,10 @@ public:
         }
         else
         {
-            for (size_t i = 0; i < usuario_logado->carros.size(); i++)
+            for (size_t i = 0; i < usuario_novo_logado->carros.size(); i++)
             {
                 // CRIA UMA REFERENCIA QUE PERCORRA DENTRO DO STRUCT CARRO SALVANDO TODOS OS CARROS
-                const CarroNovo &carro_novo = usuario_logado->carros_novo[i];
+                const CarroNovo &carro_novo = usuario_novo_logado->carros[i];
 
                 arquivoVeiculos << "NOME: " << usuario_logado->nome << endl;
                 arquivoVeiculos << "CPF: " << usuario_logado->cpf << endl;
@@ -1405,6 +1405,13 @@ struct Usuario
     string senha;
     vector<Carro> carros;
     vector<CarroNovo> carros;
+    vector<CarroNovo> carros_novo;
+};
+
+class Multa : public CarroNovo
+{
+    // carro ja tem o usuario, portanto nao precisa do usuario
+    // checar multas nos carros e pontos na carteira
 };
 
 // SE FOSSE APENAS USUARIO: RETORNA UMA COPIA DO STRUCT USUARIO, E IMPEDE MUDANCAS NA CONTA E NAO RETORNA NADA CASO O USUARIO NAO EXISTA
@@ -4843,6 +4850,8 @@ void ListarVeiculos_CRLV(vector<Carro> &carros)
 
 Usuario *usuario_logado = nullptr;
 
+UsuarioNovo *usuario_novo_logado = nullptr;
+
 int main()
 {
     setlocale(LC_ALL, "Portuguese_Brazil.1252");
@@ -4877,7 +4886,7 @@ int main()
         cout << endl;
 
         // COLOCAR SE O LOGIN JA ESTA FEITO
-        if (usuario_logado != nullptr)
+        if (usuario_novo_logado != nullptr)
         {
             if (usuario_logado->cpf != "11111111111")
             {
@@ -5877,6 +5886,16 @@ int main()
                 cout << endl;
                 break;
             }
+            else
+            {
+                // montar funcao que procura veiculo pela placa ou pelo renavam, para aplicar multa, e talvez adicione pontos na carteira
+                bool menu_aplicar_multa = true;
+
+                while(menu_aplicar_multa)
+                {
+                    system("clear");
+                }
+            }
 
             break;
         }
@@ -5891,6 +5910,10 @@ int main()
                 cout << "Opcao invalida!" << endl;
                 cout << endl;
                 break;
+            }
+            else
+            {
+                // checar se tem multas pendentes para pagamento
             }
 
             break;
