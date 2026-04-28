@@ -5,6 +5,8 @@
     arrumar o salvar cadastro de carro, colocar para construtor de class (Joao)
     arrumar a class CarroNovo, mudar para Carro e fazer os ajustes na main(Vitor e Pedro) (peguem e exemplo do cadastro de usuario e apliquem)
     bool salvar carro, arrumar (Vitor ou pedro)
+    MUDAR PARA LISTA (PEDRO E VITOR)
+    BUSCA BINARIA (PEDRO E VITOR)
 */
 
 #include <iostream>
