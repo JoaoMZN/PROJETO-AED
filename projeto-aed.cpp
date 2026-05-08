@@ -10,7 +10,7 @@
 */
 
 #include <iostream>
-#include <vector>
+#include <list>
 #include <cstdlib>
 #include <string>
 #include <cctype>
@@ -20,7 +20,679 @@
 #include <ctime>
 #include <locale>
 
+#ifdef _WIN32
+#define CLEAR system("cls")
+#else
+#define CLEAR system("clear")
+#endif
+
 using namespace std;
+
+class Carro; // Só para saber que Carro é uma classe
+// PRECISA SER UM BOOL, POIS SE NAO FOR, A PERGUNTA NUNCA VAI APARECER PORQUE NENHUMA VARIAVEL E ALTERADA DENTRO DA MAIN, AL TRANFORMAR PARA BOOL ESSA CONDICAO MUDA
+bool RetornarAoMenuDeCadastro()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_de_cadastro = false;
+
+    while (!retornar_ao_menu_de_cadastro)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de cadastro?" << endl;
+        cout << endl;
+        cout << "                       Nenhum dado sera salvo" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE CADASTRO / LOGIN" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar o CADASTRO DE USUARIO" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_de_cadastro = 0;
+        cin >> opcao_menu_de_cadastro;
+
+        switch (opcao_menu_de_cadastro)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuDeCadastro_Login()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_de_cadastro = false;
+
+    while (!retornar_ao_menu_de_cadastro)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de cadastro?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE CADASTRO / LOGIN" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar o LOGIN" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_de_cadastro = 0;
+        cin >> opcao_menu_de_cadastro;
+
+        switch (opcao_menu_de_cadastro)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuDeLogin()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_de_login = false;
+
+    while (!retornar_ao_menu_de_login)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao MENU DE LOGIN?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE LOGIN" << endl;
+        cout << endl;
+        cout << "                   2 - NAO, continuar o LOGIN" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_de_login = 0;
+        cin >> opcao_menu_de_login;
+
+        switch (opcao_menu_de_login)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuDeRegistro()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_de_registro = false;
+
+    while (!retornar_ao_menu_de_registro)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de registro?" << endl;
+        cout << endl;
+        cout << "                       Nenhum dado sera salvo" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE REGISTRO" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar o CADASTRO DO VEICULO" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_de_registro = 0;
+        cin >> opcao_menu_de_registro;
+
+        switch (opcao_menu_de_registro)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuPrincipal_Registro()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_principal = false;
+
+    while (!retornar_ao_menu_principal)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar o REGISTRO DO VEICULO" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_para_o_principal = 0;
+        cin >> opcao_menu_para_o_principal;
+
+        switch (opcao_menu_para_o_principal)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuPrincipal_Cadastro()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_principal = false;
+
+    while (!retornar_ao_menu_principal)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar o CADASTRO / LOGIN de USUARIO" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_para_o_principal = 0;
+        cin >> opcao_menu_para_o_principal;
+
+        switch (opcao_menu_para_o_principal)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuPrincipal_Checar()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_principal = false;
+
+    while (!retornar_ao_menu_principal)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar a CHECAGEM DE VEICULOS" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_para_o_principal = 0;
+        cin >> opcao_menu_para_o_principal;
+
+        switch (opcao_menu_para_o_principal)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuPrincipal_Multas()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_principal = false;
+
+    while (!retornar_ao_menu_principal)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar em MULTAS" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_para_o_principal = 0;
+        cin >> opcao_menu_para_o_principal;
+
+        switch (opcao_menu_para_o_principal)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuPrincipal_Crlv()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_principal = false;
+
+    while (!retornar_ao_menu_principal)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar em CRLV" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_para_o_principal = 0;
+        cin >> opcao_menu_para_o_principal;
+
+        switch (opcao_menu_para_o_principal)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuDeRegistro_Salvar()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_de_registro_salvar = false;
+
+    while (!retornar_ao_menu_de_registro_salvar)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Voce quer mudar algum dado antes de SALVAR o veiculo" << endl;
+        cout << endl;
+        cout << "               1 - SIM, mudar ALGUM dado do veiculo" << endl;
+        cout << endl;
+        cout << "               2 - NAO, SALVAR veiculo" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_de_registro_salvar = 0;
+        cin >> opcao_menu_de_registro_salvar;
+
+        switch (opcao_menu_de_registro_salvar)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuDeVeiculos()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_de_veiculos = false;
+
+    while (!retornar_ao_menu_de_veiculos)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao MENU DE VEICULOS?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DE VEICULOS" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar a CHECAGEM DE VEICULOS" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_veiculos = 0;
+        cin >> opcao_menu_veiculos;
+
+        switch (opcao_menu_veiculos)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
+
+bool RetornarAoMenuDeCrlv()
+{
+    CLEAR;
+
+    bool retornar_ao_menu_de_crlv = false;
+
+    while (!retornar_ao_menu_de_crlv)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "           Tem certeza que deseja retornar ao MENU DO CRLV?" << endl;
+        cout << endl;
+        cout << "               1 - SIM, retornar ao MENU DO CRLV" << endl;
+        cout << endl;
+        cout << "               2 - NAO, continuar" << endl;
+        cout << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_menu_veiculos = 0;
+        cin >> opcao_menu_veiculos;
+
+        switch (opcao_menu_veiculos)
+        {
+        case 1:
+        {
+            return true;
+        }
+
+        case 2:
+        {
+            return false;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            system("pause");
+
+            break;
+        }
+        }
+    }
+
+    return false;
+}
 
 class Usuario
 {
@@ -28,10 +700,14 @@ private:
     string nome, cpf, email, senha;
 
 public:
-    vector<Carro> carros;
-    vector<Usuario> usuarios;
+    list<Carro> carros;
+    list<Carro>::iterator carrosIT;
+    Usuario()
+    { // construtor
+        carrosIT = carros.end();
+    };
 
-    void setNome(string n)
+    void setNome(string n) // dá linha 43 até 78 são setters e getters para as variaveis privadas do Usuario.
     {
         this->nome = n;
     }
@@ -65,11 +741,11 @@ public:
     string getSenha()
     {
         return this->senha;
-    }
+    };
 
-    void cadastrarCPF(Usuario &usuario_temp, vector<Usuario> &usuarios)
+    void cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
     {
-        system("clear");
+        CLEAR;
 
         bool cadastrarCPF = false;
 
@@ -77,14 +753,14 @@ public:
 
         while (!cadastrarCPF)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "----------------------------------------------CPF-------------------------------------------------" << endl;
             cout << endl;
             cout << "Digite o seu CPF (ou digite MENU para voltar ao MENU DE CADASTRO):  ";
 
-            getline(cin, cpf_novo_temp);
+            getline(cin >> ws, cpf_novo_temp);
 
             cout << endl;
             cout << "-------------------------------------------------------------------------------------------------" << endl;
@@ -119,9 +795,9 @@ public:
             // CHECA SE O CPF JA ESTA CADASTRADO
             bool cpf_registrado = false;
 
-            for (size_t i = 0; i < usuarios.size(); i++)
+            for (auto it = usuarios.begin(); it != usuarios.end(); it++)
             {
-                if (usuarios[i].cpf == cpf_novo_temp)
+                if (it->getCpf() == cpf_novo_temp)
                 {
                     cpf_registrado = true;
 
@@ -191,11 +867,11 @@ public:
                 cadastrarCPF = true;
             }
         }
-    }
+    };
 
     void cadastrarNome(Usuario &usuario_temp)
     {
-        system("clear");
+        CLEAR;
 
         bool sair_cadastrar_nome = false;
 
@@ -203,7 +879,7 @@ public:
 
         while (!sair_cadastrar_nome)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "------------------------------------------CADASTRAR NOME-------------------------------------------------" << endl;
@@ -301,9 +977,9 @@ public:
         }
     }
 
-    void cadastrarEmail(Usuario &usuario_temp, vector<Usuario> &usuarios)
+    void cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
     {
-        system("clear");
+        CLEAR;
 
         bool sair_cadastrar_email = false;
 
@@ -311,14 +987,14 @@ public:
 
         while (!sair_cadastrar_email)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "-----------------------------------------CADASTRAR EMAIL--------------------------------------------" << endl;
             cout << endl;
             cout << "Digite o seu EMAIL (ou MENU para voltar ao MENU DE CADASTRO):  ";
 
-            getline(cin, email_novo_temp);
+            getline(cin >> ws, email_novo_temp);
 
             cout << endl;
             cout << "----------------------------------------------------------------------------------------------------" << endl;
@@ -359,9 +1035,9 @@ public:
             // CHECA SE O EMAIL JA FOI REGISTRADO
             bool email_registrado = false;
 
-            for (size_t i = 0; i < usuarios.size(); i++)
+            for (auto it = usuarios.begin(); it != usuarios.end(); it++)
             {
-                if (usuarios[i].email == email_novo_temp)
+                if (it->getEmail() == email_novo_temp)
                 {
                     email_registrado = true;
 
@@ -448,7 +1124,7 @@ public:
 
     void cadastrarSenha(Usuario &usuario_temp)
     {
-        system("clear");
+        CLEAR;
 
         bool sair_cadastrar_senha = false;
 
@@ -456,7 +1132,7 @@ public:
 
         while (!sair_cadastrar_senha)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "-----------------------------------CADASTRAR SENHA-----------------------------------------------" << endl;
@@ -555,7 +1231,7 @@ public:
         }
     }
 
-    bool SalvarUsuario(vector<Usuario> &usuarios, Usuario &usuario_temp)
+    bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp)
     {
         bool valido = true;
 
@@ -615,7 +1291,7 @@ public:
 
         if (!arquivoUsuarios.is_open())
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "ERRO ao abrir o arquivo!" << endl;
@@ -634,7 +1310,7 @@ public:
         arquivoUsuarios.close();
     }
 
-    void LoadUsuario(vector<Usuario> &usuarios)
+    void LoadUsuario(list<Usuario> &usuarios)
     {
         ifstream arquivosUsuarios("UsuarioCadastrados.txt");
 
@@ -784,7 +1460,7 @@ public:
 
     void cadastrarPlacaCinza(Carro &carro_temp)
     {
-        system("clear");
+        CLEAR;
 
         string placa_cinza_temp;
 
@@ -792,7 +1468,7 @@ public:
 
         while (!registrar_placa_cinza)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "------------------------------------------------------------------REGISTRO DE PLACA CINZA---------------------------------------------------------" << endl;
@@ -904,7 +1580,7 @@ public:
 
     void cadastrarPlacaMercosul(Carro &carro_temp)
     {
-        system("clear");
+        CLEAR;
 
         string placa_mercosul_temp;
 
@@ -912,7 +1588,7 @@ public:
 
         while (!registrar_placa_mercosul)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "------------------------------------------------------REGISTRO DE PLACA MERCOSUL---------------------------------------------------------------------" << endl;
@@ -1020,7 +1696,7 @@ public:
 
     void cadastrarAno(Carro &carro_temp)
     {
-        system("clear");
+        CLEAR;
 
         string ano_temp;
 
@@ -1028,7 +1704,7 @@ public:
 
         while (!ano_de_fabricacao)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "------------------------------------------------ANO DE FABRICACAO---------------------------------------------------------" << endl;
@@ -1145,7 +1821,7 @@ public:
 
     void cadastrarCor(Carro &carro_temp)
     {
-        system("clear");
+        CLEAR;
 
         string cor_nova_temp;
 
@@ -1153,7 +1829,7 @@ public:
 
         while (!cadastrar_cor)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "--------------------------------------------------CADASTRAR COR-------------------------------------------------" << endl;
@@ -1235,7 +1911,7 @@ public:
 
     void cadastrarModelo(Carro &carro_temp)
     {
-        system("clear");
+        CLEAR;
 
         bool cadastrar_modelo = false;
 
@@ -1243,7 +1919,7 @@ public:
 
         while (!cadastrar_modelo)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "---------------------------------------------------CADASTRAR MODELO------------------------------------------------------" << endl;
@@ -1300,7 +1976,7 @@ public:
 
     void cadastrarRenavam(Carro &carro_temp)
     {
-        system("clear");
+        CLEAR;
 
         bool cadastrar_renavam = false;
 
@@ -1308,7 +1984,7 @@ public:
 
         while (!cadastrar_renavam)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "--------------------------------------------------------RENAVAM------------------------------------------------" << endl;
@@ -1460,9 +2136,9 @@ public:
             cout << "Preencha apenas UM TIPO DE PLACA!" << endl;
             cout << endl;
 
-            carro_a_salvar.placa_cinza = "";
+            carro_a_salvar.setPlacaCinza("");
 
-            carro_a_salvar.placa_mercosul = "";
+            carro_a_salvar.setPlacaMercosul("");
 
             valido = false;
         }
@@ -1487,14 +2163,14 @@ public:
     void ExportarVeiculo(Usuario *usuario_logado)
     {
         // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
-        system("clear");
+        CLEAR;
 
         // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
         ofstream arquivoVeiculos("ArquivoVeiculos.txt");
 
         if (!arquivoVeiculos.is_open())
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "ERRO ao abrir o arquivo!" << endl;
@@ -1504,24 +2180,23 @@ public:
         }
         else
         {
-            for (size_t i = 0; i < usuario_logado->carros.size(); i++)
+            for (auto it = usuario_logado->carros.begin(); it != usuario_logado->carros.end(); it++)
             {
-                const Carro &carro_temp = usuario_logado->carros[i];
 
                 arquivoVeiculos << "NOME: " << usuario_logado->getNome() << endl;
                 arquivoVeiculos << "CPF: " << usuario_logado->getCpf() << endl;
-                if (!carro_temp.getPlacaCinza().empty())
+                if (!it->getPlacaCinza().empty())
                 {
-                    arquivoVeiculos << "PLACA CINZA: " << carro_temp.getPlacaCinza() << endl;
+                    arquivoVeiculos << "PLACA CINZA: " << it->getPlacaCinza() << endl;
                 }
-                else if (!carro_temp.getPlacaMercosul().empty())
+                else if (!it->getPlacaMercosul().empty())
                 {
-                    arquivoVeiculos << "PLACA MERCOSUL: " << carro_temp.getPlacaMercosul() << endl;
+                    arquivoVeiculos << "PLACA MERCOSUL: " << it->getPlacaMercosul() << endl;
                 }
-                arquivoVeiculos << "ANO: " << carro_temp.getAno() << endl;
-                arquivoVeiculos << "COR: " << carro_temp.getCor() << endl;
-                arquivoVeiculos << "MODELO: " << carro_temp.getModelo() << endl;
-                arquivoVeiculos << "RENAVAM: " << carro_temp.getRenavam() << endl;
+                arquivoVeiculos << "ANO: " << it->getAno() << endl;
+                arquivoVeiculos << "COR: " << it->getCor() << endl;
+                arquivoVeiculos << "MODELO: " << it->getModelo() << endl;
+                arquivoVeiculos << "RENAVAM: " << it->getRenavam() << endl;
 
                 arquivoVeiculos << endl;
             }
@@ -1653,13 +2328,13 @@ public:
         arquivoVeiculos.close();
     }
 
-    void VeiculosRegistrados(vector<Carro> &carros)
+    void VeiculosRegistrados(list<Carro> &carros)
     {
         bool sair_veiculos_registrados = false;
 
         while (!sair_veiculos_registrados)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "-------------------------------------------------VEICULOS REGISTRADOS-------------------------------------------------" << endl;
@@ -1675,32 +2350,33 @@ public:
             else
             {
                 // MOSTRAR TODOS OS CARROS
-                for (size_t i = 0; i < carros.size(); i++)
+                int contador = 1;
+                for (auto it = carros.begin(); it != carros.end(); it++)
                 {
-                    cout << "--------------------------------------CARRO " << i + 1 << "-----------------------------------------" << endl;
+                    cout << "--------------------------------------CARRO " << contador << "-----------------------------------------" << endl;
                     cout << endl;
-                    cout << "Modelo:  " << carros[i].getModelo() << endl;
+                    cout << "Modelo: " << it->getModelo() << endl;
                     cout << endl;
-                    cout << "Cor:  " << carros[i].getCor() << endl;
+                    cout << "Cor: " << it->getCor() << endl;
                     cout << endl;
-                    cout << "Ano:  " << carros[i].getAno() << endl;
+                    cout << "Ano: " << it->getAno() << endl;
                     cout << endl;
 
                     // LOGICA DA PLACA
-                    if (!carros[i].placa_cinza.empty())
+                    if (!it->getPlacaCinza().empty())
                     {
-                        cout << "Placa:  " << carros[i].getPlacaCinza() << endl;
+                        cout << "Placa:  " << it->getPlacaCinza() << endl;
                         cout << endl;
                     }
-                    else if (!carros[i].placa_mercosul.empty())
+                    else if (!it->getPlacaMercosul().empty())
                     {
-                        cout << "Placa:  " << carros[i].getPlacaMercosul() << endl;
+                        cout << "Placa:  " << it->getPlacaMercosul() << endl;
                         cout << endl;
                     }
 
-                    cout << "Renavam:  " << carros[i].getRenavam() << endl;
+                    cout << "Renavam:  " << it->getRenavam() << endl;
                     cout << endl;
-                    cout << "-------------------------------------------------------------------------------------------------" << endl;
+                    contador++;
                 }
             }
 
@@ -1716,13 +2392,13 @@ public:
         }
     }
 
-    void ExcluirVeiculos(vector<Carro> &carros)
+    void ExcluirVeiculos(list<Carro> &carros)
     {
         bool sair_excluir_veiculo = false;
 
         while (!sair_excluir_veiculo)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "------------------------------------------------------------------------------EXCLUIR VEICULOS-----------------------------------------------------------------------" << endl;
@@ -1761,16 +2437,16 @@ public:
             // CHECAR A COMPONENTE COM O STRUCT CARRO
             bool encontrado = false;
 
-            for (size_t i = 0; i < carros.size(); i++)
+            for (auto it = carros.begin(); it != carros.end(); it++)
             {
-                if (excluir_veiculo == carros[i].getPlacaCinza() ||
-                    excluir_veiculo == carros[i].getPlacaMercosul() ||
-                    excluir_veiculo == carros[i].getAno() ||
-                    excluir_veiculo == carros[i].getCor() ||
-                    excluir_veiculo == carros[i].getModelo() ||
-                    excluir_veiculo == carros[i].getRenavam())
+                if (excluir_veiculo == it->getPlacaCinza() ||
+                    excluir_veiculo == it->getPlacaMercosul() ||
+                    excluir_veiculo == it->getAno() ||
+                    excluir_veiculo == it->getCor() ||
+                    excluir_veiculo == it->getModelo() ||
+                    excluir_veiculo == it->getRenavam())
                 {
-                    system("clear");
+                    CLEAR;
 
                     encontrado = true;
                     cout << endl;
@@ -1796,9 +2472,9 @@ public:
                     {
                         // SIM
 
-                        system("clear");
+                        CLEAR;
 
-                        carros.erase(carros.begin() + i);
+                        carros.erase(it);
 
                         cout << endl;
                         cout << "Veiculo EXCLUIDO com sucesso!" << endl;
@@ -1837,7 +2513,7 @@ public:
 
             if (!encontrado)
             {
-                system("clear");
+                CLEAR;
 
                 cout << "NENHUM veiculo foi encontrado!" << endl;
                 cout << endl;
@@ -1849,13 +2525,13 @@ public:
         }
     }
 
-    void AlterarVeiculo(vector<Carro> &carros, Usuario *usuario_logado)
+    void AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado)
     {
         bool sair_alterar_veiculo = false;
 
         while (!sair_alterar_veiculo)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "-----------------------------------------------------ALTERAR VEICULO(S)-------------------------------------------------" << endl;
@@ -1889,20 +2565,20 @@ public:
                 }
             }
 
-            for (size_t i = 0; i < carros.size(); i++)
+            for (auto it = carros.begin(); it != carros.end(); it++)
             {
-                if (alterar_veiculo == carros[i].getPlacaCinza() ||
-                    alterar_veiculo == carros[i].getPlacaMercosul() ||
-                    alterar_veiculo == carros[i].getAno() ||
-                    alterar_veiculo == carros[i].getCor() ||
-                    alterar_veiculo == carros[i].getModelo() ||
-                    alterar_veiculo == carros[i].getRenavam())
+                if (alterar_veiculo == it->getPlacaCinza() ||
+                    alterar_veiculo == it->getPlacaMercosul() ||
+                    alterar_veiculo == it->getAno() ||
+                    alterar_veiculo == it->getCor() ||
+                    alterar_veiculo == it->getModelo() ||
+                    alterar_veiculo == it->getRenavam())
                 {
                     bool sair_encontrou_alterar_veiculo = false;
 
                     while (!sair_encontrou_alterar_veiculo)
                     {
-                        system("clear");
+                        CLEAR;
 
                         cout << endl;
                         cout << "-----------------------------------------------------" << endl;
@@ -1933,119 +2609,94 @@ public:
                         {
                         case 1:
                         {
-                            // PLACA CINZA
-                            string nova_placa_cinza = getPlacaCinza();
+                            cadastrarPlacaCinza(*it);
+                            it->setPlacaMercosul("");
 
-                            if (nova_placa_cinza != "")
-                            {
-                                carros[i].setPlacaCinza(nova_placa_cinza);
+                            ExportarVeiculo(usuario_logado);
 
-                                ExportarVeiculo(usuario_logado);
+                            cout << endl;
+                            cout << "Nova PLACA CINZA registrada com sucesso!" << endl;
+                            cout << endl;
 
-                                cout << endl;
-                                cout << "Nova PLACA CINZA registrada com sucesso!" << endl;
-                                cout << endl;
+                            system("pause");
 
-                                sair_alterar_veiculo = true;
-
-                                system("pause");
-                            }
+                            sair_encontrou_alterar_veiculo = true;
+                            sair_alterar_veiculo = true;
 
                             break;
                         }
 
                         case 2:
                         {
-                            // PLACA MERCOSUL
-                            string nova_placa_mercosul = getPlacaMercosul();
+                            cadastrarPlacaMercosul(*it);
+                            it->setPlacaCinza("");
 
-                            if (nova_placa_mercosul != "")
-                            {
-                                carros[i].setPlacaMercosul(nova_placa_mercosul);
+                            ExportarVeiculo(usuario_logado);
 
-                                ExportarVeiculo(usuario_logado);
+                            cout << endl;
+                            cout << "Nova PLACA MERCOSUL registrada com sucesso!" << endl;
+                            cout << endl;
 
-                                cout << endl;
-                                cout << "Nova PLACA MERCOSUL registrada com sucesso!" << endl;
-                                cout << endl;
+                            system("pause");
 
-                                sair_alterar_veiculo = true;
-
-                                system("pause");
-                            }
+                            sair_encontrou_alterar_veiculo = true;
+                            sair_alterar_veiculo = true;
 
                             break;
                         }
 
                         case 3:
                         {
-                            // ANO
-                            string novo_ano = getAno();
+                            cadastrarAno(*it);
 
-                            if (novo_ano != "")
-                            {
-                                carros[i].setAno(novo_ano);
+                            ExportarVeiculo(usuario_logado);
 
-                                ExportarVeiculo(usuario_logado);
+                            cout << endl;
+                            cout << "Novo ANO registrado com sucesso!" << endl;
+                            cout << endl;
 
-                                cout << endl;
-                                cout << "Novo ANO registrado com sucesso!" << endl;
-                                cout << endl;
+                            system("pause");
 
-                                sair_alterar_veiculo = true;
-
-                                system("pause");
-                            }
+                            sair_encontrou_alterar_veiculo = true;
+                            sair_alterar_veiculo = true;
 
                             break;
                         }
 
                         case 4:
                         {
-                            // COR
-                            string nova_cor = getCor();
+                            cadastrarCor(*it);
 
-                            if (nova_cor != "")
-                            {
-                                carros[i].setCor(nova_cor);
+                            ExportarVeiculo(usuario_logado);
 
-                                ExportarVeiculo(usuario_logado);
+                            cout << endl;
+                            cout << "Nova COR registrada com sucesso!" << endl;
+                            cout << endl;
 
-                                cout << endl;
-                                cout << "Nova COR registrada com sucesso!" << endl;
-                                cout << endl;
+                            system("pause");
 
-                                sair_alterar_veiculo = true;
-
-                                system("pause");
-                            }
+                            sair_encontrou_alterar_veiculo = true;
+                            sair_alterar_veiculo = true;
 
                             break;
                         }
 
                         case 5:
                         {
-                            // MODELO
-                            string novo_modelo = getModelo();
+                            cadastrarModelo(*it);
 
-                            if (novo_modelo != "")
-                            {
-                                carros[i].setModelo(novo_modelo);
+                            ExportarVeiculo(usuario_logado);
 
-                                ExportarVeiculo(usuario_logado);
+                            cout << endl;
+                            cout << "Novo MODELO registrado com sucesso!" << endl;
+                            cout << endl;
 
-                                cout << endl;
-                                cout << "Novo MODELO registrado com sucesso!" << endl;
-                                cout << endl;
+                            system("pause");
 
-                                sair_alterar_veiculo = true;
-
-                                system("pause");
-                            }
-
+                            sair_encontrou_alterar_veiculo = true;
+                            sair_alterar_veiculo = true;
                             break;
                         }
-
                         case 6:
                         {
                             // RETORNAR AO MENU DE VEICULO
@@ -2095,13 +2746,13 @@ public:
         }
     }
 
-    void GerarCrlv(vector<Carro> &carros, Usuario *usuario_logado)
+    void GerarCrlv(list<Carro> &carros, Usuario *usuario_logado)
     {
-        bool sair_gerar_crlv;
+        bool sair_gerar_crlv = false;
 
         while (!sair_gerar_crlv)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "-----------------------------------------GERAR CRLV---------------------------------------------" << endl;
@@ -2145,16 +2796,16 @@ public:
 
             bool encontrou_veiculo = false;
 
-            for (size_t i = 0; i < carros.size(); i++)
+            for (auto it = carros.begin(); it != carros.end(); it++)
             {
-                if (gerar_crlv == carros[i].getPlacaCinza() ||
-                    gerar_crlv == carros[i].getPlacaMercosul() ||
-                    gerar_crlv == carros[i].getAno() ||
-                    gerar_crlv == carros[i].getCor() ||
-                    gerar_crlv == carros[i].getModelo() ||
-                    gerar_crlv == carros[i].getRenavam())
+                if (gerar_crlv == it->getPlacaCinza() ||
+                    gerar_crlv == it->getPlacaMercosul() ||
+                    gerar_crlv == it->getAno() ||
+                    gerar_crlv == it->getCor() ||
+                    gerar_crlv == it->getModelo() ||
+                    gerar_crlv == it->getRenavam())
                 {
-                    system("clear");
+                    CLEAR;
 
                     cout << endl;
                     cout << "----------------------------------------CRLV---------------------------------------" << endl;
@@ -2162,24 +2813,24 @@ public:
                     // A SETA PASSA O PONTEIRO PELO STRUCT USUARIO E SALVA O NOME DELE
                     cout << "Propietario: " << usuario_logado->getNome() << endl;
                     cout << endl;
-                    cout << "Modelo: " << carros[i].getModelo() << endl;
+                    cout << "Modelo: " << it->getModelo() << endl;
                     cout << endl;
-                    cout << "Ano: " << carros[i].getAno() << endl;
+                    cout << "Ano: " << it->getAno() << endl;
                     cout << endl;
-                    cout << "Cor: " << carros[i].getCor() << endl;
+                    cout << "Cor: " << it->getCor() << endl;
                     cout << endl;
-                    if (!carros[i].getPlacaCinza().empty())
+                    if (!it->getPlacaCinza().empty())
                     {
-                        cout << "Placa: " << carros[i].getPlacaCinza() << endl;
+                        cout << "Placa: " << it->getPlacaCinza() << endl;
                         cout << endl;
                     }
-                    else if (!carros[i].getPlacaMercosul().empty())
+                    else if (!it->getPlacaMercosul().empty())
                     {
-                        cout << "Placa: " << carros[i].getPlacaMercosul() << endl;
+                        cout << "Placa: " << it->getPlacaMercosul() << endl;
                         cout << endl;
                     }
 
-                    cout << "Renavam: " << carros[i].getRenavam() << endl;
+                    cout << "Renavam: " << it->getRenavam() << endl;
                     cout << endl;
                     cout << "----------------------------------------------------------------------------------" << endl;
                     cout << endl;
@@ -2205,13 +2856,13 @@ public:
         }
     }
 
-    void ExportarCrlv(vector<Carro> &carros, Usuario *usuario_logado)
+    void ExportarCrlv(list<Carro> &carros, Usuario *usuario_logado)
     {
         bool sair_exportar_crlv = false;
 
         while (!sair_exportar_crlv)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "------------------------------------------------EXPORTAR CRLV----------------------------------------------" << endl;
@@ -2224,7 +2875,7 @@ public:
             cout << "Digite o DADO do veiculo: ";
 
             string exportar_crlv;
-            getline(cin, exportar_crlv);
+            getline(cin >> ws, exportar_crlv);
 
             cout << endl;
             cout << "----------------------------------------------------------------------------------------------------------" << endl;
@@ -2255,27 +2906,27 @@ public:
 
             bool encontrou_veiculo = false;
 
-            for (size_t i = 0; i < carros.size(); i++)
+            for (auto it = carros.begin(); it != carros.end(); it++)
             {
-                if (exportar_crlv == carros[i].getPlacaCinza() ||
-                    exportar_crlv == carros[i].getPlacaMercosul() ||
-                    exportar_crlv == carros[i].getAno() ||
-                    exportar_crlv == carros[i].getCor() ||
-                    exportar_crlv == carros[i].getModelo() ||
-                    exportar_crlv == carros[i].getRenavam())
+                if (exportar_crlv == it->getPlacaCinza() ||
+                    exportar_crlv == it->getPlacaMercosul() ||
+                    exportar_crlv == it->getAno() ||
+                    exportar_crlv == it->getCor() ||
+                    exportar_crlv == it->getModelo() ||
+                    exportar_crlv == it->getRenavam())
                 {
 
                     encontrou_veiculo = true;
 
                     string nome_exportar_crlv = "CRLV_";
 
-                    if (!carros[i].getPlacaCinza().empty())
+                    if (!it->getPlacaCinza().empty())
                     {
-                        nome_exportar_crlv += carros[i].getPlacaCinza();
+                        nome_exportar_crlv += it->getPlacaCinza();
                     }
                     else
                     {
-                        nome_exportar_crlv += carros[i].getPlacaMercosul();
+                        nome_exportar_crlv += it->getPlacaMercosul();
                     }
 
                     nome_exportar_crlv += ".txt";
@@ -2297,23 +2948,23 @@ public:
                     arquivoCRLV << endl;
                     arquivoCRLV << "Propietario:  " << usuario_logado->getNome() << endl;
                     arquivoCRLV << endl;
-                    arquivoCRLV << "Modelo:  " << carros[i].getModelo() << endl;
+                    arquivoCRLV << "Modelo:  " << it->getModelo() << endl;
                     arquivoCRLV << endl;
-                    arquivoCRLV << "Ano:  " << carros[i].getAno() << endl;
+                    arquivoCRLV << "Ano:  " << it->getAno() << endl;
                     arquivoCRLV << endl;
-                    arquivoCRLV << "Cor: " << carros[i].getCor() << endl;
+                    arquivoCRLV << "Cor: " << it->getCor() << endl;
                     arquivoCRLV << endl;
-                    if (!carros[i].getPlacaCinza().empty())
+                    if (!it->getPlacaCinza().empty())
                     {
-                        arquivoCRLV << "Placa:  " << carros[i].getPlacaCinza() << endl;
+                        arquivoCRLV << "Placa:  " << it->getPlacaCinza() << endl;
                         arquivoCRLV << endl;
                     }
-                    else if (!carros[i].getPlacaMercosul().empty())
+                    else if (!it->getPlacaMercosul().empty())
                     {
-                        arquivoCRLV << "Placa:  " << carros[i].getPlacaMercosul() << endl;
+                        arquivoCRLV << "Placa:  " << it->getPlacaMercosul() << endl;
                         arquivoCRLV << endl;
                     }
-                    arquivoCRLV << "Renvam:  " << carros[i].getRenavam() << endl;
+                    arquivoCRLV << "Renvam:  " << it->getRenavam() << endl;
                     arquivoCRLV << endl;
                     arquivoCRLV << "-----------------------------------------------------------------" << endl;
 
@@ -2343,13 +2994,13 @@ public:
         }
     }
 
-    void ListarVeiculos_CRLV(vector<Carro> &carros)
+    void ListarVeiculos_CRLV(list<Carro> &carros)
     {
         bool sair_listar_veiculos_crlv = false;
 
         while (!sair_listar_veiculos_crlv)
         {
-            system("clear");
+            CLEAR;
 
             cout << endl;
             cout << "------------------------------------------VEICULOS REGISTRADOS----------------------------------------------------" << endl;
@@ -2371,38 +3022,38 @@ public:
             }
             else
             {
+                int contador = 1;
                 // MOSTRAR TODOS OS CARROS
-                for (size_t i = 0; i < carros.size(); i++)
+                for (auto it = carros.begin(); it != carros.end(); it++)
                 {
                     cout << endl;
-                    cout << "-----------------------------------CARRO " << i + 1 << "--------------------------------------" << endl;
+                    cout << "-----------------------------------CARRO " << contador << "--------------------------------------" << endl;
                     cout << endl;
-                    cout << "Modelo:  " << carros[i].getModelo() << endl;
+                    cout << "Modelo:  " << it->getModelo() << endl;
                     cout << endl;
-                    cout << "Cor:  " << carros[i].getCor() << endl;
+                    cout << "Cor:  " << it->getCor() << endl;
                     cout << endl;
-                    cout << "Ano:  " << carros[i].getAno() << endl;
+                    cout << "Ano:  " << it->getAno() << endl;
                     cout << endl;
 
                     // LOGICA DA PLACA
-                    if (!carros[i].getPlacaCinza().empty())
+                    if (!it->getPlacaCinza().empty())
                     {
-                        cout << "Placa:  " << carros[i].getPlacaCinza() << endl;
+                        cout << "Placa:  " << it->getPlacaCinza() << endl;
                         cout << endl;
                     }
-                    else if (!carros[i].getPlacaMercosul().empty())
+                    else if (!it->getPlacaMercosul().empty())
                     {
-                        cout << "Placa:  " << carros[i].getPlacaMercosul() << endl;
+                        cout << "Placa:  " << it->getPlacaMercosul() << endl;
                         cout << endl;
                     }
 
-                    cout << "Renavam:  " << carros[i].getRenavam() << endl;
+                    cout << "Renavam:  " << it->getRenavam() << endl;
                     cout << endl;
                     cout << "-----------------------------------------------------------------------------------------" << endl;
                 }
             }
 
-            cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
             cout << endl;
 
             cout << "Todos os VEICULOS registrados!" << endl;
@@ -2424,723 +3075,52 @@ class Multa : public Carro
 // SE FOSSE APENAS USUARIO: RETORNA UMA COPIA DO STRUCT USUARIO, E IMPEDE MUDANCAS NA CONTA E NAO RETORNA NADA CASO O USUARIO NAO EXISTA
 // SE FOSSE APENAS USUARIO&: INDICA REFERENCIA DA MEMORIA, OU SEJA, A MEMORIA NAO PODE SER NULA OU NAO EXISTIR, PORTANTO NAO RETORNA NADA CASO NAO EXISTA
 // COM USUARIO*: SERVE COMO UM PONTEIO, O FATO DE COLOCAR * DEPOIS DA VARIAVEL, FUNCIONA COMO UM PONTEIRO, DESSA MANEIRA RETORNA O ESPACO DE MEMORIA CASO EXISTA E SE NAO EXISTIR NADA, RETORNARA NULL
-Usuario *EncontrarUsuarioPorLogin(vector<Usuario> &usuarios, const string &login)
+Usuario *EncontrarUsuarioPorLogin(list<Usuario> &usuarios, const string &login)
 {
-    for (int i = 0; i < usuarios.size(); i++)
+    for (auto it = usuarios.begin(); it != usuarios.end(); it++)
     {
-        if (usuarios[i].getCpf() == login ||
-            usuarios[i].getEmail() == login)
+        if (it->getCpf() == login ||
+            it->getEmail() == login)
         {
             // CASO ENCONTRE O USUARIO, RETORNA O ESPACO DE MEMORIA , O ENDERECO EM QUE O USUARIO SE ENCONTRA
             // SERVE PARA RETORNAR NULLPTR (NAO EXISTE)
-            return &usuarios[i];
+            return &(*it);
         }
-        else if (usuarios[i].getCpf() == "11111111111" || usuarios[i].getEmail() == "policiarodoviaria@detran.com")
+        else if (it->getCpf() == "11111111111" ||
+                 it->getEmail() == "policiarodoviaria@detran.com")
         {
-            return &usuarios[i];
+            return &(*it);
         }
     }
 
     return nullptr;
 }
 
-Usuario *EncontrarUsuarioPorSenha(vector<Usuario> &usuarios, const string &senha)
+Usuario *EncontrarUsuarioPorSenha(list<Usuario> &usuarios, const string &senha)
 {
-    for (int i = 0; i < usuarios.size(); i++)
+    for (auto it = usuarios.begin(); it != usuarios.end(); it++)
     {
-        if (usuarios[i].getSenha() == senha)
+        if (it->getSenha() == senha)
         {
-            return &usuarios[i];
+            return &(*it);
         }
     }
 
     return nullptr;
 }
-
-// PRECISA SER UM BOOL, POIS SE NAO FOR, A PERGUNTA NUNCA VAI APARECER PORQUE NENHUMA VARIAVEL E ALTERADA DENTRO DA MAIN, AL TRANFORMAR PARA BOOL ESSA CONDICAO MUDA
-bool RetornarAoMenuDeCadastro()
-{
-    system("clear");
-
-    bool retornar_ao_menu_de_cadastro = false;
-
-    while (!retornar_ao_menu_de_cadastro)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de cadastro?" << endl;
-        cout << endl;
-        cout << "                       Nenhum dado sera salvo" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE CADASTRO / LOGIN" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar o CADASTRO DE USUARIO" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_de_cadastro = 0;
-        cin >> opcao_menu_de_cadastro;
-
-        switch (opcao_menu_de_cadastro)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuDeCadastro_Login()
-{
-    system("clear");
-
-    bool retornar_ao_menu_de_cadastro = false;
-
-    while (!retornar_ao_menu_de_cadastro)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de cadastro?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE CADASTRO / LOGIN" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar o LOGIN" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_de_cadastro = 0;
-        cin >> opcao_menu_de_cadastro;
-
-        switch (opcao_menu_de_cadastro)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuDeLogin()
-{
-    system("clear");
-
-    bool retornar_ao_menu_de_login = false;
-
-    while (!retornar_ao_menu_de_login)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao MENU DE LOGIN?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE LOGIN" << endl;
-        cout << endl;
-        cout << "                   2 - NAO, continuar o LOGIN" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_de_login = 0;
-        cin >> opcao_menu_de_login;
-
-        switch (opcao_menu_de_login)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuDeRegistro()
-{
-    system("clear");
-
-    bool retornar_ao_menu_de_registro = false;
-
-    while (!retornar_ao_menu_de_registro)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de registro?" << endl;
-        cout << endl;
-        cout << "                       Nenhum dado sera salvo" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE REGISTRO" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar o CADASTRO DO VEICULO" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_de_registro = 0;
-        cin >> opcao_menu_de_registro;
-
-        switch (opcao_menu_de_registro)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuPrincipal_Registro()
-{
-    system("clear");
-
-    bool retornar_ao_menu_principal = false;
-
-    while (!retornar_ao_menu_principal)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar o REGISTRO DO VEICULO" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_para_o_principal = 0;
-        cin >> opcao_menu_para_o_principal;
-
-        switch (opcao_menu_para_o_principal)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuPrincipal_Cadastro()
-{
-    system("clear");
-
-    bool retornar_ao_menu_principal = false;
-
-    while (!retornar_ao_menu_principal)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar o CADASTRO / LOGIN de USUARIO" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_para_o_principal = 0;
-        cin >> opcao_menu_para_o_principal;
-
-        switch (opcao_menu_para_o_principal)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuPrincipal_Checar()
-{
-    system("clear");
-
-    bool retornar_ao_menu_principal = false;
-
-    while (!retornar_ao_menu_principal)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar a CHECAGEM DE VEICULOS" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_para_o_principal = 0;
-        cin >> opcao_menu_para_o_principal;
-
-        switch (opcao_menu_para_o_principal)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuPrincipal_Multas()
-{
-    system("clear");
-
-    bool retornar_ao_menu_principal = false;
-
-    while (!retornar_ao_menu_principal)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar em MULTAS" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_para_o_principal = 0;
-        cin >> opcao_menu_para_o_principal;
-
-        switch (opcao_menu_para_o_principal)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuPrincipal_Crlv()
-{
-    system("clear");
-
-    bool retornar_ao_menu_principal = false;
-
-    while (!retornar_ao_menu_principal)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de principal?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE PRINCIPAL" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar em CRLV" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_para_o_principal = 0;
-        cin >> opcao_menu_para_o_principal;
-
-        switch (opcao_menu_para_o_principal)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuDeRegistro_Salvar()
-{
-    system("clear");
-
-    bool retornar_ao_menu_de_registro_salvar = false;
-
-    while (!retornar_ao_menu_de_registro_salvar)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Voce quer mudar algum dado antes de SALVAR o veiculo" << endl;
-        cout << endl;
-        cout << "               1 - SIM, mudar ALGUM dado do veiculo" << endl;
-        cout << endl;
-        cout << "               2 - NAO, SALVAR veiculo" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_de_registro_salvar = 0;
-        cin >> opcao_menu_de_registro_salvar;
-
-        switch (opcao_menu_de_registro_salvar)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuDeVeiculos()
-{
-    system("clear");
-
-    bool retornar_ao_menu_de_veiculos = false;
-
-    while (!retornar_ao_menu_de_veiculos)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao MENU DE VEICULOS?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DE VEICULOS" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar a CHECAGEM DE VEICULOS" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_veiculos = 0;
-        cin >> opcao_menu_veiculos;
-
-        switch (opcao_menu_veiculos)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-bool RetornarAoMenuDeCrlv()
-{
-    system("clear");
-
-    bool retornar_ao_menu_de_crlv = false;
-
-    while (!retornar_ao_menu_de_crlv)
-    {
-        system("clear");
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao MENU DO CRLV?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DO CRLV" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_veiculos = 0;
-        cin >> opcao_menu_veiculos;
-
-        switch (opcao_menu_veiculos)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            system("pause");
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-Usuario *usuario_logado = nullptr;
 
 int main()
 {
     setlocale(LC_ALL, "Portuguese_Brazil.1252");
-
-    vector<Usuario> usuarios;
-
+    list<Usuario> usuarios;
     Usuario usuario_temp;
 
-    Usuario *p;
+    Usuario *usuario_logado = nullptr;
 
     Usuario usuario_load;
-
-    vector<Carro> carros;
+    usuario_load.LoadUsuario(usuarios);
 
     Carro carro_temp;
-
-    usuario_load.LoadUsuario(usuarios);
 
     Policial(); // cria o usuario policial
 
@@ -3148,7 +3128,7 @@ int main()
 
     while (true)
     {
-        system("clear");
+        CLEAR;
 
         cout << "-------------------------------MENU PRINCIPAL----------------------------------------" << endl;
         cout << endl;
@@ -3213,13 +3193,13 @@ int main()
         {
             // REALIZAR CADASTRO / LOGIN
 
-            system("clear");
+            CLEAR;
 
             bool sair_cadastro_login = false;
 
             while (!sair_cadastro_login)
             {
-                system("clear");
+                CLEAR;
 
                 cout << "--------------------------CADASTRO / LOGIN--------------------------" << endl;
                 cout << endl;
@@ -3245,7 +3225,7 @@ int main()
                 {
                     // CADASTRAR USUARIO
 
-                    system("clear");
+                    CLEAR;
 
                     Usuario usuario_temp;
 
@@ -3253,7 +3233,7 @@ int main()
 
                     while (!cadastrar_usuario)
                     {
-                        system("clear");
+                        CLEAR;
 
                         cout << "--------------------------CADASTRO DE USUARIO--------------------------" << endl;
                         cout << endl;
@@ -3384,7 +3364,7 @@ int main()
                 {
                     // LOGIN
 
-                    system("clear");
+                    CLEAR;
 
                     bool sair_login = false;
 
@@ -3393,7 +3373,7 @@ int main()
 
                     while (!sair_login)
                     {
-                        system("clear");
+                        CLEAR;
 
                         cout << endl;
                         cout << "-------------------------LOGIN-----------------------------" << endl;
@@ -3422,13 +3402,13 @@ int main()
                         {
                             // CPF / EMAIL / NOME
 
-                            system("clear");
+                            CLEAR;
 
                             bool cpf_email_nome_sair = false;
 
                             while (!cpf_email_nome_sair)
                             {
-                                system("clear");
+                                CLEAR;
 
                                 // cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -3500,13 +3480,13 @@ int main()
                         {
                             // SENHA
 
-                            system("clear");
+                            CLEAR;
 
                             bool sair_procurar_senha = false;
 
                             while (!sair_procurar_senha)
                             {
-                                system("clear");
+                                CLEAR;
 
                                 cout << endl;
                                 cout << "---------------------------------------SENHA-------------------------------------" << endl;
@@ -3677,13 +3657,13 @@ int main()
             }
             else
             {
-                system("clear");
+                CLEAR;
 
                 bool sair_registro = false;
 
                 while (!sair_registro)
                 {
-                    system("clear");
+                    CLEAR;
 
                     cout << endl;
                     cout << "------------------------REGISTRO DE VEICULO-----------------------" << endl;
@@ -3718,13 +3698,13 @@ int main()
                     {
                         // PLACA
 
-                        system("clear");
+                        CLEAR;
 
                         bool registrar_placa = false;
 
                         while (!registrar_placa)
                         {
-                            system("clear");
+                            CLEAR;
 
                             cout << endl;
                             cout << "----------------------------REGISTRO DA PLACA----------------------------" << endl;
@@ -3910,13 +3890,13 @@ int main()
             }
             else
             {
-                system("clear");
+                CLEAR;
 
                 bool sair_checar_veiculos = false;
 
                 while (!sair_checar_veiculos)
                 {
-                    system("clear");
+                    CLEAR;
 
                     cout << endl;
                     cout << "-----------------------------CHECAR VEICULO(S)------------------------------" << endl;
@@ -4018,13 +3998,13 @@ int main()
             }
             else
             {
-                system("clear");
+                CLEAR;
 
                 bool sair_crlv = false;
 
                 while (!sair_crlv)
                 {
-                    system("clear");
+                    CLEAR;
 
                     cout << endl;
                     cout << "--------------------------CRLV------------------------------" << endl;
@@ -4115,7 +4095,7 @@ int main()
         {
             // SAIR
 
-            system("clear");
+            CLEAR;
 
             cout << "SAIR!" << endl;
             cout << endl;
@@ -4128,7 +4108,7 @@ int main()
         case 6:
         {
             // Aplicar multa
-            system("clear");
+            CLEAR;
 
             if (!perfil_Policial)
             {
@@ -4143,7 +4123,7 @@ int main()
 
                 while (menu_aplicar_multa)
                 {
-                    system("clear");
+                    CLEAR;
 
                     cout << "-----------------------------------" << endl;
                     cout << endl;
@@ -4169,7 +4149,7 @@ int main()
 
                         while (menu_multar_por_placa_cinza)
                         {
-                            system("clear");
+                            CLEAR;
 
                             cout << "--------------------------------------------------------" << endl;
                             cout << endl;
@@ -4194,7 +4174,7 @@ int main()
 
                         while (menu_multar_por_placa_mercosul)
                         {
-                            system("clear");
+                            CLEAR;
 
                             cout << "--------------------------------------------------------" << endl;
                             cout << endl;
@@ -4213,7 +4193,7 @@ int main()
 
                     case 3:
                     {
-                        system("clear");
+                        CLEAR;
                         // retornar ao menu
 
                         menu_aplicar_multa = false;
@@ -4222,7 +4202,7 @@ int main()
 
                     default:
                     {
-                        system("clear");
+                        CLEAR;
 
                         cout << "Opcao invalida" << endl;
 
@@ -4238,7 +4218,7 @@ int main()
         case 7:
         {
             // Checar veiculo
-            system("clear");
+            CLEAR;
 
             if (!perfil_Policial)
             {
@@ -4254,7 +4234,7 @@ int main()
 
                 while (menu_checar_multas_pendentes)
                 {
-                    system("clear");
+                    CLEAR;
 
                     cout << "-----------------------------------" << endl;
                     cout << endl;
@@ -4280,7 +4260,7 @@ int main()
 
                         while (menu_buscar_por_placa_cinza)
                         {
-                            system("clear");
+                            CLEAR;
 
                             cout << "--------------------------------------------------------" << endl;
                             cout << endl;
@@ -4305,7 +4285,7 @@ int main()
 
                         while (menu_buscar_por_placa_mercosul)
                         {
-                            system("clear");
+                            CLEAR;
 
                             cout << "--------------------------------------------------------" << endl;
                             cout << endl;
@@ -4324,7 +4304,7 @@ int main()
 
                     case 3:
                     {
-                        system("clear");
+                        CLEAR;
                         // retornar ao menu
 
                         menu_checar_multas_pendentes = false;
@@ -4334,7 +4314,7 @@ int main()
 
                     default:
                     {
-                        system("clear");
+                        CLEAR;
 
                         cout << "Opcao invalida" << endl;
 
