@@ -20,7 +20,7 @@
 #include <ctime>
 #include <locale>
 
-#ifdef _WIN32
+#ifdef _WIN32 //Macro
 #define CLEAR system("cls")
 #else
 #define CLEAR system("clear")
