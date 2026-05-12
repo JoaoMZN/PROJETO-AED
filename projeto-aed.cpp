@@ -7,6 +7,9 @@
     bool salvar carro, arrumar (Vitor ou pedro)
     MUDAR PARA LISTA (PEDRO E VITOR)
     BUSCA BINARIA (PEDRO E VITOR)
+    ORDENACAO (PEDRO E VITOR)
+    ARQUIVO GERAL DE CARRO (JOAO)
+    LOGICA DA POLICIA (JOAO)
 */
 
 #include <iostream>
@@ -20,15 +23,29 @@
 #include <ctime>
 #include <locale>
 
-#ifdef _WIN32 //Macro
+#ifdef _WIN32 // Macro
 #define CLEAR system("cls")
 #else
 #define CLEAR system("clear")
 #endif
 
+#ifdef _WIN32
+#define CLEAR system("cls")
+#define PAUSE PAUSE
+#else
+#define CLEAR system("clear")
+#define PAUSE                                                \
+    {                                                        \
+        cout << "Pressione Enter para continuar...";         \
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); \
+        cin.get();                                           \
+    }
+#endif
+
 using namespace std;
 
-class Carro; // Só para saber que Carro é uma classe
+class Carro;
+
 // PRECISA SER UM BOOL, POIS SE NAO FOR, A PERGUNTA NUNCA VAI APARECER PORQUE NENHUMA VARIAVEL E ALTERADA DENTRO DA MAIN, AL TRANFORMAR PARA BOOL ESSA CONDICAO MUDA
 bool RetornarAoMenuDeCadastro()
 {
@@ -77,7 +94,7 @@ bool RetornarAoMenuDeCadastro()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -132,7 +149,7 @@ bool RetornarAoMenuDeCadastro_Login()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -187,7 +204,7 @@ bool RetornarAoMenuDeLogin()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -244,7 +261,7 @@ bool RetornarAoMenuDeRegistro()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -299,7 +316,7 @@ bool RetornarAoMenuPrincipal_Registro()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -354,7 +371,7 @@ bool RetornarAoMenuPrincipal_Cadastro()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -409,7 +426,7 @@ bool RetornarAoMenuPrincipal_Checar()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -464,7 +481,7 @@ bool RetornarAoMenuPrincipal_Multas()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -519,7 +536,7 @@ bool RetornarAoMenuPrincipal_Crlv()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -574,7 +591,7 @@ bool RetornarAoMenuDeRegistro_Salvar()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -629,7 +646,7 @@ bool RetornarAoMenuDeVeiculos()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -684,7 +701,7 @@ bool RetornarAoMenuDeCrlv()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
@@ -707,7 +724,7 @@ public:
         carrosIT = carros.end();
     };
 
-    void setNome(string n) // dá linha 43 até 78 são setters e getters para as variaveis privadas do Usuario.
+    void setNome(string n)
     {
         this->nome = n;
     }
@@ -811,7 +828,7 @@ public:
                 cout << "CPF ja REGISTRADO!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -824,7 +841,7 @@ public:
                 {
                     somente_numeros = false;
 
-                    system("pause");
+                    PAUSE;
 
                     break;
                 }
@@ -836,7 +853,7 @@ public:
                 cout << "Formato INVALIDO! Somente numeros sao aceitos!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -847,7 +864,7 @@ public:
                 cout << "Formato INVALIDO! Deve conter 11 numeros!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -861,7 +878,7 @@ public:
                 cout << "CPF cadastrado com sucesso!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 // SAI DO WHILE DO CPF
                 cadastrarCPF = true;
@@ -936,7 +953,7 @@ public:
                 cout << "Formato INVALIDO! Deve conter apenas letras!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -958,7 +975,7 @@ public:
                 cout << "Nome INCOMPLETO! Digite seu NOME e SOBRENOME!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -971,7 +988,7 @@ public:
             cout << "Nome CADASTRADO com sucesso!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             sair_cadastrar_nome = true;
         }
@@ -1051,7 +1068,7 @@ public:
                 cout << "EMAIL ja REGISTRADO!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1101,7 +1118,7 @@ public:
                 cout << "Formato INVALIDO! Cheque novamente o email digitado: " << email_novo_temp << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1115,7 +1132,7 @@ public:
                 cout << "EMAIL cadastrado com sucesso!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 sair_cadastrar_email = true;
             }
@@ -1181,7 +1198,7 @@ public:
                 cout << "Formato INVALIDO! A senha deve ter no minimo 8 caracteres, essa tem apenas " << senha_nova_temp.length() << "!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1210,7 +1227,7 @@ public:
                 cout << "Formato INVALIDO! A senha deve conter LETRAS E NUMEROS!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1224,7 +1241,7 @@ public:
                 cout << "Senha cadastrada com sucesso!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 sair_cadastrar_senha = true;
             }
@@ -1297,7 +1314,7 @@ public:
             cout << "ERRO ao abrir o arquivo!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
         }
 
         arquivoUsuarios << "NOME: " << ususarios.getNome() << endl;
@@ -1518,7 +1535,7 @@ public:
                 cout << "Formato INVALIDO! (deve possuir 7 caracteres)" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1556,7 +1573,7 @@ public:
                 cout << "PADRAO CINZA / NORMAL : LLL - NNNN" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1571,7 +1588,7 @@ public:
 
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             // SAI DO REGISTRO DA PLACA MERCOSUL
             registrar_placa_cinza = true;
@@ -1637,7 +1654,7 @@ public:
                 cout << "Formato INVALIDO! (deve possuir 7 caracteres)" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1674,7 +1691,7 @@ public:
                 cout << "PADRAO MERCOSUL: LLLNLNN" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1687,7 +1704,7 @@ public:
 
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             // SAI DO REGISTRO DA PLACA MERCOSUL
             registrar_placa_mercosul = true;
@@ -1761,7 +1778,7 @@ public:
                 cout << "Formato INVALIDO! Digite apenas NUMEROS!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -1792,7 +1809,7 @@ public:
                 cout << "------------------------------------------------------------------------------------------------";
 
                 cout << endl;
-                system("pause");
+                PAUSE;
             }
             else if (ano_fabricacao > ano_maximo)
             {
@@ -1802,7 +1819,7 @@ public:
                 cout << "O ano maximo permitido e: " << ano_maximo << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
             }
             else
             {
@@ -1812,7 +1829,7 @@ public:
                 cout << "Ano REGISTRADO com sucesso" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 ano_de_fabricacao = true;
             }
@@ -1890,7 +1907,7 @@ public:
                 cout << "Formato INVALIDO! Digite apenas LETRAS!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
             }
             else
             {
@@ -1900,7 +1917,7 @@ public:
                 cout << "Cor REGISTRADA com sucesso!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 cadastrar_cor = true;
 
@@ -1967,7 +1984,7 @@ public:
                 cout << "Modelo REGISTRADO com sucesso!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 cadastrar_modelo = true;
             }
@@ -2041,7 +2058,7 @@ public:
                 cout << "Formato INVALIDO! Digite apenas NUMEROS!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -2057,7 +2074,7 @@ public:
                 cout << "Formato INVALIDO! Deve ter 11 digitos numericos" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -2069,7 +2086,7 @@ public:
                 cout << "Renavam REGISTRADO com sucesso" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 cadastrar_renavam = true;
             }
@@ -2176,7 +2193,7 @@ public:
             cout << "ERRO ao abrir o arquivo!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
         }
         else
         {
@@ -2213,7 +2230,7 @@ public:
             cout << "Arquivo de veiculos nao encontrado ou erro ao abrir." << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             return;
         }
@@ -2386,7 +2403,7 @@ public:
             cout << "Todos os carros REGISTRADOS!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             sair_veiculos_registrados = true;
         }
@@ -2480,7 +2497,7 @@ public:
                         cout << "Veiculo EXCLUIDO com sucesso!" << endl;
                         cout << endl;
 
-                        system("pause");
+                        PAUSE;
 
                         sair_excluir_veiculo = true;
 
@@ -2501,7 +2518,7 @@ public:
                         cout << "Opcao INVALIDA!" << endl;
                         cout << endl;
 
-                        system("pause");
+                        PAUSE;
 
                         break;
                     }
@@ -2518,7 +2535,7 @@ public:
                 cout << "NENHUM veiculo foi encontrado!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -2618,7 +2635,7 @@ public:
                             cout << "Nova PLACA CINZA registrada com sucesso!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             sair_encontrou_alterar_veiculo = true;
                             sair_alterar_veiculo = true;
@@ -2637,7 +2654,7 @@ public:
                             cout << "Nova PLACA MERCOSUL registrada com sucesso!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             sair_encontrou_alterar_veiculo = true;
                             sair_alterar_veiculo = true;
@@ -2655,7 +2672,7 @@ public:
                             cout << "Novo ANO registrado com sucesso!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             sair_encontrou_alterar_veiculo = true;
                             sair_alterar_veiculo = true;
@@ -2673,7 +2690,7 @@ public:
                             cout << "Nova COR registrada com sucesso!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             sair_encontrou_alterar_veiculo = true;
                             sair_alterar_veiculo = true;
@@ -2691,7 +2708,7 @@ public:
                             cout << "Novo MODELO registrado com sucesso!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             sair_encontrou_alterar_veiculo = true;
                             sair_alterar_veiculo = true;
@@ -2725,7 +2742,7 @@ public:
                             cout << "Opcao INVALIDA!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             break;
                         }
@@ -2738,7 +2755,7 @@ public:
                     cout << "NENHUM veiculo encontrado!" << endl;
                     cout << endl;
 
-                    system("pause");
+                    PAUSE;
 
                     break;
                 }
@@ -2835,7 +2852,7 @@ public:
                     cout << "----------------------------------------------------------------------------------" << endl;
                     cout << endl;
 
-                    system("pause");
+                    PAUSE;
 
                     encontrou_veiculo = true;
 
@@ -2851,7 +2868,7 @@ public:
                 cout << "Nenhum VEICULO foi encontrado com esse dado!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
             }
         }
     }
@@ -2939,7 +2956,7 @@ public:
                         cout << "ERRO ao abrir o arquivo!" << endl;
                         cout << endl;
 
-                        system("pause");
+                        PAUSE;
 
                         return;
                     }
@@ -2973,7 +2990,7 @@ public:
                     cout << endl;
                     cout << "CRLV exportado com sucesso!" << endl;
 
-                    system("pause");
+                    PAUSE;
 
                     sair_exportar_crlv = true;
 
@@ -2987,7 +3004,7 @@ public:
                 cout << "Nenhum VEICULO foi encontrado com esse dado!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 continue;
             }
@@ -3059,7 +3076,7 @@ public:
             cout << "Todos os VEICULOS registrados!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             sair_listar_veiculos_crlv = true;
         }
@@ -3079,15 +3096,13 @@ Usuario *EncontrarUsuarioPorLogin(list<Usuario> &usuarios, const string &login)
 {
     for (auto it = usuarios.begin(); it != usuarios.end(); it++)
     {
-        if (it->getCpf() == login ||
-            it->getEmail() == login)
+        if (it->getCpf() == login || it->getEmail() == login)
         {
             // CASO ENCONTRE O USUARIO, RETORNA O ESPACO DE MEMORIA , O ENDERECO EM QUE O USUARIO SE ENCONTRA
             // SERVE PARA RETORNAR NULLPTR (NAO EXISTE)
             return &(*it);
         }
-        else if (it->getCpf() == "11111111111" ||
-                 it->getEmail() == "policiarodoviaria@detran.com")
+        else if (it->getCpf() == "11111111111" || it->getEmail() == "policiarodoviaria@detran.com")
         {
             return &(*it);
         }
@@ -3312,7 +3327,7 @@ int main()
                                 cout << "Usuario CADASTRADO com sucesso!" << endl;
                                 cout << endl;
 
-                                system("pause");
+                                PAUSE;
 
                                 // ASSIM QUE CRIAR O USUARIO, JA LOGAR AUTOMATICAMENTE
                                 usuario_logado = &usuarios.back();
@@ -3327,7 +3342,7 @@ int main()
                                 cout << "Por favor, preencha o(s) campo(s) acima antes de salvar!" << endl;
                                 cout << endl;
 
-                                system("pause");
+                                PAUSE;
                             }
                             break;
                         }
@@ -3350,7 +3365,7 @@ int main()
                             cout << "Opcao INVALIDA!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             break;
                         }
@@ -3468,7 +3483,7 @@ int main()
                                         cout << "Tente NOVAMENTE!" << endl;
                                         cout << endl;
 
-                                        system("pause");
+                                        PAUSE;
                                     }
                                 }
                             }
@@ -3531,7 +3546,7 @@ int main()
                                         cout << "ERRO! Faca o login com CPF/EMAIL primeiro!" << endl;
                                         cout << endl;
 
-                                        system("pause");
+                                        PAUSE;
 
                                         if (RetornarAoMenuDeLogin())
                                         {
@@ -3558,7 +3573,7 @@ int main()
 
                                         carro_temp.LoadVeiculos(usuario_logado);
 
-                                        system("pause");
+                                        PAUSE;
 
                                         sair_login = true;
 
@@ -3574,7 +3589,7 @@ int main()
                                         cout << "Senha INCORRETA! Tente novamente!";
                                         cout << endl;
 
-                                        system("pause");
+                                        PAUSE;
                                     }
                                 }
                             }
@@ -3600,7 +3615,7 @@ int main()
                             cout << "Opcao INVALIDA!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             cin.clear();
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -3631,7 +3646,7 @@ int main()
                     cout << "Opcao INVALIDA!" << endl;
                     cout << endl;
 
-                    system("pause");
+                    PAUSE;
 
                     break;
                 }
@@ -3651,7 +3666,7 @@ int main()
                 cout << "Faca LOGIN / CADASTO para acessar a aba REGISTRO DE VEICULO(s)!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 break;
             }
@@ -3768,7 +3783,7 @@ int main()
                                 cout << "OPCAO INVALIDA!" << endl;
                                 cout << endl;
 
-                                system("pause");
+                                PAUSE;
 
                                 cin.clear();
                                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -3828,7 +3843,7 @@ int main()
                             cout << "Carro CADASTRADO com sucesso!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
 
                             carro_temp = Carro{}; // arrumar isso para class
 
@@ -3839,7 +3854,7 @@ int main()
                             cout << "Por favor, preencha o(s) campo(s) acima antes de salvar!" << endl;
                             cout << endl;
 
-                            system("pause");
+                            PAUSE;
                         }
 
                         break;
@@ -3863,7 +3878,7 @@ int main()
                         cout << "OPCAO INVALIDA!" << endl;
                         cout << endl;
 
-                        system("pause");
+                        PAUSE;
 
                         break;
                     }
@@ -3884,7 +3899,7 @@ int main()
                 cout << "Faca LOGIN / CADASTO para acessar a aba CHECAR VEICULO(s)!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
 
                 break;
             }
@@ -3972,7 +3987,7 @@ int main()
                         cout << "Opcao INVALIDA!" << endl;
                         cout << endl;
 
-                        system("pause");
+                        PAUSE;
 
                         break;
                     }
@@ -3994,7 +4009,7 @@ int main()
                 cout << "Faca LOGIN / CADASTRO para acessar a aba CRLV!" << endl;
                 cout << endl;
 
-                system("pause");
+                PAUSE;
             }
             else
             {
@@ -4080,7 +4095,7 @@ int main()
                         cout << "Opcao INVALIDA!" << endl;
                         cout << endl;
 
-                        system("pause");
+                        PAUSE;
 
                         break;
                     }
@@ -4100,7 +4115,7 @@ int main()
             cout << "SAIR!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             return 0;
         }
@@ -4332,7 +4347,7 @@ int main()
             cout << "OPCAO INVALIDA!" << endl;
             cout << endl;
 
-            system("pause");
+            PAUSE;
 
             break;
         }
