@@ -23,15 +23,9 @@
 #include <ctime>
 #include <locale>
 
-#ifdef _WIN32 // Macro
-#define CLEAR system("cls")
-#else
-#define CLEAR system("clear")
-#endif
-
 #ifdef _WIN32
 #define CLEAR system("cls")
-#define PAUSE PAUSE
+#define PAUSE system("pause")
 #else
 #define CLEAR system("clear")
 #define PAUSE                                                \
@@ -2183,7 +2177,7 @@ public:
         CLEAR;
 
         // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
-        ofstream arquivoVeiculos("ArquivoVeiculos.txt");
+        ofstream arquivoVeiculos("ArquivoVeiculosSalvamento.txt");
 
         if (!arquivoVeiculos.is_open())
         {
@@ -4111,6 +4105,47 @@ int main()
             // SAIR
 
             CLEAR;
+
+            // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
+            CLEAR;
+
+            // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
+            ofstream arquivosVeiculosSistema("arquivosVeiculosSistema.txt", ios::app);
+
+            if (!arquivosVeiculosSistema.is_open())
+            {
+                CLEAR;
+
+                cout << endl;
+                cout << "ERRO ao abrir o arquivo!" << endl;
+                cout << endl;
+
+                PAUSE;
+            }
+            else
+            {
+                for (auto it = usuario_logado->carros.begin(); it != usuario_logado->carros.end(); it++)
+                {
+
+                    arquivosVeiculosSistema << "NOME: " << usuario_logado->getNome() << endl;
+                    arquivosVeiculosSistema << "CPF: " << usuario_logado->getCpf() << endl;
+                    if (!it->getPlacaCinza().empty())
+                    {
+                        arquivosVeiculosSistema << "PLACA CINZA: " << it->getPlacaCinza() << endl;
+                    }
+                    else if (!it->getPlacaMercosul().empty())
+                    {
+                        arquivosVeiculosSistema << "PLACA MERCOSUL: " << it->getPlacaMercosul() << endl;
+                    }
+                    arquivosVeiculosSistema << "ANO: " << it->getAno() << endl;
+                    arquivosVeiculosSistema << "COR: " << it->getCor() << endl;
+                    arquivosVeiculosSistema << "MODELO: " << it->getModelo() << endl;
+                    arquivosVeiculosSistema << "RENAVAM: " << it->getRenavam() << endl;
+
+                    arquivosVeiculosSistema << endl;
+                }
+                arquivosVeiculosSistema.close();
+            }
 
             cout << "SAIR!" << endl;
             cout << endl;
