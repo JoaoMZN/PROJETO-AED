@@ -7,9 +7,10 @@
     bool salvar carro, arrumar (Vitor ou pedro)
     MUDAR PARA LISTA (PEDRO E VITOR)
     BUSCA BINARIA (PEDRO E VITOR)
-    ORDENACAO (PEDRO E VITOR)
+    ORDENACAO DOS ARQUIVOS DE USUARIOS E DE CARROS GERAL (PEDRO E VITOR)
     ARQUIVO GERAL DE CARRO (JOAO)
     LOGICA DA POLICIA (JOAO)
+    FAZER NOVOS MENUS PARA A LOGICA POLICIAL (JOAO)
 */
 
 #include <iostream>
@@ -22,6 +23,12 @@
 #include <locale.h>
 #include <ctime>
 #include <locale>
+
+#ifdef _WIN32 // Macro
+#define CLEAR system("cls")
+#else
+#define CLEAR system("clear")
+#endif
 
 #ifdef _WIN32
 #define CLEAR system("cls")
@@ -2177,7 +2184,7 @@ public:
         CLEAR;
 
         // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
-        ofstream arquivoVeiculos("ArquivoVeiculosSalvamento.txt");
+        ofstream arquivoVeiculos("ArquivoVeiculos.txt");
 
         if (!arquivoVeiculos.is_open())
         {
@@ -3075,12 +3082,183 @@ public:
             sair_listar_veiculos_crlv = true;
         }
     }
-};
 
-class Multa : public Carro
-{
-    // carro ja tem o usuario, portanto nao precisa do usuario
-    // checar multas nos carros e pontos na carteira
+    void LoadVeiculosPolicia(Usuario *usuario_logado)
+    {
+        ifstream arquivosVeiculosSistema("arquivosVeiculosSistema.txt");
+
+        if (!arquivosVeiculosSistema.is_open())
+        {
+            cout << "Arquivo de veiculos nao encontrado ou erro ao abrir." << endl;
+            cout << endl;
+
+            PAUSE;
+
+            return;
+        }
+
+        usuario_logado->carros.clear();
+
+        string linha;
+
+        Carro carro_temp;
+
+        while (getline(arquivosVeiculosSistema, linha))
+        {
+            // SE A LINHA ESTIVER VAZIA INDICA O FIM DOS DADOS DE UM CARRO, LOGO TERA OUTRO CARRO
+            if (linha.empty())
+            {
+                usuario_logado->carros.push_back(carro_temp);
+
+                // RESETA AS VARIAVEIS PARA O PROXIMO CARRO DO ARQUIVO CASO NAO SEJA ESSE
+                carro_temp = Carro();
+
+                continue;
+            }
+
+            // VERIFICA O NOME
+            if (linha.rfind("NOME: ", 0) == 0)
+            {
+                string nome_arquivo = linha.substr(6);
+            }
+
+            else if (linha.rfind("CPF: ", 0) == 0)
+            {
+                string cpf_arquivo = linha.substr(5);
+            }
+
+            else if (linha.rfind("PLACA CINZA: ", 0) == 0)
+            {
+                carro_temp.setPlacaCinza(linha.substr(13));
+            }
+
+            else if (linha.rfind("PLACA MERCOSUL: ", 0) == 0)
+            {
+                carro_temp.setPlacaMercosul(linha.substr(16));
+            }
+
+            else if (linha.rfind("ANO: ", 0) == 0)
+            {
+                carro_temp.setAno(linha.substr(5));
+            }
+
+            else if (linha.rfind("COR: ", 0) == 0)
+            {
+                carro_temp.setCor(linha.substr(5));
+            }
+
+            else if (linha.rfind("MODELO: ", 0) == 0)
+            {
+                carro_temp.setModelo(linha.substr(8));
+            }
+
+            else if (linha.rfind("RENAVAM: ", 0) == 0)
+            {
+                carro_temp.setRenavam(linha.substr(9));
+            }
+        }
+
+        if (carro_temp.getPlacaCinza() != "") // logica para ter certeza de que serao salvos todos os veiculos
+        {
+            usuario_logado->carros.push_back(carro_temp);
+        }
+    }
+
+    void MultaPlaca(list<Carro> &carros) // nao acabado
+    {
+        bool menu_multa_placa = true;
+
+        while (menu_multa_placa)
+        {
+            CLEAR;
+
+            cout << "--------------------------------------------------------" << endl;
+            cout << endl;
+            cout << "Informe a Placa que deseja procurar (ou digite MENU): ";
+
+            string multa_placa_temp;
+            getline(cin >> ws, multa_placa_temp);
+            cout << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << endl;
+
+            for (int i = 0; i < multa_placa_temp.length(); i++)
+            {
+                multa_placa_temp[i] = toupper((unsigned char)multa_placa_temp[i]);
+            }
+
+            if (multa_placa_temp == "MENU")
+            {
+                if (RetornarAoMenuDeVeiculos()) // fazer menu
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    continue;
+                }
+            }
+
+            bool achou = false;
+
+            auto it = carros.begin();
+
+            for (auto i = it; i != carros.end(); i++)
+            {
+                if (multa_placa_temp == it->getPlacaCinza() || multa_placa_temp == it->getPlacaMercosul())
+                {
+                    it = i;
+                    achou = true;
+                }
+            }
+
+            if (achou)
+            {
+                CLEAR;
+
+                cout << "Veiculo encontrado!" << endl;
+
+                // logica para puxar os dados inteiros do veiculo
+
+                cout << "-----------------------------------------" << endl;
+                cout << "Tipo de Multa: " << endl;
+                cout << endl;
+                cout << "1 - Leve" << endl;
+                cout << endl;
+                cout << "2 - Media" << endl;
+                cout << endl;
+                cout << "3 - Grave" << endl;
+                cout << endl;
+                cout << "4 - Gravissima" << endl;
+                cout << endl;
+                cout << "----------------------------------------------" << endl;
+
+                cout << "Tipo da multa: ";
+                int opcao_multa_placa = 0;
+                cin >> opcao_multa_placa;
+
+                // logica para multar
+
+                PAUSE;
+
+                return;
+            }
+            else
+            {
+                CLEAR;
+
+                cout << "Veiculo nao encontrado!" << endl;
+
+                PAUSE;
+
+                return;
+            }
+        }
+    }
 };
 
 // SE FOSSE APENAS USUARIO: RETORNA UMA COPIA DO STRUCT USUARIO, E IMPEDE MUDANCAS NA CONTA E NAO RETORNA NADA CASO O USUARIO NAO EXISTA
@@ -3565,7 +3743,14 @@ int main()
 
                                         usuario_logado = usuario_login;
 
-                                        carro_temp.LoadVeiculos(usuario_logado);
+                                        if (usuario_logado->getCpf() != "11111111111")
+                                        {
+                                            carro_temp.LoadVeiculos(usuario_logado);
+                                        }
+                                        else
+                                        {
+                                            carro_temp.LoadVeiculosPolicia(usuario_logado);
+                                        }
 
                                         PAUSE;
 
@@ -4104,12 +4289,10 @@ int main()
         {
             // SAIR
 
-            CLEAR;
-
             // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
             CLEAR;
 
-            // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
+            // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NECESSARIA
             ofstream arquivosVeiculosSistema("arquivosVeiculosSistema.txt", ios::app);
 
             if (!arquivosVeiculosSistema.is_open())
@@ -4169,97 +4352,9 @@ int main()
             else
             {
                 // montar funcao que procura veiculo pela placa ou pelo renavam, para aplicar multa, e talvez adicione pontos na carteira
-                bool menu_aplicar_multa = true;
+                Carro multa_placa;
 
-                while (menu_aplicar_multa)
-                {
-                    CLEAR;
-
-                    cout << "-----------------------------------" << endl;
-                    cout << endl;
-                    cout << "1 - Multar por Placa Cinza" << endl;
-                    cout << endl;
-                    cout << "2 - Multar po Placa Mercosul" << endl;
-                    cout << endl;
-                    cout << "3 - Retornar ao Menu Principal" << endl;
-                    cout << endl;
-                    cout << "-----------------------------------" << endl;
-
-                    int opcao_menu_aplicar_multa = 0;
-                    cout << "Digite a opcao desejada: ";
-                    cin >> opcao_menu_aplicar_multa;
-
-                    switch (opcao_menu_aplicar_multa)
-                    {
-                    case 1:
-                    {
-                        // Placa Cinza
-
-                        bool menu_multar_por_placa_cinza = true;
-
-                        while (menu_multar_por_placa_cinza)
-                        {
-                            CLEAR;
-
-                            cout << "--------------------------------------------------------" << endl;
-                            cout << endl;
-                            cout << "   Informe a Placa Cinza que deseja procurar: ";
-
-                            string multa_placa_cinza_temp;
-                            getline(cin >> ws, multa_placa_cinza_temp);
-                            cout << endl;
-                            cout << "---------------------------------------------------------" << endl;
-
-                            // void que procura a placa cinza
-                        }
-
-                        break;
-                    }
-
-                    case 2:
-                    {
-                        // Placa Mercosul
-
-                        bool menu_multar_por_placa_mercosul = true;
-
-                        while (menu_multar_por_placa_mercosul)
-                        {
-                            CLEAR;
-
-                            cout << "--------------------------------------------------------" << endl;
-                            cout << endl;
-                            cout << "   Informe a Placa Mercosul que deseja procurar: ";
-
-                            string multa_placa_mercosul_temp;
-                            getline(cin >> ws, multa_placa_mercosul_temp);
-                            cout << endl;
-                            cout << "---------------------------------------------------------" << endl;
-
-                            // void que procura a placa mercosul
-                        }
-
-                        break;
-                    }
-
-                    case 3:
-                    {
-                        CLEAR;
-                        // retornar ao menu
-
-                        menu_aplicar_multa = false;
-                        break;
-                    }
-
-                    default:
-                    {
-                        CLEAR;
-
-                        cout << "Opcao invalida" << endl;
-
-                        break;
-                    }
-                    }
-                }
+                multa_placa.MultaPlaca(usuario_logado->carros);
             }
 
             break;
