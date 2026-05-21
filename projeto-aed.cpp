@@ -8,10 +8,11 @@
     MUDAR PARA LISTA (PEDRO E VITOR)
     BUSCA BINARIA (PEDRO E VITOR)
     ORDENACAO DOS ARQUIVOS DE USUARIOS E DE CARROS GERAL (PEDRO E VITOR)
-    ARQUIVO GERAL DE CARRO (JOAO)
-    LOGICA DA POLICIA (JOAO)
-    FAZER NOVOS MENUS PARA A LOGICA POLICIAL (JOAO)
+    ARQUIVO GERAL DE CARRO (JOAO) feito
+    LOGICA DA POLICIA (JOAO) feito parcialmente
+    FAZER NOVOS MENUS PARA A LOGICA POLICIAL (JOAO) feito
     ARRUMAR OS PONTOS E COLOCAR MENU DE PAGAR MULTA (JOAO)
+    ARRUMAR A LOGICA DE MULTAS (JOAO)
 */
 
 #include <iostream>
@@ -939,6 +940,11 @@ public:
         return this->pontos;
     }
 
+    int addPontos (int pontos_temp)
+    {
+        pontos += pontos_temp;
+    }
+
     void cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
     {
         CLEAR;
@@ -1564,7 +1570,7 @@ public:
         arquivosUsuarios.close();
     }
 
-    void ChecagemCnh(list<Usuario> &usuarios) // nao acabado
+    void ChecagemCnh(list<Usuario> &usuarios, list<Carro> &carros) // nao acabado
     {
         bool menu_cnh = true;
 
@@ -1574,7 +1580,7 @@ public:
 
             cout << "--------------------------------------------------------" << endl;
             cout << endl;
-            cout << "Informe p CPF que deseja procurar (ou digite MENU): ";
+            cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
 
             string cnh;
             getline(cin >> ws, cnh);
@@ -1609,7 +1615,7 @@ public:
 
             for (auto i = it; i != usuarios.end(); i++)
             {
-                if (cnh == it->getCpf())
+                if (cnh == i->getCpf())
                 {
                     it = i;
                     achou = true;
@@ -1622,11 +1628,11 @@ public:
 
                 cout << "CNH encontrada!" << endl;
 
-                int pontos_agr = getPontos();
+                int pontos_agr = it->getPontos();
 
                 if (pontos_agr)
 
-                PAUSE;
+                    PAUSE;
 
                 return;
             }
@@ -1642,7 +1648,6 @@ public:
             }
         }
     }
-
 };
 
 class Policial : public Usuario
@@ -1663,9 +1668,11 @@ private:
     string placa_cinza, placa_mercosul;
     string ano, cor, modelo;
     string renavam, status_crlv;
+    string cpf_dono;
 
 protected:
     int multas_leves, multas_medias, multas_graves, multas_gravissimas = 0;
+    float valor_multas = 0.0;
 
 public:
     Carro() {}
@@ -1736,7 +1743,7 @@ public:
     {
         return this->status_crlv;
     }
-
+    
     void cadastrarPlacaCinza(Carro &carro_temp)
     {
         CLEAR;
@@ -2427,14 +2434,15 @@ public:
             return false;
         }
 
-        usuario_logado->carros.push_back(Carro{// arrumar isso depois, esta colocando com o struct e nao com o class
-                                               carro_temp.getPlacaCinza(),
-                                               carro_temp.getPlacaMercosul(),
-                                               carro_temp.getAno(),
-                                               carro_temp.getCor(),
-                                               carro_temp.getModelo(),
-                                               carro_temp.getRenavam(),
-                                               carro_temp.getCrlv()});
+        usuario_logado->carros.push_back(
+            Carro(
+                carro_temp.getPlacaCinza(),
+                carro_temp.getPlacaMercosul(),
+                carro_temp.getAno(),
+                carro_temp.getCor(),
+                carro_temp.getModelo(),
+                carro_temp.getRenavam(),
+                carro_temp.getCrlv()));
 
         return true;
     }
@@ -3075,7 +3083,7 @@ public:
 
                     if (multa_placa_temp == "MENU")
                     {
-                        if (RetornarAoMenuDeMultas()) // fazer menu
+                        if (RetornarAoMenuDeMultas())
                         {
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -3128,6 +3136,7 @@ public:
 
                 break;
             }
+
             case 2:
             {
                 // pagar multa
@@ -3208,6 +3217,7 @@ public:
 
                 break;
             }
+
             case 3:
             {
                 CLEAR;
@@ -3223,6 +3233,7 @@ public:
 
                 PAUSE;
             }
+
             default:
             {
                 CLEAR;
@@ -3635,7 +3646,7 @@ public:
         }
     }
 
-    void MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acabado
+    void MultaPlaca(list<Carro> &carros, list<Usuario> &usuarios) // nao acabado
     {
         bool menu_multa_placa = true;
 
@@ -3676,14 +3687,36 @@ public:
 
             bool achou = false;
 
-            auto it = carros.begin();
-
-            for (auto i = it; i != carros.end(); i++)
+            for (auto u = usuarios.begin(); u != usuarios.end(); u++)
             {
-                if (multa_placa_temp == it->getPlacaCinza() || multa_placa_temp == it->getPlacaMercosul())
+                for (auto c = u->carros.begin(); c != u->carros.end(); c++)
                 {
-                    it = i;
-                    achou = true;
+                    if (multa_placa_temp == c->getPlacaCinza() ||
+                        multa_placa_temp == c->getPlacaMercosul())
+                    {
+                        achou = true;
+
+                        cout << endl;
+                        cout << "-----------------------------------------" << endl;
+                        cout << "Nome: " << u->getNome() << endl;
+                        cout << endl;
+                        cout << "Cpf: " << u->getCpf() << endl;
+                        cout << endl;
+                        cout << "Placa: " << multa_placa_temp << endl;
+                        cout << endl;
+                        cout << "Cor: " << c->getCor() << endl;
+                        cout << endl;
+                        cout << "Modelo: " << c->getModelo() << endl;
+                        cout << endl;
+                        cout << "Ano: " << c->getAno() << endl;
+                        cout << endl;
+                        cout << "Renavam: " << c->getRenavam() << endl;
+                        cout << endl;
+                        cout << "-----------------------------------------" << endl;
+                        cout << endl;
+
+                        break;
+                    }
                 }
             }
 
@@ -3691,12 +3724,8 @@ public:
             {
                 CLEAR;
 
-                cout << "Veiculo encontrado!" << endl;
-
-                // logica para puxar os dados inteiros do veiculo
-
                 bool veiculo_multa = true;
-                
+
                 // arrumar a logica de salvar os pontos na carteira
                 int pontos_temp = 0;
 
@@ -3729,9 +3758,13 @@ public:
 
                         // leve
 
+                    
+
                         pontos_temp += 3;
 
                         multas_leves++;
+
+                        valor_multas += 88.38;
 
                         break;
                     }
@@ -3745,6 +3778,8 @@ public:
 
                         multas_medias++;
 
+                        valor_multas += 130.16;
+
                         break;
                     }
                     case 3:
@@ -3757,6 +3792,8 @@ public:
 
                         multas_graves++;
 
+                        valor_multas += 195.23;
+
                         break;
                     }
                     case 4:
@@ -3768,6 +3805,8 @@ public:
                         pontos_temp += 7;
 
                         multas_gravissimas++;
+
+                        valor_multas += 239.47;
 
                         break;
                     }
@@ -3822,7 +3861,6 @@ public:
             }
         }
     }
-
 };
 
 // SE FOSSE APENAS USUARIO: RETORNA UMA COPIA DO STRUCT USUARIO, E IMPEDE MUDANCAS NA CONTA E NAO RETORNA NADA CASO O USUARIO NAO EXISTA
@@ -4931,7 +4969,7 @@ int main()
                 // montar funcao que procura veiculo pela placa ou pelo renavam, para aplicar multa, e talvez adicione pontos na carteira
                 Carro multa_placa;
 
-                multa_placa.MultaPlaca(usuario_logado->carros, usuario_logado);
+                multa_placa.MultaPlaca(usuario_logado->carros, usuarios);
             }
 
             break;
