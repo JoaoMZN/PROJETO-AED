@@ -3,6 +3,7 @@
 
 /*COISAS A FAZER:
     arrumar o salvar cadastro de carro, colocar para construtor de class (Joao)
+<<<<<<< HEAD
     arrumar a class CarroNovo, mudar para Carro e fazer os ajustes na main(Vitor e Pedro) (peguem e exemplo do cadastro de usuario e apliquem)
     bool salvar carro, arrumar (Vitor ou pedro)
     MUDAR PARA LISTA (PEDRO E VITOR)
@@ -13,6 +14,17 @@
     FAZER NOVOS MENUS PARA A LOGICA POLICIAL (JOAO) feito
     ARRUMAR OS PONTOS E COLOCAR MENU DE PAGAR MULTA (JOAO)
     ARRUMAR A LOGICA DE MULTAS (JOAO)
+=======
+    arrumar a class CarroNovo, mudar para Carro e fazer os ajustes na main(Vitor e Pedro) (peguem e exemplo do cadastro de usuario e apliquem) não entendi
+    bool salvar carro, arrumar (Vitor ou pedro) feito
+    MUDAR PARA LISTA (PEDRO E VITOR) feito
+    BUSCA BINARIA (PEDRO E VITOR) feito (Criada as funções de busca binaria, mas apenas implementada na checagem de cnh e load Veiculos, não sei se é pratico implementar em mais lugares)
+    ORDENACAO DOS ARQUIVOS DE USUARIOS E DE CARROS GERAL (PEDRO E VITOR) feito
+    ARQUIVO GERAL DE CARRO (JOAO)
+    LOGICA DA POLICIA (JOAO)
+    FAZER NOVOS MENUS PARA A LOGICA POLICIAL (JOAO)
+    ARRUMAR OS PONTOS E COLOCAR MENU DE PAGAR MULTA (JOAO)
+>>>>>>> 955259b (22/05)
 */
 
 #include <iostream>
@@ -940,11 +952,14 @@ public:
         return this->pontos;
     }
 
+<<<<<<< HEAD
     int addPontos (int pontos_temp)
     {
         pontos += pontos_temp;
     }
 
+=======
+>>>>>>> 955259b (22/05)
     void cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
     {
         CLEAR;
@@ -1433,6 +1448,66 @@ public:
         }
     }
 
+    void OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios) // Ordenação dos usuarios por inserção, com base no cpf de cada usuario
+    {
+        if (usuarios.size() <= 1)
+        {
+            return;
+        }
+
+        auto it = next(usuarios.begin());
+
+        while (it != usuarios.end())
+        {
+            Usuario Copia = *it; // guarda todos os dados da posição do ponteiro
+
+            auto atual = it;
+            it++;
+            auto posTrocar = atual;
+
+            while (posTrocar != usuarios.begin() &&
+                   prev(posTrocar)->getCpf() > Copia.getCpf()) // checa apenas o anterior para ver se troca.
+            {
+                posTrocar--;
+            }
+            if (posTrocar != atual) // Executa apenas se precisar de troca
+            {
+                usuarios.erase(atual); // apaga tudo da posição
+
+                usuarios.insert(posTrocar, Copia); // coloca na posição, e como se trata de lista, depois de inserido os valores se reorganizam automaticamente
+            }
+        }
+    }
+
+    Usuario *BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf) // Retorna um endereço que será convertido nos valores do usuario encontrado
+    {
+        int inicio = 0;
+        int fim = usuarios.size() - 1;
+
+        while (inicio <= fim)
+        {
+            int meio = (inicio + fim) / 2;
+
+            auto it = usuarios.begin();
+            advance(it, meio);
+
+            if (it->getCpf() == cpf)
+            {
+                return &(*it); // endereço de todos os valores da posiçao
+            }
+            else if (it->getCpf() < cpf)
+            {
+                inicio = meio + 1;
+            }
+            else
+            {
+                fim = meio - 1;
+            }
+        }
+
+        return nullptr;
+    }
+
     bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp)
     {
         bool valido = true;
@@ -1480,7 +1555,7 @@ public:
         }
 
         usuarios.push_back(usuario_temp);
-
+        OdernaçãoPorInsercaoCpfUsuarios(usuarios); // Ordena nossa lista já incluindo o novo usuario.
         return true;
     }
 
@@ -1570,7 +1645,11 @@ public:
         arquivosUsuarios.close();
     }
 
+<<<<<<< HEAD
     void ChecagemCnh(list<Usuario> &usuarios, list<Carro> &carros) // nao acabado
+=======
+    void ChecagemCnh(list<Usuario> &usuarios) // nao acabado
+>>>>>>> 955259b (22/05)
     {
         bool menu_cnh = true;
 
@@ -1580,7 +1659,11 @@ public:
 
             cout << "--------------------------------------------------------" << endl;
             cout << endl;
+<<<<<<< HEAD
             cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
+=======
+            cout << "Informe p CPF que deseja procurar (ou digite MENU): ";
+>>>>>>> 955259b (22/05)
 
             string cnh;
             getline(cin >> ws, cnh);
@@ -1609,6 +1692,7 @@ public:
                 }
             }
 
+<<<<<<< HEAD
             bool achou = false;
 
             auto it = usuarios.begin();
@@ -1623,16 +1707,33 @@ public:
             }
 
             if (achou)
+=======
+            Usuario *usuarioEncontrado = BuscaBinariaUsuarioPorCpf(usuarios, cnh); // Ponteiro de classe usuario que retornara o endereço do atributo cpf, caso exista
+
+            if (usuarioEncontrado != nullptr)
+>>>>>>> 955259b (22/05)
             {
                 CLEAR;
 
                 cout << "CNH encontrada!" << endl;
+<<<<<<< HEAD
 
                 int pontos_agr = it->getPontos();
 
                 if (pontos_agr)
 
                     PAUSE;
+=======
+                cout << endl;
+
+                cout << "Nome: " << usuarioEncontrado->getNome() << endl;
+                cout << "CPF: " << usuarioEncontrado->getCpf() << endl;
+                cout << "Pontos na CNH: " << usuarioEncontrado->getPontos() << endl;
+
+                cout << endl;
+
+                PAUSE;
+>>>>>>> 955259b (22/05)
 
                 return;
             }
@@ -1640,7 +1741,11 @@ public:
             {
                 CLEAR;
 
+<<<<<<< HEAD
                 cout << "CNH nao encontrado!" << endl;
+=======
+                cout << "CNH nao encontrada!" << endl;
+>>>>>>> 955259b (22/05)
 
                 PAUSE;
 
@@ -1673,6 +1778,9 @@ private:
 protected:
     int multas_leves, multas_medias, multas_graves, multas_gravissimas = 0;
     float valor_multas = 0.0;
+
+protected:
+    int multas_leves, multas_medias, multas_graves, multas_gravissimas = 0;
 
 public:
     Carro() {}
@@ -2362,6 +2470,64 @@ public:
         }
     }
 
+    void OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros) // Ordenação dos usuarios por inserção, com base na Renavam do carro
+    {
+        if (carros.size() <= 1)
+        {
+            return;
+        }
+
+        auto it = next(carros.begin());
+
+        while (it != carros.end())
+        {
+            Carro Copia = *it; // guarda todos os dados da posição do ponteiro
+
+            auto atual = it;
+            it++;
+            auto posTrocar = atual;
+
+            while (posTrocar != carros.begin() &&
+                   prev(posTrocar)->getRenavam() > Copia.getRenavam()) // checa apenas o anterior para ver se troca.
+            {
+                posTrocar--;
+            }
+
+            carros.erase(atual); // apaga tudo da posição
+
+            carros.insert(posTrocar, Copia); // coloca na posição, e como se trata de lista, depois de inserido os valores se reorganizam automaticamente
+        }
+    }
+
+    Carro *BuscaBinariaCarroPorModelo(list<Carro> &carros, string modelo) // Retornara endereços de todos os atributos de carro e será em valores reais
+    {
+        int inicio = 0;
+        int fim = carros.size() - 1;
+
+        while (inicio <= fim)
+        {
+            int meio = (inicio + fim) / 2;
+
+            auto it = carros.begin();
+            advance(it, meio);
+
+            if (it->getModelo() == modelo)
+            {
+                return &(*it); // Retorna os endereços de todos os valores
+            }
+            else if (it->getModelo() < modelo)
+            {
+                inicio = meio + 1;
+            }
+            else
+            {
+                fim = meio - 1;
+            }
+        }
+
+        return nullptr;
+    }
+
     bool SalvarCarro(Usuario *usuario_logado, Carro &carro_temp)
     {
         bool valido = true;
@@ -2444,10 +2610,11 @@ public:
                 carro_temp.getRenavam(),
                 carro_temp.getCrlv()));
 
+        OdernaçãoPorInsercaoRenavamCarro(usuario_logado->carros); // Ordena a lista carro, com o carro que acabei de salvar
         return true;
     }
 
-    void ExportarVeiculo(Usuario *usuario_logado)
+    void ExportarVeiculo(list<Usuario> &usuarios) // troquei para listas
     {
         // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
         CLEAR;
@@ -2466,32 +2633,35 @@ public:
             PAUSE;
         }
         else
-        {
-            for (auto it = usuario_logado->carros.begin(); it != usuario_logado->carros.end(); it++)
+        { // Aqui vamos Rescrever todas as informações no arquivo, não tendo erro de duplicada e sobscrita.
+            for (auto usuario = usuarios.begin(); usuario != usuarios.end(); usuario++)
             {
-
-                arquivoVeiculos << "NOME: " << usuario_logado->getNome() << endl;
-                arquivoVeiculos << "CPF: " << usuario_logado->getCpf() << endl;
-                if (!it->getPlacaCinza().empty())
+                for (auto carro = usuario->carros.begin(); carro != usuario->carros.end(); carro++)
                 {
-                    arquivoVeiculos << "PLACA CINZA: " << it->getPlacaCinza() << endl;
-                }
-                else if (!it->getPlacaMercosul().empty())
-                {
-                    arquivoVeiculos << "PLACA MERCOSUL: " << it->getPlacaMercosul() << endl;
-                }
-                arquivoVeiculos << "ANO: " << it->getAno() << endl;
-                arquivoVeiculos << "COR: " << it->getCor() << endl;
-                arquivoVeiculos << "MODELO: " << it->getModelo() << endl;
-                arquivoVeiculos << "RENAVAM: " << it->getRenavam() << endl;
+                    arquivoVeiculos << "NOME: " << usuario->getNome() << endl;
+                    arquivoVeiculos << "CPF: " << usuario->getCpf() << endl;
 
-                arquivoVeiculos << endl;
+                    if (!carro->getPlacaCinza().empty())
+                    {
+                        arquivoVeiculos << "PLACA CINZA: " << carro->getPlacaCinza() << endl;
+                    }
+                    else if (!carro->getPlacaMercosul().empty())
+                    {
+                        arquivoVeiculos << "PLACA MERCOSUL: " << carro->getPlacaMercosul() << endl;
+                    }
+
+                    arquivoVeiculos << "ANO: " << carro->getAno() << endl;
+                    arquivoVeiculos << "COR: " << carro->getCor() << endl;
+                    arquivoVeiculos << "MODELO: " << carro->getModelo() << endl;
+                    arquivoVeiculos << "RENAVAM: " << carro->getRenavam() << endl;
+                    arquivoVeiculos << endl;
+                }
             }
             arquivoVeiculos.close();
         }
     }
 
-    void LoadVeiculos(Usuario *usuario_logado)
+    void LoadVeiculos(list<Usuario> &usuarios)
     {
         ifstream arquivoVeiculos("ArquivoVeiculos.txt");
 
@@ -2505,62 +2675,49 @@ public:
             return;
         }
 
-        // LIMPA O VETOR ATUAL PARA EVITAR DUPLICACAO
-        usuario_logado->carros.clear();
+        // Evitar duplicação
+        for (auto usuario = usuarios.begin(); usuario != usuarios.end(); usuario++)
+        {
+            usuario->carros.clear();
+        }
 
         string linha;
+        string cpf_arquivo = "";
 
         Carro carro_temp;
-
-        // GARANTIR QUE PERTENCE AO USAURIO LOGADO
-        bool nome_confere = false;
-
-        bool cpf_confere = false;
 
         bool dados_preenchidos = false;
 
         while (getline(arquivoVeiculos, linha))
         {
-            // SE A LINHA ESTIVER VAZIA INDICA O FIM DOS DADOS DE UM CARRO, LOGO TERA OUTRO CARRO
+            // Linha vazia indica fim dos dados de um carro
             if (linha.empty())
             {
-                // SE TIVER LIDO OS DADOS E O CARRO PERTENCER AO USAURIO, SALVA O CARRO
-                if (dados_preenchidos && nome_confere && cpf_confere)
+                // Se o carro foi preenchido corretamente
+                if (dados_preenchidos)
                 {
-                    usuario_logado->carros.push_back(carro_temp);
+                    // Apenas para conseguir chamar a Busca binaria dentro da classe Carro, pois essa função foi declarada na classe Usuario
+                    Usuario usuario_auxiliar;
+                    Usuario *usuario_encontrado = usuario_auxiliar.BuscaBinariaUsuarioPorCpf(usuarios, cpf_arquivo);
+
+                    if (usuario_encontrado != nullptr)
+                    {
+                        usuario_encontrado->carros.push_back(carro_temp);
+                    }
                 }
 
-                // RESETA AS VARIAVEIS PARA O PROXIMO CARRO DO ARQUIVO CASO NAO SEJA ESSE
                 carro_temp = Carro();
 
-                nome_confere = false;
-
-                cpf_confere = false;
+                cpf_arquivo = "";
 
                 dados_preenchidos = false;
 
                 continue;
             }
 
-            // VERIFICA O NOME
-            if (linha.rfind("NOME: ", 0) == 0)
+            if (linha.rfind("CPF: ", 0) == 0)
             {
-                string nome_arquivo = linha.substr(6);
-
-                if (nome_arquivo == usuario_logado->getNome())
-                {
-                    nome_confere = true;
-                }
-            }
-
-            else if (linha.rfind("CPF: ", 0) == 0)
-            {
-                string cpf_arquivo = linha.substr(5);
-
-                if (cpf_arquivo == usuario_logado->getCpf())
-                {
-                    cpf_confere = true;
-                }
+                cpf_arquivo = linha.substr(5);
             }
 
             else if (linha.rfind("PLACA CINZA: ", 0) == 0)
@@ -2606,10 +2763,17 @@ public:
             }
         }
 
-        // CASO NAO TERMINE EM LINHA VAZIA O ARQUIVO, SE O ULTIMO CARRO FOR VALIDO. SALVA NO VETOR
-        if (dados_preenchidos && nome_confere && cpf_confere)
+        // último carro do arquivo
+        if (dados_preenchidos)
         {
-            usuario_logado->carros.push_back(carro_temp);
+            // Apenas para conseguir chamar a Busca binaria dentro da classe Carro, pois essa função foi declarada na classe Usuario
+            Usuario usuario_auxiliar;
+            Usuario *usuario_encontrado = usuario_auxiliar.BuscaBinariaUsuarioPorCpf(usuarios, cpf_arquivo);
+
+            if (usuario_encontrado != nullptr)
+            {
+                usuario_encontrado->carros.push_back(carro_temp);
+            }
         }
 
         arquivoVeiculos.close();
@@ -2812,7 +2976,7 @@ public:
         }
     }
 
-    void AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado)
+    void AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios)
     {
         bool sair_alterar_veiculo = false;
 
@@ -2899,7 +3063,7 @@ public:
                             cadastrarPlacaCinza(*it);
                             it->setPlacaMercosul("");
 
-                            ExportarVeiculo(usuario_logado);
+                            ExportarVeiculo(usuarios);
 
                             cout << endl;
                             cout << "Nova PLACA CINZA registrada com sucesso!" << endl;
@@ -2918,7 +3082,7 @@ public:
                             cadastrarPlacaMercosul(*it);
                             it->setPlacaCinza("");
 
-                            ExportarVeiculo(usuario_logado);
+                            ExportarVeiculo(usuarios);
 
                             cout << endl;
                             cout << "Nova PLACA MERCOSUL registrada com sucesso!" << endl;
@@ -2936,7 +3100,7 @@ public:
                         {
                             cadastrarAno(*it);
 
-                            ExportarVeiculo(usuario_logado);
+                            ExportarVeiculo(usuarios);
 
                             cout << endl;
                             cout << "Novo ANO registrado com sucesso!" << endl;
@@ -2954,7 +3118,7 @@ public:
                         {
                             cadastrarCor(*it);
 
-                            ExportarVeiculo(usuario_logado);
+                            ExportarVeiculo(usuarios);
 
                             cout << endl;
                             cout << "Nova COR registrada com sucesso!" << endl;
@@ -2972,7 +3136,7 @@ public:
                         {
                             cadastrarModelo(*it);
 
-                            ExportarVeiculo(usuario_logado);
+                            ExportarVeiculo(usuarios);
 
                             cout << endl;
                             cout << "Novo MODELO registrado com sucesso!" << endl;
@@ -3083,7 +3247,11 @@ public:
 
                     if (multa_placa_temp == "MENU")
                     {
+<<<<<<< HEAD
                         if (RetornarAoMenuDeMultas())
+=======
+                        if (RetornarAoMenuDeMultas()) // fazer menu
+>>>>>>> 955259b (22/05)
                         {
                             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -3136,7 +3304,10 @@ public:
 
                 break;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 955259b (22/05)
             case 2:
             {
                 // pagar multa
@@ -3217,7 +3388,10 @@ public:
 
                 break;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 955259b (22/05)
             case 3:
             {
                 CLEAR;
@@ -3233,7 +3407,10 @@ public:
 
                 PAUSE;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 955259b (22/05)
             default:
             {
                 CLEAR;
@@ -3646,7 +3823,11 @@ public:
         }
     }
 
+<<<<<<< HEAD
     void MultaPlaca(list<Carro> &carros, list<Usuario> &usuarios) // nao acabado
+=======
+    void MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acabado
+>>>>>>> 955259b (22/05)
     {
         bool menu_multa_placa = true;
 
@@ -3687,6 +3868,7 @@ public:
 
             bool achou = false;
 
+<<<<<<< HEAD
             for (auto u = usuarios.begin(); u != usuarios.end(); u++)
             {
                 for (auto c = u->carros.begin(); c != u->carros.end(); c++)
@@ -3717,6 +3899,16 @@ public:
 
                         break;
                     }
+=======
+            auto it = carros.begin();
+
+            for (auto i = it; i != carros.end(); i++)
+            {
+                if (multa_placa_temp == it->getPlacaCinza() || multa_placa_temp == it->getPlacaMercosul())
+                {
+                    it = i;
+                    achou = true;
+>>>>>>> 955259b (22/05)
                 }
             }
 
@@ -3724,6 +3916,13 @@ public:
             {
                 CLEAR;
 
+<<<<<<< HEAD
+=======
+                cout << "Veiculo encontrado!" << endl;
+
+                // logica para puxar os dados inteiros do veiculo
+
+>>>>>>> 955259b (22/05)
                 bool veiculo_multa = true;
 
                 // arrumar a logica de salvar os pontos na carteira
@@ -3758,14 +3957,20 @@ public:
 
                         // leve
 
+<<<<<<< HEAD
                     
 
+=======
+>>>>>>> 955259b (22/05)
                         pontos_temp += 3;
 
                         multas_leves++;
 
+<<<<<<< HEAD
                         valor_multas += 88.38;
 
+=======
+>>>>>>> 955259b (22/05)
                         break;
                     }
                     case 2:
@@ -3778,8 +3983,11 @@ public:
 
                         multas_medias++;
 
+<<<<<<< HEAD
                         valor_multas += 130.16;
 
+=======
+>>>>>>> 955259b (22/05)
                         break;
                     }
                     case 3:
@@ -3792,8 +4000,11 @@ public:
 
                         multas_graves++;
 
+<<<<<<< HEAD
                         valor_multas += 195.23;
 
+=======
+>>>>>>> 955259b (22/05)
                         break;
                     }
                     case 4:
@@ -3806,8 +4017,11 @@ public:
 
                         multas_gravissimas++;
 
+<<<<<<< HEAD
                         valor_multas += 239.47;
 
+=======
+>>>>>>> 955259b (22/05)
                         break;
                     }
                     case 5:
@@ -4094,17 +4308,16 @@ int main()
 
                             if (usuario_temp.SalvarUsuario(usuarios, usuario_temp))
                             {
-                                // SALVAR OS USUARIO EM UM ARQUIVO
-                                usuario_temp.ExportarUsuario(usuarios.back());
+                                // SALVAR OS USUARIO EM UM ARQUIVO, como está ordenada vamos colocar o usuario que foi cadastrado agora.
+                                usuario_temp.ExportarUsuario(usuario_temp);
 
                                 cout << endl;
                                 cout << "Usuario CADASTRADO com sucesso!" << endl;
                                 cout << endl;
 
                                 PAUSE;
-
-                                // ASSIM QUE CRIAR O USUARIO, JA LOGAR AUTOMATICAMENTE
-                                usuario_logado = &usuarios.back();
+                                // PROCURA O USUARIO PELO CPF, POIS A LISTA FOI ORDENADA
+                                usuario_logado = usuario_temp.BuscaBinariaUsuarioPorCpf(usuarios, usuario_temp.getCpf());
 
                                 cadastrar_usuario = true;
 
@@ -4248,6 +4461,9 @@ int main()
                                     if (usuario_login != nullptr)
                                     {
                                         cpf_email_nome_sair = true;
+                                        cout << "Usuario encontrado!" << endl;
+                                        cout << endl;
+                                        PAUSE;
                                     }
                                     else
                                     {
@@ -4347,7 +4563,11 @@ int main()
 
                                         if (usuario_logado->getCpf() != "11111111111")
                                         {
+<<<<<<< HEAD
                                             carro_temp.LoadVeiculos(usuario_logado);
+=======
+                                            carro_temp.LoadVeiculos(usuarios);
+>>>>>>> 955259b (22/05)
                                         }
                                         else
                                         {
@@ -4618,7 +4838,7 @@ int main()
                         // SALVAR
                         if (carro_temp.SalvarCarro(usuario_logado, carro_temp))
                         {
-                            carro_temp.ExportarVeiculo(usuario_logado);
+                            carro_temp.ExportarVeiculo(usuarios);
 
                             cout << endl;
                             cout << "Carro CADASTRADO com sucesso!" << endl;
@@ -4734,7 +4954,7 @@ int main()
                         // EXCLUIR VEICULO
                         carro_temp.ExcluirVeiculos(usuario_logado->carros);
 
-                        carro_temp.ExportarVeiculo(usuario_logado);
+                        carro_temp.ExportarVeiculo(usuarios);
 
                         sair_checar_veiculos = true;
 
@@ -4744,7 +4964,7 @@ int main()
                     case 3:
                     {
                         // ALTERAR VEICULO
-                        carro_temp.AlterarVeiculo(usuario_logado->carros, usuario_logado);
+                        carro_temp.AlterarVeiculo(usuario_logado->carros, usuario_logado, usuarios);
 
                         sair_checar_veiculos = true;
 
@@ -4969,7 +5189,11 @@ int main()
                 // montar funcao que procura veiculo pela placa ou pelo renavam, para aplicar multa, e talvez adicione pontos na carteira
                 Carro multa_placa;
 
+<<<<<<< HEAD
                 multa_placa.MultaPlaca(usuario_logado->carros, usuarios);
+=======
+                multa_placa.MultaPlaca(usuario_logado->carros, usuario_logado);
+>>>>>>> 955259b (22/05)
             }
 
             break;
