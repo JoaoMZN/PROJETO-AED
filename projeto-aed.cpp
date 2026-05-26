@@ -1634,7 +1634,7 @@ public:
 
             cout << "--------------------------------------------------------" << endl;
             cout << endl;
-            cout << "Informe p CPF que deseja procurar (ou digite MENU): ";
+            cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
 
             string cnh;
             getline(cin >> ws, cnh);
@@ -3784,6 +3784,7 @@ public:
             bool achou = false;
 
             auto it = carros.begin();
+            auto placa_multada = it;
 
             for (auto i = it; i != carros.end(); i++)
             {
@@ -3791,6 +3792,7 @@ public:
                 {
                     it = i;
                     achou = true;
+                    placa_multada = it;
                 }
             }
 
@@ -3800,7 +3802,25 @@ public:
 
                 cout << "Veiculo encontrado!" << endl;
 
+                cout << "--------------------------------------------------" << endl;
+
                 // logica para puxar os dados inteiros do veiculo
+
+                //cout << "Nome: " << placa_multada->nome << endl;
+                cout << endl;
+                //cout << "CPF: " << placa_multada->cpf << endl;
+                cout << endl;
+                cout << "Placa: " << multa_placa_temp << endl;
+                cout << endl;
+                cout << "Modelo: " << placa_multada->modelo << endl;
+                cout << endl;
+                cout << "Cor: " << placa_multada->cor << endl;
+                cout << endl;
+                cout << "Ano: " << placa_multada->ano << endl;
+                cout << endl;
+                cout << "Renavam: " << placa_multada->renavam << endl;
+                cout << endl;
+                cout << "---------------------------------------------------" << endl;
 
                 bool veiculo_multa = true;
 
@@ -3842,6 +3862,7 @@ public:
 
                         break;
                     }
+                    
                     case 2:
                     {
                         CLEAR;
@@ -3854,6 +3875,7 @@ public:
 
                         break;
                     }
+                    
                     case 3:
                     {
                         CLEAR;
@@ -3866,6 +3888,7 @@ public:
 
                         break;
                     }
+                    
                     case 4:
                     {
                         CLEAR;
@@ -3878,6 +3901,7 @@ public:
 
                         break;
                     }
+                    
                     case 5:
                     {
                         CLEAR;
@@ -3895,6 +3919,7 @@ public:
 
                         break;
                     }
+                    
                     default:
                     {
                         CLEAR;
