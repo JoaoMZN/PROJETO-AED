@@ -1,5 +1,6 @@
 #include "usuarios.hpp"
 #include "utils.hpp"
+#include "carro.hpp"
 #include <iostream>
 #include <list>
 
@@ -749,5 +750,122 @@ public:
         arquivosUsuarios.close();
     }
 
-    void ChecagemCnh(list<Usuario> &usuarios); // nao acabado
+    void ChecagemCnh(list<Usuario> &usuarios)
+    {
+        bool menu_cnh = true;
+
+        while (menu_cnh)
+        {
+            CLEAR;
+
+            cout << "--------------------------------------------------------" << endl;
+            cout << endl;
+            cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
+
+            string cnh;
+            getline(cin >> ws, cnh);
+            cout << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << endl;
+
+            for (int i = 0; i < cnh.length(); i++)
+            {
+                cnh[i] = toupper((unsigned char)cnh[i]);
+            }
+
+            if (cnh == "MENU")
+            {
+                if (RetornarAoMenuDeChecagem())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    continue;
+                }
+            }
+
+            Usuario *usuarioEncontrado = BuscaBinariaUsuarioPorCpf(usuarios, cnh); // Ponteiro de classe usuario que retornara o endereço do atributo cpf, caso exista
+
+            if (usuarioEncontrado != nullptr)
+            {
+                CLEAR;
+
+                Carro carro_multa;
+
+                string cpf_multa = carro_multa.getCpfDono();
+
+                int pontos_multa = usuarioEncontrado->getPontos();
+
+                cout << "CNH encontrada!" << endl;
+                cout << endl;
+
+                cout << "Nome: " << usuarioEncontrado->getNome() << endl;
+                cout << "CPF: " << usuarioEncontrado->getCpf() << endl;
+                cout << "Pontos na CNH: " << usuarioEncontrado->getPontos() << endl;
+                cout << endl;
+                cout << "Multas Leves: " << carro_multa.getMultasLeves() << endl;
+                cout << endl;
+                cout << "Multas Medias: " << carro_multa.getMultasMedias() << endl;
+                cout << endl;
+                cout << "Multas Graves: " << carro_multa.getMultasGraves() << endl;
+                cout << endl;
+                cout << "Multas Gravissimas: " << carro_multa.getMultasGravissimas() << endl;
+                cout << endl; 
+
+                PAUSE;
+
+                if (pontos_multa >= 40 && carro_multa.getMultasGravissimas() != 0)
+                {
+                    cout << endl;
+                    cout << "Retirar carteira" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                }   
+                else if (pontos_multa >= 30 && carro_multa.getMultasGravissimas() >= 1)
+                {
+                    cout << endl;
+                    cout << "Retirar carteira" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                }
+                else if (pontos_multa >= 20 && carro_multa.getMultasGravissimas() >= 2)
+                {
+                    cout << endl;
+                    cout << "Retirar carteira" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                } 
+                else
+                {
+                    cout << endl;
+                    cout << "Pontos e multas aceitaveis" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                }
+
+                PAUSE;
+
+                return;
+            }
+            else
+            {
+                CLEAR;
+
+                cout << "CNH nao encontrada!" << endl;
+
+                PAUSE;
+
+                return;
+            }
+        }
+    }
 };

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <list>
+#include "carro.hpp"
 
 using namespace std;
 

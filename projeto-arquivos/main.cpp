@@ -23,7 +23,14 @@ int main()
     policial.setSenha("PoliciaRodoviaria-Detran");
     usuarios.push_front(policial); 
 
-    MenuPrincipal(usuarios, usuario_logado, carro_temp);
+    if (usuario_logado == nullptr)
+    {
+        MenuInicial(usuarios, usuario_logado, carro_temp);
+    }
+    else
+    {
+        MenuPrincipal(usuarios, usuario_logado, carro_temp);
+    }
 
     return 0;
 }
