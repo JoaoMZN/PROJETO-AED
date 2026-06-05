@@ -4,68 +4,57 @@
 #include <iostream>
 #include <list>
 
-class Usuario
-{
-private:
-    string nome, cpf, email, senha;
-
-protected:
-    int pontos;
-
-public:
-    list<Carro> carros;
-    list<Carro>::iterator carrosIT;
-    Usuario()
+Usuario::Usuario()
     { // construtor
         carrosIT = carros.end();
     };
 
-    void setNome(string n)
+void Usuario::setNome(string n)
     {
         this->nome = n;
     }
-    string getNome()
+string Usuario::getNome()
     {
         return this->nome;
     }
 
-    void setCpf(string c)
+void Usuario::setCpf(string c)
     {
         this->cpf = c;
     }
-    string getCpf()
+string Usuario::getCpf()
     {
         return this->cpf;
     }
 
-    void setEmail(string e)
+void Usuario::setEmail(string e)
     {
         this->email = e;
     }
-    string getEmail()
+string Usuario::getEmail()
     {
         return this->email;
     }
 
-    void setSenha(string s)
+void Usuario::setSenha(string s)
     {
         this->senha = s;
     }
-    string getSenha()
+string Usuario::getSenha()
     {
         return this->senha;
     };
 
-    void setPontos(int p)
+void Usuario::setPontos(int p)
     {
         this->pontos = p;
     }
-    int getPontos()
+int Usuario::getPontos()
     {
         return this->pontos;
     }
 
-    void cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
+void Usuario::cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
     {
         CLEAR;
 
@@ -191,7 +180,7 @@ public:
         }
     };
 
-    void cadastrarNome(Usuario &usuario_temp)
+void Usuario::cadastrarNome(Usuario &usuario_temp)
     {
         CLEAR;
 
@@ -299,7 +288,7 @@ public:
         }
     }
 
-    void cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
+void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
     {
         CLEAR;
 
@@ -444,7 +433,7 @@ public:
         }
     }
 
-    void cadastrarSenha(Usuario &usuario_temp)
+void Usuario::cadastrarSenha(Usuario &usuario_temp)
     {
         CLEAR;
 
@@ -553,7 +542,7 @@ public:
         }
     }
 
-    void OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios) // Ordenação dos usuarios por inserção, com base no cpf de cada usuario
+void Usuario::OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios) // Ordenação dos usuarios por inserção, com base no cpf de cada usuario
     {
         if (usuarios.size() <= 1)
         {
@@ -584,7 +573,7 @@ public:
         }
     }
 
-    Usuario *BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf) // Retorna um endereço que será convertido nos valores do usuario encontrado
+Usuario* BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf) // Retorna um endereço que será convertido nos valores do usuario encontrado
     {
         int inicio = 0;
         int fim = usuarios.size() - 1;
@@ -613,7 +602,7 @@ public:
         return nullptr;
     }
 
-    bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp)
+bool Usuario::SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp)
     {
         bool valido = true;
 
@@ -664,7 +653,7 @@ public:
         return true;
     }
 
-    void ExportarUsuario(Usuario &ususarios)
+void Usuario::ExportarUsuario(Usuario &ususarios)
     {
         // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
 
@@ -692,7 +681,7 @@ public:
         arquivoUsuarios.close();
     }
 
-    void LoadUsuario(list<Usuario> &usuarios)
+void Usuario::LoadUsuario(list<Usuario> &usuarios)
     {
         ifstream arquivosUsuarios("UsuarioCadastrados.txt");
 
@@ -750,7 +739,7 @@ public:
         arquivosUsuarios.close();
     }
 
-    void ChecagemCnh(list<Usuario> &usuarios)
+void Usuario::ChecagemCnh(list<Usuario> &usuarios)
     {
         bool menu_cnh = true;
 
@@ -868,4 +857,3 @@ public:
             }
         }
     }
-};

@@ -43,25 +43,25 @@ public:
     string getRenavam() const;
 
     void setCrlv (string cr);
-    string getCrlv();
+    string getCrlv() const;
 
     void setNomeDono (string nd);
-    string getNomeDono();
+    string getNomeDono() const;
 
     void setCpfDono (string cpfd);
     string getCpfDono() const;
 
     void setMultasLeves(int ml);
-    int getMultasLeves();
+    int getMultasLeves() const;
 
     void setMultasMedias(int mm);
-    int getMultasMedias();
+    int getMultasMedias() const;
 
     void setMultasGraves(int mg);
-    int getMultasGraves();
+    int getMultasGraves() const;
 
     void setMultasGravissimas(int mgravissima);
-    int getMultasGravissimas();
+    int getMultasGravissimas() const;
 
     void cadastrarPlacaCinza(Carro &carro_temp);
 
