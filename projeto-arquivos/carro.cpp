@@ -8,9 +8,12 @@ using namespace std;
 
 class Usuario;
 
-Carro::Carro(string placa_cinza, string placa_mercosul, string ano, string cor, string modelo, string renavam, string status_crlv)
-    : placa_cinza(placa_cinza), placa_mercosul(placa_mercosul), ano(ano), cor(cor), modelo(modelo), renavam(renavam), status_crlv(status_crlv) {}
-// os dois acima sao contrutores, usados para, : usado para a incializacao, se tirar vai dar erro na hora de salvar o carro
+Carro::Carro() {}
+
+Carro::Carro(string placa_cinza, string placa_mercosul, string ano, string cor,
+             string modelo, string renavam, string status_crlv)
+    : placa_cinza(placa_cinza), placa_mercosul(placa_mercosul), ano(ano),
+      cor(cor), modelo(modelo), renavam(renavam), status_crlv(status_crlv) {}
 
 void Carro::setPlacaCinza(string pc)
 {
@@ -154,7 +157,7 @@ void Carro::cadastrarPlacaCinza(Carro &carro_temp)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < placa_cinza_temp.length(); i++)
+        for (size_t i = 0; i < placa_cinza_temp.length(); i++)
         {
             placa_cinza_temp[i] = toupper((unsigned char)placa_cinza_temp[i]);
         }
@@ -274,7 +277,7 @@ void Carro::cadastrarPlacaMercosul(Carro &carro_temp)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < placa_mercosul_temp.length(); i++)
+        for (size_t i = 0; i < placa_mercosul_temp.length(); i++)
         {
             placa_mercosul_temp[i] = toupper((unsigned char)placa_mercosul_temp[i]);
         }
@@ -389,7 +392,7 @@ void Carro::cadastrarAno(Carro &carro_temp)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < ano_temp.length(); i++)
+        for (size_t i = 0; i < ano_temp.length(); i++)
         {
             ano_temp[i] = toupper((unsigned char)ano_temp[i]);
         }
@@ -416,7 +419,7 @@ void Carro::cadastrarAno(Carro &carro_temp)
 
         bool apenas_numeros = true;
 
-        for (int i = 0; i < ano_temp.length(); i++)
+        for (size_t i = 0; i < ano_temp.length(); i++)
         {
             if (!isdigit(ano_temp[i]))
             {
@@ -515,7 +518,7 @@ void Carro::cadastrarCor(Carro &carro_temp)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < cor_nova_temp.length(); i++)
+        for (size_t i = 0; i < cor_nova_temp.length(); i++)
         {
             cor_nova_temp[i] = toupper((unsigned char)cor_nova_temp[i]);
         }
@@ -545,7 +548,7 @@ void Carro::cadastrarCor(Carro &carro_temp)
         // CHECAR SE SAO APENAS LETRAS
         bool so_letras = true;
 
-        for (int i = 0; i < cor_nova_temp.length(); i++)
+        for (size_t i = 0; i < cor_nova_temp.length(); i++)
         {
             if (!isalpha(cor_nova_temp[i]) && cor_nova_temp[i] != ' ')
             {
@@ -605,7 +608,7 @@ void Carro::cadastrarModelo(Carro &carro_temp)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < modelo_novo_temp.length(); i++)
+        for (size_t i = 0; i < modelo_novo_temp.length(); i++)
         {
             modelo_novo_temp[i] = toupper((unsigned char)modelo_novo_temp[i]);
         }
@@ -669,7 +672,7 @@ void Carro::cadastrarRenavam(Carro &carro_temp)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < renavam_novo_temp.length(); i++)
+        for (size_t i = 0; i < renavam_novo_temp.length(); i++)
         {
             renavam_novo_temp[i] = toupper((unsigned char)renavam_novo_temp[i]);
         }
@@ -696,7 +699,7 @@ void Carro::cadastrarRenavam(Carro &carro_temp)
 
         bool apenas_numeros = true;
 
-        for (int i = 0; i < renavam_novo_temp.length(); i++)
+        for (size_t i = 0; i < renavam_novo_temp.length(); i++)
         {
             if (!isdigit(renavam_novo_temp[i]))
             {
@@ -1133,7 +1136,7 @@ void Carro::ExcluirVeiculos(list<Carro> &carros)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < excluir_veiculo.length(); i++)
+        for (size_t i = 0; i < excluir_veiculo.length(); i++)
         {
             excluir_veiculo[i] = toupper((unsigned char)excluir_veiculo[i]);
         }
@@ -1264,7 +1267,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
         cout << "------------------------------------------------------------------------------------------------------------------------" << endl;
         cout << endl;
 
-        for (int i = 0; i < alterar_veiculo.length(); i++)
+        for (size_t i = 0; i < alterar_veiculo.length(); i++)
         {
             alterar_veiculo[i] = toupper((unsigned char)alterar_veiculo[i]);
         }
@@ -1509,7 +1512,7 @@ void Carro::Multas(list<Carro> &carros) // nao acabado
                 cout << "---------------------------------------------------------" << endl;
                 cout << endl;
 
-                for (int i = 0; i < multa_placa_temp.length(); i++)
+                for (size_t i = 0; i < multa_placa_temp.length(); i++)
                 {
                     multa_placa_temp[i] = toupper((unsigned char)multa_placa_temp[i]);
                 }
@@ -1589,7 +1592,7 @@ void Carro::Multas(list<Carro> &carros) // nao acabado
                 cout << "---------------------------------------------------------" << endl;
                 cout << endl;
 
-                for (int i = 0; i < multa_placa_temp.length(); i++)
+                for (size_t i = 0; i < multa_placa_temp.length(); i++)
                 {
                     multa_placa_temp[i] = toupper((unsigned char)multa_placa_temp[i]);
                 }
@@ -1702,7 +1705,7 @@ void Carro::GerarCrlv(list<Carro> &carros, Usuario *usuario_logado)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < gerar_crlv.length(); i++)
+        for (size_t i = 0; i < gerar_crlv.length(); i++)
         {
             gerar_crlv[i] = toupper((unsigned char)gerar_crlv[i]);
         }
@@ -1812,7 +1815,7 @@ void Carro::ExportarCrlv(list<Carro> &carros, Usuario *usuario_logado)
         cout << endl;
 
         // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (int i = 0; i < exportar_crlv.length(); i++)
+        for (size_t i = 0; i < exportar_crlv.length(); i++)
         {
             exportar_crlv[i] = toupper((unsigned char)exportar_crlv[i]);
         }
@@ -2094,7 +2097,7 @@ void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acab
         cout << "---------------------------------------------------------" << endl;
         cout << endl;
 
-        for (int i = 0; i < multa_placa_temp.length(); i++)
+        for (size_t i = 0; i < multa_placa_temp.length(); i++)
         {
             multa_placa_temp[i] = toupper((unsigned char)multa_placa_temp[i]);
         }

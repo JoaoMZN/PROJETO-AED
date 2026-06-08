@@ -5,9 +5,9 @@
 #include <list>
 
 Usuario::Usuario()
-    { // construtor
-        carrosIT = carros.end();
-    };
+{ // construtor
+    carrosIT = carros.end();
+};
 
 void Usuario::setNome(string n)
     {
@@ -78,7 +78,7 @@ void Usuario::cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
             cout << endl;
 
             // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-            for (int i = 0; i < cpf_novo_temp.length(); i++)
+            for (size_t i = 0; i < cpf_novo_temp.length(); i++)
             {
                 cpf_novo_temp[i] = toupper((unsigned char)cpf_novo_temp[i]);
             }
@@ -129,7 +129,7 @@ void Usuario::cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
 
             bool somente_numeros = true;
 
-            for (int i = 0; i < cpf_novo_temp.length(); i++)
+            for (size_t i = 0; i < cpf_novo_temp.length(); i++)
             {
                 if (!isdigit(cpf_novo_temp[i]))
                 {
@@ -204,7 +204,7 @@ void Usuario::cadastrarNome(Usuario &usuario_temp)
             cout << endl;
 
             // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-            for (int i = 0; i < nome_novo_temp.length(); i++)
+            for (size_t i = 0; i < nome_novo_temp.length(); i++)
             {
                 nome_novo_temp[i] = toupper((unsigned char)nome_novo_temp[i]);
             }
@@ -232,7 +232,7 @@ void Usuario::cadastrarNome(Usuario &usuario_temp)
             bool somente_letras = true;
 
             // CHECAR SE SAO APENAS LETRAS E ESPACOS
-            for (int i = 0; i < nome_novo_temp.length(); i++)
+            for (size_t i = 0; i < nome_novo_temp.length(); i++)
             {
                 if (!isalpha(nome_novo_temp[i]) && nome_novo_temp[i] != ' ')
                 {
@@ -255,7 +255,7 @@ void Usuario::cadastrarNome(Usuario &usuario_temp)
             // SEGUNDO A LEGISLACAO BRASILEIRA, TODAS AS PESSOAS TEM DE TER UM NOME PROPRIO E UM SOBRENOME NO MINIMO
             int conta_espacos = 0;
 
-            for (int i = 0; i < nome_novo_temp.length(); i++)
+            for (size_t i = 0; i < nome_novo_temp.length(); i++)
             {
                 if (nome_novo_temp[i] == ' ')
                 {
@@ -312,7 +312,7 @@ void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
             cout << endl;
 
             // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-            for (int i = 0; i < email_novo_temp.length(); i++)
+            for (size_t i = 0; i < email_novo_temp.length(); i++)
             {
                 email_novo_temp[i] = toupper((unsigned char)email_novo_temp[i]);
             }
@@ -338,7 +338,7 @@ void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
             }
 
             // TRANSFORMA TODAS AS LETRAS PARA MINUSCULO
-            for (int i = 0; i < email_novo_temp.length(); i++)
+            for (size_t i = 0; i < email_novo_temp.length(); i++)
             {
                 email_novo_temp[i] = tolower((unsigned char)email_novo_temp[i]);
             }
@@ -371,11 +371,11 @@ void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
             bool emailValido = false;
 
             // O -1 INDICA QUE NADA FOI ENCONTRADO
-            int posArroba = -1;
-            int posPonto = -1;
+            size_t posArroba = 0;
+            size_t posPonto = 0;
 
             // PROCURA O @
-            for (int i = 0; i < email_novo_temp.length(); i++)
+            for (size_t i = 0; i < email_novo_temp.length(); i++)
             {
                 if (email_novo_temp[i] == '@')
                 {
@@ -386,10 +386,10 @@ void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
             }
 
             // SE ENCONTROU O @
-            if (posArroba != -1)
+            if (posArroba != 0)
             {
                 // PROUCURA UM PONTO APOS O @
-                for (int i = posArroba + 1; i < email_novo_temp.length(); i++)
+                for (size_t i = posArroba + 1; i < email_novo_temp.length(); i++)
                 {
                     if (email_novo_temp[i] == '.')
                     {
@@ -401,7 +401,7 @@ void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
             }
 
             // VALIDA O EMAIL, O .LENGTH APARECE DENOVO, PORQUE ELE GARANTE QUE O PONTO NAO VA APARECER COMO ULTIMO CARACTERE DO EMAIL
-            if (posArroba != -1 && posPonto != -1 && posPonto < email_novo_temp.length() - 1)
+            if (posArroba != 0 && posPonto != 0 && posPonto < email_novo_temp.length() - 1)
             {
                 emailValido = true;
             }
@@ -460,7 +460,7 @@ void Usuario::cadastrarSenha(Usuario &usuario_temp)
             string menu = senha_nova_temp;
 
             // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-            for (int i = 0; i < menu.length(); i++)
+            for (size_t i = 0; i < menu.length(); i++)
             {
                 menu[i] = toupper((unsigned char)menu[i]);
             }
@@ -502,7 +502,7 @@ void Usuario::cadastrarSenha(Usuario &usuario_temp)
 
             bool temNumeros = false;
 
-            for (int i = 0; i < senha_nova_temp.length(); i++)
+            for (size_t i = 0; i < senha_nova_temp.length(); i++)
             {
                 if (isalpha(senha_nova_temp[i]))
                 {
@@ -573,7 +573,7 @@ void Usuario::OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios) // Orde
         }
     }
 
-Usuario* BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf) // Retorna um endereço que será convertido nos valores do usuario encontrado
+Usuario *Usuario::BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf) // Retorna um endereço que será convertido nos valores do usuario encontrado
     {
         int inicio = 0;
         int fim = usuarios.size() - 1;
@@ -757,7 +757,7 @@ void Usuario::ChecagemCnh(list<Usuario> &usuarios)
             cout << "---------------------------------------------------------" << endl;
             cout << endl;
 
-            for (int i = 0; i < cnh.length(); i++)
+            for (size_t i = 0; i < cnh.length(); i++)
             {
                 cnh[i] = toupper((unsigned char)cnh[i]);
             }

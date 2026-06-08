@@ -1,406 +1,12 @@
 #include "menu.hpp"
 #include "utils.hpp"
+#include "usuarios.hpp"
+#include "carro.hpp"
 #include <iostream>
 #include <fstream>
 #include <limits>
 
 using namespace std;
-
-void MenuIncial(list<Usuario> &usuarios, Usuario *usuario_logado, Carro &carro_temp)
-{
-    while (true)
-    {
-        CLEAR;
-
-        cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
-        cout << endl;
-        cout << "                                 1 - Realizar Login" << endl;
-        cout << endl;
-        cout << "                               2 - Realizar Cadastro" << endl;
-        cout << endl;
-        cout << "                                       3 - Sair" << endl;
-        cout << endl;
-        cout << "---------------------------------------------------------------------------------------" << endl;
-
-        cout << "Digite a OPCAO desejada: ";
-        int opcao = 0;
-        cin >> opcao;
-
-        switch (opcao)
-        {
-            case 1:
-            {
-                MenuLogin(usuarios, usuario_logado, carro_temp);
-                break;
-            }
-            case 2:
-            {
-                MenuCadastrarUsuario(usuarios, usuario_logado);
-                break;
-            }
-            case 3:
-            {
-                MenuSair(usuario_logado);
-                break;
-            }
-            default:
-            {
-                CLEAR;
-                cout << "Opcao invalida!" << endl;
-                PAUSE;
-
-                break;
-            }
-        }
-    }
-}
-
-void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
-{
-    bool perfil_Policial = false;
-
-    while (true)
-    {
-        CLEAR;
-
-        cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
-        cout << endl;
-
-        if (usuario_logado->getCpf() != "11111111111")
-        {
-            cout << "Seja Bem vindo " << usuario_logado->getNome() << "!" << endl;
-
-            cout << endl;
-
-            MenuNormal(usuarios, usuario_logado, carro_temp);
-        }
-        else
-        {
-            perfil_Policial = true;
-            cout << "Perfil Policial" << endl;
-
-            cout << endl;
-
-            MenuPolicial(usuario_logado, usuarios);
-        }
-
-        cout << endl;
-
-        if (perfil_Policial)
-        {
-            cout << "                      6 - Aplicar multa" << endl;
-            cout << "                      7 - Checar CNH" << endl;
-        }
-
-        cout << endl;
-        cout << "-------------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "Digite a OPCAO DESEJADA: ";
-
-        int opcao = 0;
-        cin >> opcao;
-
-        switch (opcao)
-        {
-        case 1:
-            MenuCadastroLogin(usuarios, usuario_logado, carro_temp);
-            break;
-        case 2:
-            MenuRegistroVeiculo(usuarios, usuario_logado, carro_temp);
-            break;
-        case 3:
-            MenuChecarVeiculos(usuarios, usuario_logado, carro_temp);
-            break;
-        case 4:
-            MenuCRLV(usuario_logado, carro_temp);
-            break;
-        case 5:
-            MenuSair(usuario_logado);
-            return;
-        case 6:
-            if (!perfil_Policial)
-            {
-                cout << "Opcao invalida!" << endl;
-                PAUSE;
-            }
-            else
-            {
-                Carro multa_placa;
-                multa_placa.MultaPlaca(usuario_logado->carros, usuario_logado);
-            }
-            break;
-        case 7:
-            if (!perfil_Policial)
-            {
-                cout << "Opcao invalida!" << endl;
-                PAUSE;
-            }
-            else
-            {
-                usuario_logado->ChecagemCnh(usuarios);
-            }
-            break;
-        default:
-            cout << endl
-                 << "OPCAO INVALIDA!" << endl
-                 << endl;
-            PAUSE;
-        }
-    }
-}
-
-void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
-{
-    cout << "                      1 - Registrar Veiculo" << endl;
-    cout << endl;
-    cout << "                      2 - Checar Veiculo(s)" << endl;
-    cout << endl;
-    cout << "                           3 - CRLV" << endl;
-    cout << endl;
-    cout << "                           4 - Sair" << endl;
-    cout << endl;
-    cout << "-------------------------------------------------------------------------------------" << endl;
-    cout << endl;
-
-    cout << "Digite a OPCAO desejada: ";
-    int opcao = 0;
-    cin >> opcao;
-
-    switch (opcao)
-    {
-        case 1:
-        {
-            MenuRegistroVeiculo(usuarios, usuario_logado, carro_temp);
-
-            break;
-        }
-        case 2:
-        {
-            MenuChecarVeiculos(usuarios, usuario_logado, carro_temp);
-
-            break;
-        }
-        case 3:
-        {
-            MenuCRLV(usuario_logado, carro_temp);
-
-            break;
-        }
-        case 4:
-        {
-            MenuSair(usuario_logado);
-
-            break;
-        }
-        default:
-        {
-            CLEAR;
-
-            cout << "Opcao invalida!" << endl;
-
-            PAUSE;
-
-            break;
-        }
-    }
-
-}
-
-void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios)
-{
-    
-    cout << "                      1 - Aplicar multa" << endl;
-    cout << endl;
-    cout << "                       2 - Checar CNH" << endl;
-    cout << endl;
-    cout << "                          3 - Sair" << endl;
-    cout << endl;
-    cout << "-------------------------------------------------------------------------------------" << endl;
-    cout << endl;
-
-    cout << "Digite a OPCAO desejada: ";
-    int opcao = 0;
-    cin >> opcao;
-
-    switch (opcao)
-    {
-        case 1:
-        {
-            // arrumar para colocar um menu para aplica multa
-
-            break;
-        }
-        case 2:
-        {
-            // arrumar para colocar para checar cnh
-
-            break;
-        }
-        case 3:
-        {
-            MenuSair(usuario_logado);
-
-            break;
-        }
-        default:
-        {
-            CLEAR;
-            
-            cout << "Opcao invalida!" << endl;
-
-            PAUSE;
-        }
-    }
-}
-
-void MenuCadastroLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
-{
-    bool sair = false;
-
-    while (!sair)
-    {
-        CLEAR;
-        cout << "--------------------------CADASTRO / LOGIN--------------------------" << endl;
-        cout << "                   1 - Cadastrar Usuario" << endl;
-        cout << "                   2 - Login" << endl;
-        cout << "                   3 - Retornar ao menu principal" << endl;
-        cout << "--------------------------------------------------------------------" << endl;
-        cout << "Digite a OPCAO DESEJADA: ";
-
-        int opcao = 0;
-        cin >> opcao;
-
-        switch (opcao)
-        {
-        case 1:
-            MenuCadastrarUsuario(usuarios, usuario_logado);
-            sair = true;
-            break;
-        case 2:
-            MenuLogin(usuarios, usuario_logado, carro_temp);
-            sair = true;
-            break;
-        case 3:
-            if (RetornarAoMenuPrincipal_Cadastro())
-                sair = true;
-            break;
-        default:
-            cout << endl
-                 << "Opcao INVALIDA!" << endl
-                 << endl;
-            PAUSE;
-        }
-    }
-}
-
-void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado)
-{
-    Usuario usuario_temp;
-    bool sair = false;
-
-    while (!sair)
-    {
-        CLEAR;
-        cout << "--------------------------CADASTRO DE USUARIO--------------------------" << endl;
-        cout << "                       1 - CPF" << endl;
-        cout << "                       2 - Nome Completo" << endl;
-        cout << "                       3 - E-mail" << endl;
-        cout << "                       4 - Senha" << endl;
-        cout << "                       5 - Salvar" << endl;
-        cout << "            6 - Retornar ao MENU DE CADASTRO / LOGIN" << endl;
-        cout << "----------------------------------------------------------------------" << endl;
-        cout << "Digite a OPCAO DESEJADA: ";
-
-        int opcao = 0;
-        cin >> opcao;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        switch (opcao)
-        {
-        case 1:
-            usuario_temp.cadastrarCPF(usuario_temp, usuarios);
-            break;
-        case 2:
-            usuario_temp.cadastrarNome(usuario_temp);
-            break;
-        case 3:
-            usuario_temp.cadastrarEmail(usuario_temp, usuarios);
-            break;
-        case 4:
-            usuario_temp.cadastrarSenha(usuario_temp);
-            break;
-        case 5:
-            if (usuario_temp.SalvarUsuario(usuarios, usuario_temp))
-            {
-                usuario_temp.ExportarUsuario(usuario_temp);
-                cout << endl
-                     << "Usuario CADASTRADO com sucesso!" << endl
-                     << endl;
-                PAUSE;
-                usuario_logado = usuario_temp.BuscaBinariaUsuarioPorCpf(usuarios, usuario_temp.getCpf());
-                sair = true;
-            }
-            else
-            {
-                cout << endl
-                     << "Preencha todos os campos antes de salvar!" << endl
-                     << endl;
-                PAUSE;
-            }
-            break;
-        case 6:
-            if (RetornarAoMenuDeCadastro())
-                sair = true;
-            break;
-        default:
-            cout << endl
-                 << "Opcao INVALIDA!" << endl
-                 << endl;
-            PAUSE;
-        }
-    }
-}
-
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
-{
-    // todo o conteúdo do case 2 (LOGIN) do seu main atual
-}
-
-void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
-{
-    if (usuario_logado == nullptr)
-    {
-        cout << endl
-             << "Faca LOGIN / CADASTRO para acessar REGISTRO DE VEICULO(s)!" << endl
-             << endl;
-        PAUSE;
-        return;
-    }
-}
-
-void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
-{
-    if (usuario_logado == nullptr)
-    {
-        cout << endl
-             << "Faca LOGIN / CADASTRO para acessar CHECAR VEICULO(s)!" << endl
-             << endl;
-        PAUSE;
-        return;
-    }
-}
-
-void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp)
-{
-    if (usuario_logado == nullptr)
-    {
-        cout << endl
-             << "Faca LOGIN / CADASTRO para acessar CRLV!" << endl
-             << endl;
-        PAUSE;
-        return;
-    }
-}
 
 void MenuSair(Usuario *&usuario_logado)
 {
@@ -448,4 +54,939 @@ void MenuSair(Usuario *&usuario_logado)
     cout << endl;
 
     PAUSE;
+
+    return;
+}
+
+void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+{
+    while (true)
+    {
+        CLEAR;
+
+        cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
+        cout << endl;
+        cout << "                                 1 - Realizar Login" << endl;
+        cout << endl;
+        cout << "                               2 - Realizar Cadastro" << endl;
+        cout << endl;
+        cout << "                                       3 - Sair" << endl;
+        cout << endl;
+        cout << "---------------------------------------------------------------------------------------" << endl;
+
+        cout << "Digite a OPCAO desejada: ";
+        int opcao = 0;
+        cin >> opcao;
+
+        switch (opcao)
+        {
+        case 1:
+        {
+            MenuLogin(usuarios, usuario_logado, carro_temp);
+            break;
+        }
+        case 2:
+        {
+            MenuCadastrarUsuario(usuarios, usuario_logado, carro_temp);
+            break;
+        }
+        case 3:
+        {
+            MenuSair(usuario_logado);
+            break;
+        }
+        default:
+        {
+            CLEAR;
+            cout << "Opcao invalida!" << endl;
+            PAUSE;
+
+            break;
+        }
+        }
+    }
+}
+
+void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+{
+    // LOGIN
+
+    CLEAR;
+
+    bool sair_login = false;
+
+    // PONTEIRO DO TIPO USUARIO QUE RECEBE O VALOR NULLPTR (VAZIO)
+    Usuario *usuario_login = nullptr;
+    Usuario usuario_temp_login;
+
+    while (!sair_login)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "-------------------------LOGIN-----------------------------" << endl;
+        cout << endl;
+        cout << "                       1 - CPF" << endl;
+        cout << endl;
+        cout << "                      2 - Senha" << endl;
+        cout << endl;
+        cout << "          3 - Retornar ao MENU DE CADASTRO / LOGIN" << endl;
+        cout << endl;
+        cout << "----------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA:  ";
+
+        int opcao_login = 0;
+        cin >> opcao_login;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        cout << endl;
+
+        switch (opcao_login)
+        {
+        case 1:
+        {
+            // CPF / EMAIL / NOME
+
+            CLEAR;
+
+            bool cpf_email_nome_sair = false;
+
+            while (!cpf_email_nome_sair)
+            {
+                CLEAR;
+
+                cout << endl;
+                cout << "-----------------------------------------------CPF------------------------------------------------------" << endl;
+                cout << endl;
+                cout << "Digite o seu CPF para fazer o login (ou digite MENU para voltar ao MENU DE LOGIN): " << endl;
+
+                string login;
+                getline(cin, login);
+
+                cout << endl;
+                cout << "-----------------------------------------------------------------------------------------------------------" << endl;
+                cout << endl;
+
+                // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
+                for (size_t i = 0; i < login.length(); i++)
+                {
+                    login[i] = toupper((unsigned char)login[i]);
+                }
+
+                if (login == "MENU")
+                {
+                    if (RetornarAoMenuDeLogin())
+                    {
+                        cpf_email_nome_sair = true;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    for (size_t i = 0; i < login.length(); i++)
+                    {
+                        login[i] = tolower((unsigned char)login[i]);
+                    }
+                    // CHECAR SE O USUARIO EXISTE
+
+                    // O PONTEIRO ANTERIORMENTE CRIADO RECEBE O VALOR GERADO NA FUNCAO CRAIDA ANTERIORMENTE
+                    usuario_login = usuario_temp_login.BuscaBinariaUsuarioPorCpf(usuarios, login);
+
+                    if (usuario_login != nullptr)
+                    {
+                        cpf_email_nome_sair = true;
+                        cout << "Login realizado!" << endl;
+                        cout << endl;
+                        PAUSE;
+
+                        MenuPrincipal(usuarios, usuario_logado, carro_temp);
+                    }
+                    else
+                    {
+                        cout << endl;
+                        cout << "Usuario NAO encontrado!" << endl;
+                        cout << endl;
+                        cout << "Tente NOVAMENTE!" << endl;
+                        cout << endl;
+
+                        PAUSE;
+                    }
+                }
+            }
+
+            break;
+        }
+
+        case 2:
+        {
+            // SENHA
+
+            CLEAR;
+
+            bool sair_procurar_senha = false;
+
+            while (!sair_procurar_senha)
+            {
+                CLEAR;
+
+                cout << endl;
+                cout << "---------------------------------------SENHA-------------------------------------" << endl;
+                cout << endl;
+                cout << "Digite a sua SENHA (ou digite MENU para voltar ao MENU DE LOGIN):  ";
+
+                string senha_login;
+                getline(cin, senha_login);
+
+                cout << endl;
+                cout << "---------------------------------------------------------------------------------" << endl;
+                cout << endl;
+
+                string senha_para_menu = senha_login;
+
+                for (size_t i = 0; i < senha_para_menu.length(); i++)
+                {
+                    senha_para_menu[i] = toupper((unsigned char)senha_para_menu[i]);
+                }
+
+                if (senha_para_menu == "MENU")
+                {
+                    if (RetornarAoMenuDeLogin())
+                    {
+                        sair_procurar_senha = true;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+
+                    if (usuario_login == nullptr)
+                    {
+                        cout << endl;
+                        cout << "ERRO! Faca o login com CPF/EMAIL primeiro!" << endl;
+                        cout << endl;
+
+                        PAUSE;
+
+                        if (RetornarAoMenuDeLogin())
+                        {
+                            sair_procurar_senha = true;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    // CHECA SE A SENHA ESTA CORRETA, A SETA UTILIZADA TEM A FUNCAO DE UM PONTEIRO QUE APONTA PARA UM OBJETO, E COMO SE FOSSE USUARIO.SENHA MAS USA A SETA POIS E UM PONTEIRO E NAO UM STRUCT
+                    if (usuario_login != nullptr && usuario_login->getSenha() == senha_login)
+                    {
+                        cout << endl;
+                        cout << "Login REALIZADO com sucesso!" << endl;
+                        cout << endl;
+
+                        usuario_logado = usuario_login;
+
+                        if (usuario_logado->getCpf() != "11111111111")
+                        {
+                            carro_temp.LoadVeiculos(usuarios);
+                        }
+                        else
+                        {
+                            carro_temp.LoadVeiculosPolicia(usuario_logado);
+                        }
+
+                        PAUSE;
+
+                        sair_login = true;
+
+                        sair_procurar_senha = true;
+
+                        break;
+                    }
+                    else
+                    {
+                        cout << endl;
+                        cout << "Senha INCORRETA! Tente novamente!";
+                        cout << endl;
+
+                        PAUSE;
+                    }
+                }
+            }
+
+            break;
+        }
+
+        case 3:
+        {
+            // RETORNAR AO MENU DE CADASTRO
+
+            if (RetornarAoMenuDeCadastro_Login())
+            {
+                sair_login = true;
+            }
+
+            break;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "Opcao INVALIDA!" << endl;
+            cout << endl;
+
+            PAUSE;
+
+            break;
+        }
+        }
+    }
+}
+
+void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+{
+    Usuario usuario_temp;
+    bool sair = false;
+
+    while (!sair)
+    {
+        CLEAR;
+        cout << "--------------------------CADASTRO DE USUARIO--------------------------" << endl;
+        cout << endl;
+        cout << "                              1 - CPF" << endl;
+        cout << endl;
+        cout << "                         2 - Nome Completo" << endl;
+        cout << endl;
+        cout << "                             3 - E-mail" << endl;
+        cout << endl;
+        cout << "                             4 - Senha" << endl;
+        cout << endl;
+        cout << "                            5 - Salvar" << endl;
+        cout << endl;
+        cout << "            6 - Retornar ao MENU DE CADASTRO / LOGIN" << endl;
+        cout << "----------------------------------------------------------------------" << endl;
+        cout << "Digite a OPCAO DESEJADA: ";
+
+        int opcao = 0;
+        cin >> opcao;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (opcao)
+        {
+        case 1:
+        {
+            usuario_temp.cadastrarCPF(usuario_temp, usuarios);
+            break;
+        }
+        case 2:
+        {
+            usuario_temp.cadastrarNome(usuario_temp);
+            break;
+        }
+        case 3:
+        {
+            usuario_temp.cadastrarEmail(usuario_temp, usuarios);
+            break;
+        }
+        case 4:
+        {
+            usuario_temp.cadastrarSenha(usuario_temp);
+            break;
+        }
+        case 5:
+        {
+            if (usuario_temp.SalvarUsuario(usuarios, usuario_temp))
+            {
+                usuario_temp.ExportarUsuario(usuario_temp);
+                cout << endl
+                     << "Usuario CADASTRADO com sucesso!" << endl;
+                PAUSE;
+                usuario_logado = usuario_temp.BuscaBinariaUsuarioPorCpf(usuarios, usuario_temp.getCpf());
+                sair = true;
+
+                MenuPrincipal(usuarios, usuario_logado, carro_temp);
+            }
+            else
+            {
+                cout << endl
+                     << "Preencha todos os campos antes de salvar!" << endl;
+                PAUSE;
+            }
+            break;
+        }
+        case 6:
+        {
+            if (RetornarAoMenuDeCadastro())
+                sair = true;
+            break;
+        }
+        default:
+        {
+            cout << endl
+                 << "Opcao INVALIDA!" << endl;
+            PAUSE;
+        }
+        }
+    }
+}
+
+void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+{
+    while (true)
+    {
+        CLEAR;
+
+        cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
+        cout << endl;
+
+        if (usuario_logado->getCpf() != "11111111111")
+        {
+            cout << "Seja Bem vindo " << usuario_logado->getNome() << "!" << endl;
+
+            cout << endl;
+
+            MenuNormal(usuarios, usuario_logado, carro_temp);
+        }
+        else
+        {
+            cout << "Perfil Policial" << endl;
+
+            cout << endl;
+
+            MenuPolicial(usuario_logado, usuarios);
+        }
+    }
+}
+
+void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+{
+    cout << "                      1 - Registrar Veiculo" << endl;
+    cout << endl;
+    cout << "                      2 - Checar Veiculo(s)" << endl;
+    cout << endl;
+    cout << "                           3 - CRLV" << endl;
+    cout << endl;
+    cout << "                           4 - Sair" << endl;
+    cout << endl;
+    cout << "-------------------------------------------------------------------------------------" << endl;
+    cout << endl;
+
+    cout << "Digite a OPCAO desejada: ";
+    int opcao = 0;
+    cin >> opcao;
+
+    switch (opcao)
+    {
+    case 1:
+    {
+        MenuRegistroVeiculo(usuarios, usuario_logado, carro_temp);
+
+        break;
+    }
+    case 2:
+    {
+        MenuChecarVeiculos(usuarios, usuario_logado, carro_temp);
+
+        break;
+    }
+    case 3:
+    {
+        MenuCRLV(usuario_logado, carro_temp);
+
+        break;
+    }
+    case 4:
+    {
+        MenuSair(usuario_logado);
+
+        break;
+    }
+    default:
+    {
+        CLEAR;
+
+        cout << "Opcao invalida!" << endl;
+
+        PAUSE;
+
+        break;
+    }
+    }
+}
+
+void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios)
+{
+
+    cout << "                      1 - Aplicar multa" << endl;
+    cout << endl;
+    cout << "                       2 - Checar CNH" << endl;
+    cout << endl;
+    cout << "                          3 - Sair" << endl;
+    cout << endl;
+    cout << "-------------------------------------------------------------------------------------" << endl;
+    cout << endl;
+
+    cout << "Digite a OPCAO desejada: ";
+    int opcao = 0;
+    cin >> opcao;
+
+    switch (opcao)
+    {
+    case 1:
+    {
+        // arrumar para colocar um menu para aplica multa
+
+        break;
+    }
+    case 2:
+    {
+        // arrumar para colocar para checar cnh
+
+        break;
+    }
+    case 3:
+    {
+        MenuSair(usuario_logado);
+
+        break;
+    }
+    default:
+    {
+        CLEAR;
+
+        cout << "Opcao invalida!" << endl;
+
+        PAUSE;
+    }
+    }
+}
+
+void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+{
+    if (usuario_logado == nullptr)
+    {
+        cout << endl
+             << "Faca LOGIN / CADASTRO para acessar REGISTRO DE VEICULO(s)!" << endl;
+        PAUSE;
+        return;
+    }
+
+    bool sair_registro = false;
+
+    while (!sair_registro)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "------------------------REGISTRO DE VEICULO-----------------------" << endl;
+        cout << endl;
+        cout << "                   1 - Placa" << endl;
+        cout << endl;
+        cout << "                   2 - Ano" << endl;
+        cout << endl;
+        cout << "                   3 - Cor" << endl;
+        cout << endl;
+        cout << "                   4 - Modelo" << endl;
+        cout << endl;
+        cout << "                   5 - Renavam" << endl;
+        cout << endl;
+        cout << "                   6 - Salvar" << endl;
+        cout << endl;
+        cout << "                   7 - Retornar ao menu principal" << endl;
+        cout << endl;
+        cout << "-----------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJDA: ";
+
+        int registro_de_veiculo = 0;
+        cin >> registro_de_veiculo;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (registro_de_veiculo)
+        {
+        case 1:
+        {
+            // PLACA
+            bool registrar_placa = false;
+
+            while (!registrar_placa)
+            {
+                CLEAR;
+
+                cout << endl;
+                cout << "----------------------------REGISTRO DA PLACA----------------------------" << endl;
+                cout << endl;
+                cout << "                   1 - Placa CINZA / NORMAL" << endl;
+                cout << endl;
+                cout << "                   2 - Placa MERCOSUL" << endl;
+                cout << endl;
+                cout << "                   3 - Retornar ao menu de registro" << endl;
+                cout << endl;
+                cout << "------------------------------------------------------------------------" << endl;
+                cout << endl;
+
+                cout << "Digite a OPCAO DESEJADA: ";
+
+                int tipo_de_placa = 0;
+                cin >> tipo_de_placa;
+
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                switch (tipo_de_placa)
+                {
+                case 1:
+                {
+                    // PLACA NORMAL / CINZA
+
+                    carro_temp.cadastrarPlacaCinza(carro_temp);
+
+                    registrar_placa = true;
+
+                    break;
+                }
+
+                case 2:
+                {
+                    // PLACA MERCOSUL
+
+                    carro_temp.cadastrarPlacaMercosul(carro_temp);
+
+                    registrar_placa = true;
+
+                    break;
+                }
+
+                case 3:
+                {
+                    // RETORNAR AO MENU DE REGISTRO
+
+                    // ESSE IF CONCLUI A SINTAXE DO BOOL COMO FUNCAO CRIADO ANTERIORMENTE
+                    if (RetornarAoMenuDeRegistro())
+                    {
+                        registrar_placa = true;
+                    }
+
+                    break;
+                }
+
+                default:
+                {
+                    cout << endl;
+                    cout << "OPCAO INVALIDA!" << endl;
+                    cout << endl;
+
+                    PAUSE;
+
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    break;
+                }
+                }
+            }
+
+            break;
+        }
+
+        case 2:
+        {
+            // ANO
+
+            carro_temp.cadastrarAno(carro_temp);
+
+            break;
+        }
+
+        case 3:
+        {
+            // COR
+
+            carro_temp.cadastrarCor(carro_temp);
+
+            break;
+        }
+
+        case 4:
+        {
+            // MODELO
+
+            carro_temp.cadastrarModelo(carro_temp);
+
+            break;
+        }
+
+        case 5:
+        {
+            // RENAVAM
+
+            carro_temp.cadastrarRenavam(carro_temp);
+
+            break;
+        }
+
+        case 6:
+        {
+            // SALVAR
+            if (carro_temp.SalvarCarro(usuario_logado, carro_temp))
+            {
+                carro_temp.ExportarVeiculo(usuarios);
+
+                cout << endl;
+                cout << "Carro CADASTRADO com sucesso!" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                carro_temp = Carro();
+
+                sair_registro = true;
+            }
+            else
+            {
+                cout << "Por favor, preencha o(s) campo(s) acima antes de salvar!" << endl;
+                cout << endl;
+
+                PAUSE;
+            }
+
+            break;
+        }
+
+        case 7:
+        {
+            // RETORNAR AO MENU PRINCIPAL
+
+            if (RetornarAoMenuPrincipal_Registro())
+            {
+                sair_registro = true;
+            }
+
+            break;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "OPCAO INVALIDA!" << endl;
+            cout << endl;
+
+            PAUSE;
+
+            break;
+        }
+        }
+    }
+}
+
+void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+{
+    if (usuario_logado == nullptr)
+    {
+        cout << endl
+             << "Faca LOGIN / CADASTRO para acessar CHECAR VEICULO(s)!" << endl;
+        PAUSE;
+        return;
+    }
+
+    // CHECAR VEICULO (S)
+    bool sair_checar_veiculos = false;
+
+    while (!sair_checar_veiculos)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "-----------------------------CHECAR VEICULO(S)------------------------------" << endl;
+        cout << endl;
+        cout << "               1 - Veiculo(s) Registrado(s)" << endl;
+        cout << endl;
+        cout << "               2 - Excluir Veiculo" << endl;
+        cout << endl;
+        cout << "               3 - Alterar Veiculo" << endl;
+        cout << endl;
+        cout << "               4 - Multas" << endl;
+        cout << endl;
+        cout << "               5 - Retornar ao MENU PRINCIPAL" << endl;
+        cout << endl;
+        cout << "---------------------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA: " << endl;
+
+        int opcao_checar_veiculos = 0;
+        cin >> opcao_checar_veiculos;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (opcao_checar_veiculos)
+        {
+        case 1:
+        {
+            // VEICULOS REGISTRADOS
+            carro_temp.VeiculosRegistrados(usuario_logado->carros);
+
+            sair_checar_veiculos = true;
+
+            break;
+        }
+
+        case 2:
+        {
+            // EXCLUIR VEICULO
+            carro_temp.ExcluirVeiculos(usuario_logado->carros);
+
+            carro_temp.ExportarVeiculo(usuarios);
+
+            sair_checar_veiculos = true;
+
+            break;
+        }
+
+        case 3:
+        {
+            // ALTERAR VEICULO
+            carro_temp.AlterarVeiculo(usuario_logado->carros, usuario_logado, usuarios);
+
+            sair_checar_veiculos = true;
+
+            break;
+        }
+
+        case 4:
+        {
+            // Multas
+
+            carro_temp.Multas(usuario_logado->carros);
+
+            break;
+        }
+
+        case 5:
+        {
+            // RETORNAR AO MENU PRINCIPAL
+            if (RetornarAoMenuPrincipal_Checar())
+            {
+                sair_checar_veiculos = true;
+            }
+
+            break;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "Opcao INVALIDA!" << endl;
+            cout << endl;
+
+            PAUSE;
+
+            break;
+        }
+        }
+    }
+}
+
+void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp)
+{
+    if (usuario_logado == nullptr)
+    {
+        cout << endl
+             << "Faca LOGIN / CADASTRO para acessar CRLV!" << endl;
+        PAUSE;
+        return;
+    }
+
+    // GERAR CRLV
+    bool sair_crlv = false;
+
+    while (!sair_crlv)
+    {
+        CLEAR;
+
+        cout << endl;
+        cout << "--------------------------CRLV------------------------------" << endl;
+        cout << endl;
+        cout << "               1 - Gerar CRLV" << endl;
+        cout << endl;
+        cout << "               2 - Exportar CRLV" << endl;
+        cout << endl;
+        cout << "               3 - Listar Veiculos" << endl;
+        cout << endl;
+        cout << "               4 - Retornar ao MENU PRINCIPAL" << endl;
+        cout << endl;
+        cout << "------------------------------------------------------------" << endl;
+        cout << endl;
+
+        cout << "Digite a OPCAO DESEJADA:  ";
+
+        int opcao_crlv = 0;
+        cin >> opcao_crlv;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (opcao_crlv)
+        {
+        case 1:
+        {
+            // GERAR CRLV
+            carro_temp.GerarCrlv(usuario_logado->carros, usuario_logado);
+
+            break;
+        }
+
+        case 2:
+        {
+            // EXPORTAR CRLV
+            carro_temp.ExportarCrlv(usuario_logado->carros, usuario_logado);
+
+            break;
+        }
+
+        case 3:
+        {
+            // LISTAR VEICULOS
+            carro_temp.ListarVeiculos_CRLV(usuario_logado->carros);
+
+            sair_crlv = true;
+
+            break;
+        }
+
+        case 4:
+        {
+            // RETORNAR AO MENU PRINCIPAL
+            if (RetornarAoMenuPrincipal_Crlv())
+            {
+                sair_crlv = true;
+            }
+            else
+            {
+                continue;
+            }
+
+            break;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "Opcao INVALIDA!" << endl;
+            cout << endl;
+
+            PAUSE;
+
+            break;
+        }
+        }
+    }
 }

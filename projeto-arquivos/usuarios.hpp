@@ -22,10 +22,7 @@ public:
     list<Carro> carros;
     list<Carro>::iterator carrosIT;
 
-    Usuario()
-    { // construtor
-        carrosIT = carros.end();
-    };
+    Usuario();
 
     void setNome(string n);
     string getNome();

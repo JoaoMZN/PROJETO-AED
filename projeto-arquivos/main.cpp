@@ -5,6 +5,8 @@
 #include "carro.hpp"
 #include "utils.hpp"
 
+/*Fazer o menu de multas no menu.cpp (Joao)*/
+
 int main()
 {
     setlocale(LC_ALL, "Portuguese_Brazil.1252");
@@ -23,14 +25,7 @@ int main()
     policial.setSenha("PoliciaRodoviaria-Detran");
     usuarios.push_front(policial); 
 
-    if (usuario_logado == nullptr)
-    {
-        MenuInicial(usuarios, usuario_logado, carro_temp);
-    }
-    else
-    {
-        MenuPrincipal(usuarios, usuario_logado, carro_temp);
-    }
-
+    MenuInicial(usuarios, usuario_logado, carro_temp);
+    
     return 0;
 }

@@ -12,6 +12,7 @@
     LOGICA DA POLICIA (JOAO)
     FAZER NOVOS MENUS PARA A LOGICA POLICIAL (JOAO)
     ARRUMAR OS PONTOS E COLOCAR MENU DE PAGAR MULTA (JOAO)
+    COLOCAR STATURS DA CARTEIRA NOS ARQUIVOS DAS PESSOAS (JOAO)
 */
 
 #include <iostream>
@@ -46,10 +47,9 @@
 
 using namespace std;
 
-class Usuario;
-
 class Carro;
 
+// PRECISA SER UM BOOL, POIS SE NAO FOR, A PERGUNTA NUNCA VAI APARECER PORQUE NENHUMA VARIAVEL E ALTERADA DENTRO DA MAIN, AL TRANFORMAR PARA BOOL ESSA CONDICAO MUDA
 bool RetornarAoMenuDeCadastro()
 {
     CLEAR;
@@ -1625,7 +1625,124 @@ public:
         arquivosUsuarios.close();
     }
 
-    void ChecagemCnh(list<Usuario> &usuarios); // nao acabado
+    void ChecagemCnh(list<Usuario> &usuarios) // nao acabado
+    {
+        bool menu_cnh = true;
+
+        while (menu_cnh)
+        {
+            CLEAR;
+
+            cout << "--------------------------------------------------------" << endl;
+            cout << endl;
+            cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
+
+            string cnh;
+            getline(cin >> ws, cnh);
+            cout << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << endl;
+
+            for (int i = 0; i < cnh.length(); i++)
+            {
+                cnh[i] = toupper((unsigned char)cnh[i]);
+            }
+
+            if (cnh == "MENU")
+            {
+                if (RetornarAoMenuDeChecagem())
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    return;
+                }
+                else
+                {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                    continue;
+                }
+            }
+
+            Usuario *usuarioEncontrado = BuscaBinariaUsuarioPorCpf(usuarios, cnh); // Ponteiro de classe usuario que retornara o endereço do atributo cpf, caso exista
+
+            if (usuarioEncontrado != nullptr)
+            {
+                CLEAR;
+
+                Carro carro_multa;
+
+                string cpf_multa = carro_multa.getCpfDono();
+
+                int pontos_multa = usuarioEncontrado->getPontos();
+
+                cout << "CNH encontrada!" << endl;
+                cout << endl;
+
+                cout << "Nome: " << usuarioEncontrado->getNome() << endl;
+                cout << "CPF: " << usuarioEncontrado->getCpf() << endl;
+                cout << "Pontos na CNH: " << usuarioEncontrado->getPontos() << endl;
+                cout << endl;
+                cout << "Multas Leves: " << carro_multa.getMultasLeves() << endl;
+                cout << endl;
+                cout << "Multas Medias: " << carro_multa.getMultasMedias() << endl;
+                cout << endl;
+                cout << "Multas Graves: " << carro_multa.getMultasGraves() << endl;
+                cout << endl;
+                cout << "Multas Gravissimas: " << carro_multa.getMultasGravissimas() << endl;
+                cout << endl; 
+
+                PAUSE;
+
+                if (pontos_multa >= 40 && carro_multa.getMultasGravissimas() != 0)
+                {
+                    cout << endl;
+                    cout << "Retirar carteira" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                }   
+                else if (pontos_multa >= 30 && carro_multa.getMultasGravissimas() >= 1)
+                {
+                    cout << endl;
+                    cout << "Retirar carteira" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                }
+                else if (pontos_multa >= 20 && carro_multa.getMultasGravissimas() >= 2)
+                {
+                    cout << endl;
+                    cout << "Retirar carteira" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                } 
+                else
+                {
+                    cout << endl;
+                    cout << "Pontos e multas aceitaveis" << endl;
+                    cout << endl;
+
+                    PAUSE;
+                }
+
+                PAUSE;
+
+                return;
+            }
+            else
+            {
+                CLEAR;
+
+                cout << "CNH nao encontrada!" << endl;
+
+                PAUSE;
+
+                return;
+            }
+        }
+    }
 };
 
 class Policial : public Usuario
@@ -1739,38 +1856,38 @@ public:
         return this->cpf_dono;
     }
 
-    void setMultasLeves(int ml)
+    void setMultasLeves (int ml)
     {
         this->multas_leves = ml;
     }
-    int getMultasLeves()
+    int getMultasLeves ()
     {
         return this->multas_leves;
     }
 
-    void setMultasMedias(int mm)
+    void setMultasMedias (int mm)
     {
         this->multas_medias = mm;
     }
-    int getMultasMedias()
+    int getMultasMedias ()
     {
         return this->multas_medias;
     }
 
-    void setMultasGraves(int mg)
+    void setMultasGraves (int mg)
     {
         this->multas_graves = mg;
     }
-    int getMultasGraves()
+    int getMultasGraves ()
     {
         return this->multas_graves;
     }
 
-    void setMultasGravissimas(int mgravissima)
+    void setMultasGravissimas (int mgravissima)
     {
         this->multas_gravissimas = mgravissima;
     }
-    int getMultasGravissimas()
+    int getMultasGravissimas ()
     {
         return this->multas_gravissimas;
     }
@@ -3848,7 +3965,7 @@ public:
 
                         break;
                     }
-
+                    
                     case 2:
                     {
                         CLEAR;
@@ -3860,7 +3977,7 @@ public:
 
                         break;
                     }
-
+                    
                     case 3:
                     {
                         CLEAR;
@@ -3868,12 +3985,12 @@ public:
                         // grave
 
                         usuario_multado.setPontos(usuario_multado.getPontos() + 5);
-
+                        
                         setMultasGraves(getMultasGraves() + 1);
 
                         break;
                     }
-
+                    
                     case 4:
                     {
                         CLEAR;
@@ -3886,7 +4003,7 @@ public:
 
                         break;
                     }
-
+                    
                     case 5:
                     {
                         CLEAR;
@@ -3904,7 +4021,7 @@ public:
 
                         break;
                     }
-
+                    
                     default:
                     {
                         CLEAR;
@@ -3920,6 +4037,8 @@ public:
                 cout << endl;
                 cout << "Multa registrada com sucesso" << endl;
                 cout << endl;
+
+
 
                 PAUSE;
 
@@ -3940,136 +4059,6 @@ public:
         }
     }
 };
-
-void Usuario::ChecagemCnh(list<Usuario> &usuarios)
-{
-    bool menu_cnh = true;
-
-        while (menu_cnh)
-        {
-            CLEAR;
-
-            cout << "--------------------------------------------------------" << endl;
-            cout << endl;
-            cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
-
-            string cnh;
-            getline(cin >> ws, cnh);
-            cout << endl;
-            cout << "---------------------------------------------------------" << endl;
-            cout << endl;
-
-            for (int i = 0; i < cnh.length(); i++)
-            {
-                cnh[i] = toupper((unsigned char)cnh[i]);
-            }
-
-            if (cnh == "MENU")
-            {
-                if (RetornarAoMenuDeChecagem())
-                {
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                    return;
-                }
-                else
-                {
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                    continue;
-                }
-            }
-
-            Usuario *usuarioEncontrado = BuscaBinariaUsuarioPorCpf(usuarios, cnh); // Ponteiro de classe usuario que retornara o endereço do atributo cpf, caso exista
-
-            if (usuarioEncontrado != nullptr)
-            {
-                CLEAR;
-
-                int pontos_multa = usuarioEncontrado->getPontos();
-
-                cout << "CNH encontrada!" << endl;
-                cout << endl;
-
-                cout << "Nome: " << usuarioEncontrado->getNome() << endl;
-                cout << "CPF: " << usuarioEncontrado->getCpf() << endl;
-                cout << "Pontos na CNH: " << usuarioEncontrado->getPontos() << endl;
-                cout << endl;
-
-                // Acumula multas de todos os carros do usuário
-                int totalLeves = 0;
-                int totalMedias = 0;
-                int totalGraves = 0;
-                int totalGravissimas = 0;
-
-                for (Carro &carro : usuarioEncontrado->carros)
-                {
-                    totalLeves += carro.getMultasLeves();
-                    totalMedias += carro.getMultasMedias();
-                    totalGraves += carro.getMultasGraves();
-                    totalGravissimas += carro.getMultasGravissimas();
-                }
-
-                cout << "Multas Leves: " << totalLeves << endl;
-                cout << endl;
-                cout << "Multas Medias: " << totalMedias << endl;
-                cout << endl;
-                cout << "Multas Graves: " << totalGraves << endl;
-                cout << endl;
-                cout << "Multas Gravissimas: " << totalGravissimas << endl;
-                cout << endl;   
-
-                PAUSE;
-
-                if (pontos_multa >= 40 && totalGravissimas != 0)
-                {
-                    cout << endl;
-                    cout << "Retirar carteira" << endl;
-                    cout << endl;
-
-                    PAUSE;
-                }
-                else if (pontos_multa >= 30 && totalGravissimas >= 1)
-                {
-                    cout << endl;
-                    cout << "Retirar carteira" << endl;
-                    cout << endl;
-
-                    PAUSE;
-                }
-                else if (pontos_multa >= 20 && totalGravissimas >= 2)
-                {
-                    cout << endl;
-                    cout << "Retirar carteira" << endl;
-                    cout << endl;
-
-                    PAUSE;
-                }
-                else
-                {
-                    cout << endl;
-                    cout << "Pontos e multas aceitaveis" << endl;
-                    cout << endl;
-
-                    PAUSE;
-                }
-
-                PAUSE;
-
-                return;
-            }
-            else
-            {
-                CLEAR;
-
-                cout << "CNH nao encontrada!" << endl;
-
-                PAUSE;
-
-                return;
-            }
-        }
-} 
 
 // SE FOSSE APENAS USUARIO: RETORNA UMA COPIA DO STRUCT USUARIO, E IMPEDE MUDANCAS NA CONTA E NAO RETORNA NADA CASO O USUARIO NAO EXISTA
 // SE FOSSE APENAS USUARIO&: INDICA REFERENCIA DA MEMORIA, OU SEJA, A MEMORIA NAO PODE SER NULA OU NAO EXISTIR, PORTANTO NAO RETORNA NADA CASO NAO EXISTA
@@ -4127,7 +4116,7 @@ int main()
     {
         CLEAR;
 
-        cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
+        cout << "-------------------------------MENU PRINCIPAL----------------------------------------" << endl;
         cout << endl;
 
         // COLOCAR SE O LOGIN JA ESTA FEITO
@@ -5199,8 +5188,6 @@ int main()
             else
             {
                 // checar se tem multas pendentes para pagamento
-
-                usuario_logado->ChecagemCnh(usuarios);
             }
 
         default:
