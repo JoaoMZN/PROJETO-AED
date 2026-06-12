@@ -58,7 +58,7 @@ void MenuSair(Usuario *&usuario_logado)
     return;
 }
 
-void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
 {
     while (true)
     {
@@ -82,18 +82,18 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
         {
         case 1:
         {
-            MenuLogin(usuarios, usuario_logado, carro_temp);
+            MenuLogin(usuarios, usuario_logado, carro_temp, carros);
             break;
         }
         case 2:
         {
-            MenuCadastrarUsuario(usuarios, usuario_logado, carro_temp);
+            MenuCadastrarUsuario(usuarios, usuario_logado, carro_temp, carros);
             break;
         }
         case 3:
         {
             MenuSair(usuario_logado);
-            break;
+            return;
         }
         default:
         {
@@ -107,7 +107,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
     }
 }
 
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
 {
     // LOGIN
 
@@ -196,15 +196,13 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
 
                     // O PONTEIRO ANTERIORMENTE CRIADO RECEBE O VALOR GERADO NA FUNCAO CRAIDA ANTERIORMENTE
                     usuario_login = usuario_temp_login.BuscaBinariaUsuarioPorCpf(usuarios, login);
-
+                    
                     if (usuario_login != nullptr)
                     {
                         cpf_email_nome_sair = true;
-                        cout << "Login realizado!" << endl;
+                        cout << "CPF encontrado, prossiga com a senha!" << endl;
                         cout << endl;
                         PAUSE;
-
-                        MenuPrincipal(usuarios, usuario_logado, carro_temp);
                     }
                     else
                     {
@@ -285,7 +283,6 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
                         }
                     }
 
-                    // CHECA SE A SENHA ESTA CORRETA, A SETA UTILIZADA TEM A FUNCAO DE UM PONTEIRO QUE APONTA PARA UM OBJETO, E COMO SE FOSSE USUARIO.SENHA MAS USA A SETA POIS E UM PONTEIRO E NAO UM STRUCT
                     if (usuario_login != nullptr && usuario_login->getSenha() == senha_login)
                     {
                         cout << endl;
@@ -305,9 +302,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
 
                         PAUSE;
 
-                        sair_login = true;
-
-                        sair_procurar_senha = true;
+                        MenuPrincipal(usuarios, usuario_logado, carro_temp, carros);
 
                         break;
                     }
@@ -351,7 +346,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
     }
 }
 
-void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
 {
     Usuario usuario_temp;
     bool sair = false;
@@ -412,7 +407,7 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
                 usuario_logado = usuario_temp.BuscaBinariaUsuarioPorCpf(usuarios, usuario_temp.getCpf());
                 sair = true;
 
-                MenuPrincipal(usuarios, usuario_logado, carro_temp);
+                MenuPrincipal(usuarios, usuario_logado, carro_temp, carros);
             }
             else
             {
@@ -438,7 +433,7 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
     }
 }
 
-void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
 {
     while (true)
     {
@@ -461,7 +456,7 @@ void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &car
 
             cout << endl;
 
-            MenuPolicial(usuario_logado, usuarios);
+            MenuPolicial(usuario_logado, usuarios, carros, carro_temp);
         }
     }
 }
@@ -507,7 +502,7 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
     {
         MenuSair(usuario_logado);
 
-        break;
+        return;
     }
     default:
     {
@@ -522,7 +517,7 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
     }
 }
 
-void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios)
+void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro> &carros, Carro &carro_temp)
 {
 
     cout << "                      1 - Aplicar multa" << endl;
@@ -556,7 +551,7 @@ void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios)
     {
         MenuSair(usuario_logado);
 
-        break;
+        return;
     }
     default:
     {
@@ -571,14 +566,6 @@ void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios)
 
 void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
 {
-    if (usuario_logado == nullptr)
-    {
-        cout << endl
-             << "Faca LOGIN / CADASTRO para acessar REGISTRO DE VEICULO(s)!" << endl;
-        PAUSE;
-        return;
-    }
-
     bool sair_registro = false;
 
     while (!sair_registro)
@@ -790,14 +777,6 @@ void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carr
 
 void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
 {
-    if (usuario_logado == nullptr)
-    {
-        cout << endl
-             << "Faca LOGIN / CADASTRO para acessar CHECAR VEICULO(s)!" << endl;
-        PAUSE;
-        return;
-    }
-
     // CHECAR VEICULO (S)
     bool sair_checar_veiculos = false;
 
@@ -898,14 +877,6 @@ void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro
 
 void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp)
 {
-    if (usuario_logado == nullptr)
-    {
-        cout << endl
-             << "Faca LOGIN / CADASTRO para acessar CRLV!" << endl;
-        PAUSE;
-        return;
-    }
-
     // GERAR CRLV
     bool sair_crlv = false;
 
@@ -957,8 +928,6 @@ void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp)
             // LISTAR VEICULOS
             carro_temp.ListarVeiculos_CRLV(usuario_logado->carros);
 
-            sair_crlv = true;
-
             break;
         }
 
@@ -989,4 +958,28 @@ void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp)
         }
         }
     }
+}
+
+void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp)
+{
+    bool sair_aplica_multa = false;
+
+    while (!sair_aplica_multa)
+    {
+        cout << "--------------------------Aplicar Multa--------------------------" << endl;
+        cout << endl;
+        carro_temp.MultaRenavam(carros, usuario_logado);
+        cout << endl;
+        cout << "-----------------------------------------------------------------" << endl;
+        cout << endl;
+
+        sair_aplica_multa = true;
+    }
+
+    return;
+}
+
+void MenuChecarCnh(list<Usuario> &usuarios, Usuario *&usuario_logado)
+{
+
 }

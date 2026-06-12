@@ -18,6 +18,8 @@ private:
 protected:
     int pontos;
 
+    int multas_leves, multas_medias, multas_graves, multas_gravissimas = 0;
+
 public:
     list<Carro> carros;
     list<Carro>::iterator carrosIT;
@@ -39,6 +41,18 @@ public:
     void setPontos(int p);
     int getPontos();
 
+    void setMultasLeves(int ml);
+    int getMultasLeves() const;
+
+    void setMultasMedias(int mm);
+    int getMultasMedias() const;
+
+    void setMultasGraves(int mg);
+    int getMultasGraves() const;
+
+    void setMultasGravissimas(int mgravissima);
+    int getMultasGravissimas() const;
+
     void cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios);
 
     void cadastrarNome(Usuario &usuario_temp);
@@ -53,7 +67,7 @@ public:
 
     bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp);
 
-    void ExportarUsuario(Usuario &ususarios);
+    void ExportarUsuario(Usuario &usuarios);
 
     void LoadUsuario(list<Usuario> &usuarios);
 

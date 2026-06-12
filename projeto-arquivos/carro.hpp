@@ -15,9 +15,7 @@ private:
     string ano, cor, modelo;
     string renavam, status_crlv;
     string nome_dono, cpf_dono;
-
-protected:
-    int multas_leves, multas_medias, multas_graves, multas_gravissimas = 0;
+    bool multa = false;
 
 public:
     Carro();
@@ -51,17 +49,8 @@ public:
     void setCpfDono (string cpfd);
     string getCpfDono() const;
 
-    void setMultasLeves(int ml);
-    int getMultasLeves() const;
-
-    void setMultasMedias(int mm);
-    int getMultasMedias() const;
-
-    void setMultasGraves(int mg);
-    int getMultasGraves() const;
-
-    void setMultasGravissimas(int mgravissima);
-    int getMultasGravissimas() const;
+    void setMulta(bool m);
+    bool getMulta() const;
 
     void cadastrarPlacaCinza(Carro &carro_temp);
 
@@ -101,5 +90,5 @@ public:
 
     void LoadVeiculosPolicia(Usuario *usuario_logado);
     
-    void MultaPlaca(list<Carro> &carros, Usuario *usuario_logado);
+    void MultaRenavam(list<Carro> &carros, Usuario *usuario_logado);
 };

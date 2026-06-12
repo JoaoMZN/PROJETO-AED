@@ -96,40 +96,13 @@ string Carro::getCpfDono() const
     return this->cpf_dono;
 }
 
-void Carro::setMultasLeves(int ml)
+void Carro::setMulta(bool m)
 {
-    this->multas_leves = ml;
+    this->multa = m;
 }
-int Carro::getMultasLeves() const
+bool Carro::getMulta() const
 {
-    return this->multas_leves;
-}
-
-void Carro::setMultasMedias(int mm)
-{
-    this->multas_medias = mm;
-}
-int Carro::getMultasMedias() const
-{
-    return this->multas_medias;
-}
-
-void Carro::setMultasGraves(int mg)
-{
-    this->multas_graves = mg;
-}
-int Carro::getMultasGraves() const
-{
-    return this->multas_graves;
-}
-
-void Carro::setMultasGravissimas(int mg)
-{
-    this->multas_gravissimas = mg;
-}
-int Carro::getMultasGravissimas() const
-{
-    return this->multas_gravissimas;
+    return this->multa;
 }
 
 void Carro::cadastrarPlacaCinza(Carro &carro_temp)
@@ -1481,9 +1454,7 @@ void Carro::Multas(list<Carro> &carros) // nao acabado
         cout << endl;
         cout << "           1 - Checar multas pendentes" << endl;
         cout << endl;
-        cout << "           2 - Pagar multa" << endl;
-        cout << endl;
-        cout << "           3 - Retornar ao Menu de Multas" << endl;
+        cout << "     2 - Retornar ao Menu de Checar veiculo" << endl;
         cout << endl;
         cout << "--------------------------------------------------------" << endl;
 
@@ -1519,16 +1490,12 @@ void Carro::Multas(list<Carro> &carros) // nao acabado
 
                 if (multa_placa_temp == "MENU")
                 {
-                    if (RetornarAoMenuDeMultas()) // fazer menu
+                    if (RetornarAoMenuDeMultas())
                     {
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                         return;
                     }
                     else
                     {
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                         continue;
                     }
                 }
@@ -1573,86 +1540,6 @@ void Carro::Multas(list<Carro> &carros) // nao acabado
             break;
         }
         case 2:
-        {
-            // pagar multa
-
-            bool menu_multa_placa = true;
-
-            while (menu_multa_placa)
-            {
-                CLEAR;
-
-                cout << "--------------------------------------------------------" << endl;
-                cout << endl;
-                cout << "Informe a Placa que deseja procurar (ou digite MENU): ";
-
-                string multa_placa_temp;
-                getline(cin >> ws, multa_placa_temp);
-                cout << endl;
-                cout << "---------------------------------------------------------" << endl;
-                cout << endl;
-
-                for (size_t i = 0; i < multa_placa_temp.length(); i++)
-                {
-                    multa_placa_temp[i] = toupper((unsigned char)multa_placa_temp[i]);
-                }
-
-                if (multa_placa_temp == "MENU")
-                {
-                    if (RetornarAoMenuDeMultas()) // fazer menu
-                    {
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                        return;
-                    }
-                    else
-                    {
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                        continue;
-                    }
-                }
-
-                bool achou = false;
-
-                auto it = carros.begin();
-
-                for (auto i = it; i != carros.end(); i++)
-                {
-                    if (multa_placa_temp == it->getPlacaCinza() || multa_placa_temp == it->getPlacaMercosul())
-                    {
-                        it = i;
-                        achou = true;
-                    }
-                }
-
-                if (achou)
-                {
-                    CLEAR;
-
-                    cout << "Veiculo encontrado!" << endl;
-
-                    // arrumar logica de multa, como vai mostrar que tem multa
-
-                    PAUSE;
-
-                    return;
-                }
-                else
-                {
-                    CLEAR;
-
-                    cout << "Veiculo nao encontrado!" << endl;
-
-                    PAUSE;
-
-                    return;
-                }
-            }
-
-            break;
-        }
-        case 3:
         {
             CLEAR;
 
@@ -2079,41 +1966,33 @@ void Carro::LoadVeiculosPolicia(Usuario *usuario_logado)
     }
 }
 
-void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acabado
+void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado) // nao acabado
 {
-    bool menu_multa_placa = true;
+    bool menu_multa_renavam = true;
 
-    while (menu_multa_placa)
+    while (menu_multa_renavam)
     {
         CLEAR;
 
-        cout << "--------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "Informe a Placa que deseja procurar (ou digite MENU): ";
+        cout << "Informe o Renavam que deseja procurar (ou digite MENU): ";
 
-        string multa_placa_temp;
-        getline(cin >> ws, multa_placa_temp);
-        cout << endl;
-        cout << "---------------------------------------------------------" << endl;
+        string multa_renavam;
+        getline(cin >> ws, multa_renavam);
         cout << endl;
 
-        for (size_t i = 0; i < multa_placa_temp.length(); i++)
+        for (size_t i = 0; i < multa_renavam.length(); i++)
         {
-            multa_placa_temp[i] = toupper((unsigned char)multa_placa_temp[i]);
+            multa_renavam[i] = toupper((unsigned char)multa_renavam[i]);
         }
 
-        if (multa_placa_temp == "MENU")
+        if (multa_renavam == "MENU")
         {
             if (RetornarAoMenuDeMultasPlaca())
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                 return;
             }
             else
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                 continue;
             }
         }
@@ -2121,15 +2000,15 @@ void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acab
         bool achou = false;
 
         auto it = carros.begin();
-        auto placa_multada = it;
+        auto renavam_multado = it;
 
         for (auto i = it; i != carros.end(); i++)
         {
-            if (multa_placa_temp == it->getPlacaCinza() || multa_placa_temp == it->getPlacaMercosul())
+            if (multa_renavam == it->getRenavam())
             {
                 it = i;
                 achou = true;
-                placa_multada = it;
+                renavam_multado = it;
             }
         }
 
@@ -2137,31 +2016,37 @@ void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acab
         {
             CLEAR;
 
+            cout << endl;
             cout << "Veiculo encontrado!" << endl;
+            cout << endl;
 
             cout << "--------------------------------------------------" << endl;
-
-            // logica para puxar os dados inteiros do veiculo
             cout << endl;
-            cout << "Nome: " << placa_multada->nome_dono << endl;
+            cout << "Nome: " << renavam_multado->nome_dono << endl;
             cout << endl;
-            cout << "CPF: " << placa_multada->cpf_dono << endl;
+            cout << "CPF: " << renavam_multado->cpf_dono << endl;
             cout << endl;
-            cout << "Placa: " << multa_placa_temp << endl;
+            if (renavam_multado->getPlacaCinza() != "")
+            {
+                cout << "Placa: " << renavam_multado->getPlacaCinza() << endl;
+            }
+            else
+            {
+                cout << "Placa: " << renavam_multado->getPlacaMercosul() << endl;
+            }
             cout << endl;
-            cout << "Modelo: " << placa_multada->modelo << endl;
+            cout << "Modelo: " << renavam_multado->modelo << endl;
             cout << endl;
-            cout << "Cor: " << placa_multada->cor << endl;
+            cout << "Cor: " << renavam_multado->cor << endl;
             cout << endl;
-            cout << "Ano: " << placa_multada->ano << endl;
+            cout << "Ano: " << renavam_multado->ano << endl;
             cout << endl;
-            cout << "Renavam: " << placa_multada->renavam << endl;
+            cout << "Renavam: " << multa_renavam << endl;
             cout << endl;
             cout << "---------------------------------------------------" << endl;
 
             bool veiculo_multa = true;
 
-            // arrumar a logica de salvar os pontos na carteira
             Usuario usuario_multado;
 
             while (veiculo_multa)
@@ -2191,10 +2076,9 @@ void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acab
                 {
                     CLEAR;
 
-                    // leve
                     usuario_multado.setPontos(usuario_multado.getPontos() + 3);
 
-                    setMultasLeves(getMultasLeves() + 1);
+                    usuario_multado.setMultasLeves(usuario_multado.getMultasLeves() + 1);
 
                     break;
                 }
@@ -2206,7 +2090,7 @@ void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acab
                     // media
                     usuario_multado.setPontos(usuario_multado.getPontos() + 4);
 
-                    setMultasMedias(getMultasMedias() + 1);
+                    usuario_multado.setMultasMedias(usuario_multado.getMultasMedias() + 1);
 
                     break;
                 }
@@ -2219,7 +2103,7 @@ void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acab
 
                     usuario_multado.setPontos(usuario_multado.getPontos() + 5);
 
-                    setMultasGraves(getMultasGraves() + 1);
+                    usuario_multado.setMultasGraves(usuario_multado.getMultasGraves() + 1);
 
                     break;
                 }
@@ -2232,7 +2116,7 @@ void Carro::MultaPlaca(list<Carro> &carros, Usuario *usuario_logado) // nao acab
 
                     usuario_multado.setPontos(usuario_multado.getPontos() + 7);
 
-                    setMultasGravissimas(getMultasGravissimas() + 1);
+                    usuario_multado.setMultasGravissimas(usuario_multado.getMultasGravissimas() + 1);
 
                     break;
                 }
