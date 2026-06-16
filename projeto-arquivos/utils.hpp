@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream> 
+#include <iostream>
 #include <limits>
 
 #ifdef _WIN32 // Macro
@@ -741,7 +741,7 @@ inline bool RetornarAoMenuDeMultas()
     return false;
 }
 
-inline bool RetornarAoMenuDeMultasPlaca()
+inline bool RetornarAoMenuPolicial()
 {
     CLEAR;
 
@@ -754,62 +754,7 @@ inline bool RetornarAoMenuDeMultasPlaca()
         cout << endl;
         cout << "--------------------------------------------------------------------------------" << endl;
         cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de multas?" << endl;
-        cout << endl;
-        cout << "                               1 - SIM" << endl;
-        cout << endl;
-        cout << "                               2 - NAO" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_de_cadastro = 0;
-        cin >> opcao_menu_de_cadastro;
-
-        switch (opcao_menu_de_cadastro)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            PAUSE;
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
-inline bool RetornarAoMenuDeChecagem()
-{
-    CLEAR;
-
-    bool retornar_ao_menu_de_multas = false;
-
-    while (!retornar_ao_menu_de_multas)
-    {
-        CLEAR;
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao menu de checagem?" << endl;
+        cout << "           Tem certeza que deseja retornar ao menu policial?" << endl;
         cout << endl;
         cout << "                               1 - SIM" << endl;
         cout << endl;

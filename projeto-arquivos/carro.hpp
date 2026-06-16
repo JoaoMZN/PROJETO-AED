@@ -90,5 +90,5 @@ public:
 
     void LoadVeiculosPolicia(Usuario *usuario_logado);
     
-    void MultaRenavam(list<Carro> &carros, Usuario *usuario_logado);
+    void MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios);
 };

@@ -1966,7 +1966,7 @@ void Carro::LoadVeiculosPolicia(Usuario *usuario_logado)
     }
 }
 
-void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado) // nao acabado
+void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios) // nao acabado
 {
     bool menu_multa_renavam = true;
 
@@ -1974,10 +1974,16 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado) // nao ac
     {
         CLEAR;
 
+        cout << "--------------------------------Multar-----------------------------------------" << endl;
+        cout << endl;
         cout << "Informe o Renavam que deseja procurar (ou digite MENU): ";
 
         string multa_renavam;
         getline(cin >> ws, multa_renavam);
+        cout << endl;
+
+        cout << endl;
+        cout << "------------------------------------------------------------------------------" << endl;
         cout << endl;
 
         for (size_t i = 0; i < multa_renavam.length(); i++)
@@ -1987,7 +1993,7 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado) // nao ac
 
         if (multa_renavam == "MENU")
         {
-            if (RetornarAoMenuDeMultasPlaca())
+            if (RetornarAoMenuPolicial())
             {
                 return;
             }
@@ -2028,11 +2034,11 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado) // nao ac
             cout << endl;
             if (renavam_multado->getPlacaCinza() != "")
             {
-                cout << "Placa: " << renavam_multado->getPlacaCinza() << endl;
+                cout << "Placa cinza: " << renavam_multado->getPlacaCinza() << endl;
             }
             else
             {
-                cout << "Placa: " << renavam_multado->getPlacaMercosul() << endl;
+                cout << "Placa merco-sul: " << renavam_multado->getPlacaMercosul() << endl;
             }
             cout << endl;
             cout << "Modelo: " << renavam_multado->modelo << endl;

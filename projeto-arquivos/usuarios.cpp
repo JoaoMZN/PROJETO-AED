@@ -7,6 +7,11 @@
 Usuario::Usuario()
 { // construtor
     carrosIT = carros.end();
+    pontos = 0;
+    multas_leves = 0;
+    multas_medias = 0;
+    multas_graves = 0;
+    multas_gravissimas = 0;
 };
 
 void Usuario::setNome(string n)
@@ -54,7 +59,6 @@ int Usuario::getPontos()
     return this->pontos;
 }
 
-
 void Usuario::setMultasLeves(int ml)
 {
     this->multas_leves = ml;
@@ -90,7 +94,6 @@ int Usuario::getMultasGravissimas() const
 {
     return this->multas_gravissimas;
 }
-
 
 void Usuario::cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
 {
@@ -785,16 +788,10 @@ void Usuario::ChecagemCnh(list<Usuario> &usuarios)
 
     while (menu_cnh)
     {
-        CLEAR;
-
-        cout << "--------------------------------------------------------" << endl;
-        cout << endl;
         cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
 
         string cnh;
         getline(cin >> ws, cnh);
-        cout << endl;
-        cout << "---------------------------------------------------------" << endl;
         cout << endl;
 
         for (size_t i = 0; i < cnh.length(); i++)
@@ -804,16 +801,12 @@ void Usuario::ChecagemCnh(list<Usuario> &usuarios)
 
         if (cnh == "MENU")
         {
-            if (RetornarAoMenuDeChecagem())
+            if (RetornarAoMenuPolicial())
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                 return;
             }
             else
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                 continue;
             }
         }
@@ -833,8 +826,14 @@ void Usuario::ChecagemCnh(list<Usuario> &usuarios)
             cout << "CNH encontrada!" << endl;
             cout << endl;
 
+            cout << "--------------------------------------------------" << endl;
+
+            cout << endl;
+
             cout << "Nome: " << usuarioEncontrado->getNome() << endl;
+            cout << endl;
             cout << "CPF: " << usuarioEncontrado->getCpf() << endl;
+            cout << endl;
             cout << "Pontos na CNH: " << usuarioEncontrado->getPontos() << endl;
             cout << endl;
             cout << "Multas Leves: " << getMultasLeves() << endl;

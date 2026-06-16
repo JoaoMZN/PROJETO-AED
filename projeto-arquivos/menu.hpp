@@ -27,6 +27,6 @@ void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro
 
 void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp);
+void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp, list<Usuario> &usuarios);
 
 void MenuChecarCnh(list<Usuario> &usuarios, Usuario *&usuario_logado);

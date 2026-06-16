@@ -5,8 +5,6 @@
 #include "carro.hpp"
 #include "utils.hpp"
 
-/*Fazer o menu de multas no menu.cpp (Joao)*/
-
 int main()
 {
     setlocale(LC_ALL, "Portuguese_Brazil.1252");
