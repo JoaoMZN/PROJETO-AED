@@ -3,8 +3,3 @@ CPF: 09248526152
 EMAIL: joao@gmail.com
 SENHA: teste123
 
-NOME: USUARIO TESTE
-CPF: 00000000000
-EMAIL: teste@gmail.com
-SENHA: teste123
-

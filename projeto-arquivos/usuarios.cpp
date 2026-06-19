@@ -700,7 +700,7 @@ void Usuario::ExportarUsuario(Usuario &usuarios)
     {
         return;
     }
-    
+
     ofstream arquivoUsuarios("UsuarioCadastrados.txt", ios::app);
 
     if (!arquivoUsuarios.is_open())
@@ -718,6 +718,10 @@ void Usuario::ExportarUsuario(Usuario &usuarios)
     arquivoUsuarios << "CPF: " << usuarios.getCpf() << endl;
     arquivoUsuarios << "EMAIL: " << usuarios.getEmail() << endl;
     arquivoUsuarios << "SENHA: " << usuarios.getSenha() << endl;
+    arquivoUsuarios << "LEVES: " << usuarios.getMultasLeves() << endl;
+    arquivoUsuarios << "MEDIAS: " << usuarios.getMultasMedias() << endl;
+    arquivoUsuarios << "GRAVES: " << usuarios.getMultasGraves() << endl;
+    arquivoUsuarios << "GRAVISSIMAS: " << usuarios.getMultasGravissimas() << endl;
 
     arquivoUsuarios << endl;
 
@@ -774,6 +778,34 @@ void Usuario::LoadUsuario(list<Usuario> &usuarios)
         }
 
         // LE A LINHA EM BRANCO DEPOIS DO USUARIO
+        getline(arquivosUsuarios, linha);
+
+        if (linha.rfind("LEVES: ", 0) == 0)
+        {
+            ler_usuario_temp.setMultasLeves(stoi(linha.substr(7)));
+        }
+
+        getline(arquivosUsuarios, linha);
+
+        if (linha.rfind("MEDIAS: ", 0) == 0)
+        {
+            ler_usuario_temp.setMultasMedias(stoi(linha.substr(8)));
+        }
+
+        getline(arquivosUsuarios, linha);
+
+        if (linha.rfind("GRAVES: ", 0) == 0)
+        {
+            ler_usuario_temp.setMultasGraves(stoi(linha.substr(8)));
+        }
+        
+        getline(arquivosUsuarios, linha);
+
+        if (linha.rfind("GRAVISSIMAS: ", 0) == 0)
+        {
+            ler_usuario_temp.setMultasGravissimas(stoi(linha.substr(13)));
+        }
+
         getline(arquivosUsuarios, linha);
 
         usuarios.push_back(ler_usuario_temp);

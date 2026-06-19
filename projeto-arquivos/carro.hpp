@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <iostream>
 #include <fstream>
@@ -16,11 +16,12 @@ private:
     string renavam, status_crlv;
     string nome_dono, cpf_dono;
     bool multa = false;
+    float debitos;
 
 public:
     Carro();
     Carro(string placa_cinza, string placa_mercosul, string ano, string cor,
-          string modelo, string renavam, string status_crlv);
+          string modelo, string renavam, string status_crlv, float debitos);
 
     void setPlacaCinza(string pc);
     string getPlacaCinza() const;
@@ -28,8 +29,8 @@ public:
     void setPlacaMercosul(string pm);
     string getPlacaMercosul() const;
 
-    void setAno (string a);
-    string getAno () const;
+    void setAno(string a);
+    string getAno() const;
 
     void setCor(string c);
     string getCor() const;
@@ -40,17 +41,20 @@ public:
     void setRenavam(string r);
     string getRenavam() const;
 
-    void setCrlv (string cr);
+    void setCrlv(string cr);
     string getCrlv() const;
 
-    void setNomeDono (string nd);
+    void setNomeDono(string nd);
     string getNomeDono() const;
 
-    void setCpfDono (string cpfd);
+    void setCpfDono(string cpfd);
     string getCpfDono() const;
 
     void setMulta(bool m);
     bool getMulta() const;
+
+    void setDebitos(float d);
+    float getDebitos() const;
 
     void cadastrarPlacaCinza(Carro &carro_temp);
 
@@ -63,13 +67,13 @@ public:
     void cadastrarModelo(Carro &carro_temp);
 
     void cadastrarRenavam(Carro &carro_temp);
-    
+
     void OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros);
-    
-    Carro *BuscaBinariaCarroPorModelo(list<Carro> &carros, string modelo); 
-    
+
+    Carro *BuscaBinariaCarroPorModelo(list<Carro> &carros, string modelo);
+
     bool SalvarCarro(Usuario *usuario_logado, Carro &carro_temp);
-    
+
     void ExportarVeiculo(list<Usuario> &usuarios);
 
     void LoadVeiculos(list<Usuario> &usuarios);
@@ -77,7 +81,7 @@ public:
     void VeiculosRegistrados(list<Carro> &carros);
 
     void ExcluirVeiculos(list<Carro> &carros);
-    
+
     void AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios);
 
     void Multas(list<Carro> &carros);
@@ -89,6 +93,6 @@ public:
     void ListarVeiculos_CRLV(list<Carro> &carros);
 
     void LoadVeiculosPolicia(Usuario *usuario_logado);
-    
+
     void MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios);
 };

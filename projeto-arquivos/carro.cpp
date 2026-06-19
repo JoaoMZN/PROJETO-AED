@@ -11,9 +11,9 @@ class Usuario;
 Carro::Carro() {}
 
 Carro::Carro(string placa_cinza, string placa_mercosul, string ano, string cor,
-             string modelo, string renavam, string status_crlv)
+             string modelo, string renavam, string status_crlv, float debitos)
     : placa_cinza(placa_cinza), placa_mercosul(placa_mercosul), ano(ano),
-      cor(cor), modelo(modelo), renavam(renavam), status_crlv(status_crlv) {}
+      cor(cor), modelo(modelo), renavam(renavam), status_crlv(status_crlv), debitos(debitos) {}
 
 void Carro::setPlacaCinza(string pc)
 {
@@ -103,6 +103,15 @@ void Carro::setMulta(bool m)
 bool Carro::getMulta() const
 {
     return this->multa;
+}
+
+void Carro::setDebitos(float d)
+{
+    this->debitos = d;
+}
+float Carro::getDebitos() const
+{
+    return this->debitos;
 }
 
 void Carro::cadastrarPlacaCinza(Carro &carro_temp)
@@ -859,9 +868,8 @@ bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp)
     return true;
 }
 
-void Carro::ExportarVeiculo(list<Usuario> &usuarios) // troquei para listas
+void Carro::ExportarVeiculo(list<Usuario> &usuarios)
 {
-    // ESSE VOID RETORNA APENAS ERROS NA TELA E MAIS NADA
     CLEAR;
 
     // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
@@ -899,6 +907,7 @@ void Carro::ExportarVeiculo(list<Usuario> &usuarios) // troquei para listas
                 arquivoVeiculos << "COR: " << carro->getCor() << endl;
                 arquivoVeiculos << "MODELO: " << carro->getModelo() << endl;
                 arquivoVeiculos << "RENAVAM: " << carro->getRenavam() << endl;
+                arquivoVeiculos << "DEBITOS: " << carro->getDebitos() << endl;
                 arquivoVeiculos << endl;
             }
         }
@@ -908,7 +917,7 @@ void Carro::ExportarVeiculo(list<Usuario> &usuarios) // troquei para listas
 
 void Carro::LoadVeiculos(list<Usuario> &usuarios)
 {
-    ifstream arquivoVeiculos("ArquivoVeiculos.txt");
+    ifstream arquivoVeiculos("ArquivosVeiculos.txt");
 
     if (!arquivoVeiculos.is_open())
     {
@@ -1003,6 +1012,13 @@ void Carro::LoadVeiculos(list<Usuario> &usuarios)
         else if (linha.rfind("RENAVAM: ", 0) == 0)
         {
             carro_temp.setRenavam(linha.substr(9));
+
+            dados_preenchidos = true;
+        }
+
+        else if (linha.rfind("DEBITOS: ", 0) == 0)
+        {
+            carro_temp.setDebitos(stof(linha.substr(9)));
 
             dados_preenchidos = true;
         }
@@ -1393,22 +1409,19 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
                         sair_alterar_veiculo = true;
                         break;
                     }
+
                     case 6:
                     {
                         // RETORNAR AO MENU DE VEICULO
 
                         if (RetornarAoMenuDeVeiculos())
                         {
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                             sair_encontrou_alterar_veiculo = true;
 
                             sair_alterar_veiculo = true;
                         }
                         else
                         {
-                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                             continue;
                         }
 
@@ -2038,7 +2051,7 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usua
             }
             else
             {
-                cout << "Placa merco-sul: " << renavam_multado->getPlacaMercosul() << endl;
+                cout << "Placa mercosul: " << renavam_multado->getPlacaMercosul() << endl;
             }
             cout << endl;
             cout << "Modelo: " << renavam_multado->modelo << endl;
@@ -2080,57 +2093,55 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usua
                 {
                 case 1:
                 {
-                    CLEAR;
-
                     usuario_multado.setPontos(usuario_multado.getPontos() + 3);
 
                     usuario_multado.setMultasLeves(usuario_multado.getMultasLeves() + 1);
+
+                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 88.38);
 
                     break;
                 }
 
                 case 2:
                 {
-                    CLEAR;
-
                     // media
                     usuario_multado.setPontos(usuario_multado.getPontos() + 4);
 
                     usuario_multado.setMultasMedias(usuario_multado.getMultasMedias() + 1);
+
+                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 130.16);
 
                     break;
                 }
 
                 case 3:
                 {
-                    CLEAR;
-
                     // grave
 
                     usuario_multado.setPontos(usuario_multado.getPontos() + 5);
 
                     usuario_multado.setMultasGraves(usuario_multado.getMultasGraves() + 1);
 
+                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 195.23);
+
                     break;
                 }
 
                 case 4:
                 {
-                    CLEAR;
-
                     // gravissima
 
                     usuario_multado.setPontos(usuario_multado.getPontos() + 7);
 
                     usuario_multado.setMultasGravissimas(usuario_multado.getMultasGravissimas() + 1);
 
+                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 293.47);
+
                     break;
                 }
 
                 case 5:
                 {
-                    CLEAR;
-
                     if (RetornarAoMenuPrincipal_Multas())
                     {
                         veiculo_multa = false;
@@ -2156,6 +2167,8 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usua
                 }
                 }
             }
+
+            CLEAR;
 
             cout << endl;
             cout << "Multa registrada com sucesso" << endl;

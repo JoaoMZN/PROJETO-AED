@@ -18,8 +18,7 @@ private:
 protected:
     int pontos;
 
-    int multas_leves, multas_medias, multas_graves, multas_gravissimas = 0;
-
+    int multas_leves, multas_medias, multas_graves, multas_gravissimas;
 public:
     list<Carro> carros;
     list<Carro>::iterator carrosIT;
@@ -52,6 +51,9 @@ public:
 
     void setMultasGravissimas(int mgravissima);
     int getMultasGravissimas() const;
+
+    void setDebitos(float d);
+    float getDebitos() const;
 
     void cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios);
 

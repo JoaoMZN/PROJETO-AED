@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <cstdio>
+#include <cstdlib>
 
 using namespace std;
 
@@ -22,7 +24,7 @@ void MenuSair(Usuario *&usuario_logado)
     }
     else
     {
-        ofstream arquivosVeiculosSistema("arquivosVeiculosSistema.txt", ios::app);
+        ofstream arquivosVeiculosSistema("ArquivosVeiculosSistema.txt", ios::app);
 
         if (!arquivosVeiculosSistema.is_open())
         {
@@ -51,13 +53,15 @@ void MenuSair(Usuario *&usuario_logado)
         }
 
         arquivosVeiculosSistema.close();
+        
+        // remove("ArquivoVeiculosTemp.txt");
 
         cout << "SAIR!" << endl;
         cout << endl;
 
         PAUSE;
 
-        return;
+        exit(0);
     }
 }
 
@@ -357,6 +361,7 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
     while (!sair)
     {
         CLEAR;
+
         cout << "--------------------------CADASTRO DE USUARIO--------------------------" << endl;
         cout << endl;
         cout << "                              1 - CPF" << endl;
@@ -439,36 +444,14 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
 
 void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
 {
-    bool menu_principal = true;
-
-    while (menu_principal)
+    if (usuario_logado->getCpf() != "11111111111")
     {
-        CLEAR;
-
-        cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
-        cout << endl;
-
-        if (usuario_logado->getCpf() != "11111111111")
-        {
-            cout << "Seja Bem vindo " << usuario_logado->getNome() << "!" << endl;
-
-            cout << endl;
-
-            MenuNormal(usuarios, usuario_logado, carro_temp);
-        }
-        else
-        {
-            cout << "Perfil Policial" << endl;
-
-            cout << endl;
-
-            MenuPolicial(usuario_logado, usuarios, carros, carro_temp);
-        }
-
-        menu_principal = false;
+        MenuNormal(usuarios, usuario_logado, carro_temp);
     }
-
-    return;
+    else
+    {
+        MenuPolicial(usuario_logado, usuarios, carros, carro_temp);
+    }
 }
 
 void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
@@ -481,7 +464,7 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
 
         cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
         cout << endl;
-        cout << usuario_logado->getNome() << "seja bem-vindo!" << endl;
+        cout << usuario_logado->getNome() << " seja bem-vindo!" << endl;
         cout << endl;
         cout << "                              1 - Registrar Veiculo" << endl;
         cout << endl;
@@ -521,8 +504,6 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
         case 4:
         {
             MenuSair(usuario_logado);
-
-            return;
         }
         default:
         {
@@ -545,6 +526,8 @@ void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro>
         CLEAR;
 
         cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
+        cout << endl;
+        cout << "Perfil Policial" << endl;
         cout << endl;
         cout << "                                1 - Aplicar multa" << endl;
         cout << endl;
@@ -605,7 +588,7 @@ void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carr
         cout << endl;
         cout << "                           4 - Modelo" << endl;
         cout << endl;
-        cout << "                          5 - Renavam" << endl;
+        cout << "                           5 - Renavam" << endl;
         cout << endl;
         cout << "                           6 - Salvar" << endl;
         cout << endl;
