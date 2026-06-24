@@ -2,11 +2,34 @@
 #include "usuarios.hpp"
 #include "utils.hpp"
 #include <iostream>
+#include <vector>
 #include <list>
 
 using namespace std;
 
 class Usuario;
+
+int Carro::funcaoHash(string &renavam)
+{
+    int hash = 0;
+
+    for (char c : renavam)
+    {
+        hash = hash * 31 + (c - '0');
+    }
+
+    return hash % 101;
+}
+
+void Carro::montagemRenvamHash(vector<list<Carro*>> &carrosHash, list<Carro> &carros)
+{
+    for (auto it = carros.begin(); it != carros.end(); it++)
+    {
+        int indice = funcaoHash(renavam);
+
+        carrosHash[indice].push_back(&*it);
+    }
+}
 
 Carro::Carro() {}
 
@@ -14,6 +37,7 @@ Carro::Carro(string placa_cinza, string placa_mercosul, string ano, string cor,
              string modelo, string renavam, string status_crlv, float debitos)
     : placa_cinza(placa_cinza), placa_mercosul(placa_mercosul), ano(ano),
       cor(cor), modelo(modelo), renavam(renavam), status_crlv(status_crlv), debitos(debitos) {}
+
 
 void Carro::setPlacaCinza(string pc)
 {
@@ -761,29 +785,15 @@ void Carro::OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros) // Ordenaç�
     }
 }
 
-Carro* BuscaBinariaCarroPorModelo(list<Carro> &carros, string modelo) // Retornara endereços de todos os atributos de carro e será em valores reais
+Carro *Carro::BuscarRenavamHash(vector<list<Carro*>> &carrosHash, string renavam)
 {
-    int inicio = 0;
-    int fim = carros.size() - 1;
+    int indice = funcaoHash(renavam);
 
-    while (inicio <= fim)
+    for (auto it = carrosHash[indice].begin(); it != carrosHash[indice].end(); it++)
     {
-        int meio = (inicio + fim) / 2;
-
-        auto it = carros.begin();
-        advance(it, meio);
-
-        if (it->getModelo() == modelo)
+        if ((*it)->getRenavam() == renavam)
         {
-            return &(*it); // Retorna os endereços de todos os valores
-        }
-        else if (it->getModelo() < modelo)
-        {
-            inicio = meio + 1;
-        }
-        else
-        {
-            fim = meio - 1;
+            return (*it);
         }
     }
 
@@ -2018,16 +2028,15 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usua
 
         bool achou = false;
 
-        auto it = carros.begin();
-        auto renavam_multado = it;
+        auto renavam_multado = carros.end();
 
-        for (auto i = it; i != carros.end(); i++)
+        for (auto i = carros.begin(); i != carros.end(); ++i)
         {
-            if (multa_renavam == it->getRenavam())
+            if (multa_renavam == i->getRenavam())
             {
-                it = i;
+                renavam_multado = i;
                 achou = true;
-                renavam_multado = it;
+                break;
             }
         }
 

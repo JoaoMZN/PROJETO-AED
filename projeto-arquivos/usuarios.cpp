@@ -3,6 +3,30 @@
 #include "carro.hpp"
 #include <iostream>
 #include <list>
+#include <vector>
+
+int Usuario::funcaoHash(const string &cpf)
+{
+    int hash = 0;
+
+    for (char c : cpf)
+    {
+        // usado para transformar no codigo ASCII, ou seja, tranformar em um inteiro
+        hash = hash * 31 + (c - '0'); // multiplica por 31 pois e algo comum a se fazer
+    }
+
+    return hash % 101; // para dar mais usuarios por linha, esperado muitos usuarios
+}
+
+void Usuario::montagemTabelaHash(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash)
+{ // copia da lista de usuarios, para poder colocar hash de maneira mais simples e eficiente
+    for (auto it = usuarios.begin(); it != usuarios.end(); it++)
+    {
+        int indice = funcaoHash(it->getCpf());
+
+        usuariosHash[indice].push_back(&*it);
+    }
+}
 
 Usuario::Usuario()
 { // construtor
@@ -637,6 +661,21 @@ Usuario *Usuario::BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf)
         else
         {
             fim = meio - 1;
+        }
+    }
+
+    return nullptr;
+}
+
+Usuario *Usuario::BuscaCpfHash(vector<list<Usuario*>> &usuariosHash, string &cpf)
+{
+    int indice = funcaoHash(cpf);
+
+    for (auto it = usuariosHash[indice].begin(); it != usuariosHash[indice].end(); it++)
+    {
+        if ((*it)->getCpf() == cpf)
+        {
+            return *it;
         }
     }
 

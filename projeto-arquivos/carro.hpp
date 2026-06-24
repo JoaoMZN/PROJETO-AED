@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <list>
 
 using namespace std;
@@ -17,6 +18,10 @@ private:
     string nome_dono, cpf_dono;
     bool multa = false;
     float debitos;
+
+    int funcaoHash(string &renavam);
+
+    void montagemRenvamHash(vector<list<Carro *>> &carroshash, list<Carro> &carros);
 
 public:
     Carro();
@@ -70,7 +75,7 @@ public:
 
     void OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros);
 
-    Carro *BuscaBinariaCarroPorModelo(list<Carro> &carros, string modelo);
+    Carro *BuscarRenavamHash(vector<list<Carro*>> &carrosHash, string renavam);
 
     bool SalvarCarro(Usuario *usuario_logado, Carro &carro_temp);
 

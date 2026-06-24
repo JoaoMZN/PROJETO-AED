@@ -1,5 +1,6 @@
 #include <list>
 #include <clocale>
+#include <vector>
 #include "menu.hpp"
 #include "usuarios.hpp"
 #include "carro.hpp"
@@ -10,7 +11,9 @@ int main()
     setlocale(LC_ALL, "Portuguese_Brazil.1252");
 
     list<Usuario> usuarios;
+    vector<list<Usuario*>> usuariosHash(101);
     list<Carro> carros;
+    vector<list<Carro*>> carroshash(101);
     Usuario *usuario_logado = nullptr;
     Carro carro_temp;
 
@@ -30,7 +33,7 @@ int main()
         usuario_load.OdernaçãoPorInsercaoCpfUsuarios(usuarios);
     }
 
-    MenuInicial(usuarios, usuario_logado, carro_temp, carros);
+    MenuInicial(usuarios, usuario_logado, carro_temp, carros, usuariosHash);
 
     return 0;
 }

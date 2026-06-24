@@ -2,18 +2,21 @@
 
 #include <list>
 #include <string>
+#include <vector>
 #include "usuarios.hpp"
 #include "carro.hpp"
+
+// algoritmo dbj2 para tabela hash
 
 using namespace std;
 
 void MenuSair(Usuario *&usuario_logado);
 
-void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros);
+void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash);
 
 void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros);
 
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros);
+void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash);
 
 void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros);
 

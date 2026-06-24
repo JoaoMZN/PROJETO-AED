@@ -4,6 +4,7 @@
 #include "carro.hpp"
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <limits>
 #include <cstdio>
 #include <cstdlib>
@@ -65,7 +66,7 @@ void MenuSair(Usuario *&usuario_logado)
     }
 }
 
-void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
+void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash)
 {
     while (true)
     {
@@ -89,7 +90,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
         {
         case 1:
         {
-            MenuLogin(usuarios, usuario_logado, carro_temp, carros);
+            MenuLogin(usuarios, usuario_logado, carro_temp, carros, usuariosHash);
             break;
         }
         case 2:
@@ -114,7 +115,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
     }
 }
 
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
+void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros,vector<list<Usuario*>> &usuariosHash)
 {
     // LOGIN
 
@@ -202,7 +203,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
                     // CHECAR SE O USUARIO EXISTE
 
                     // O PONTEIRO ANTERIORMENTE CRIADO RECEBE O VALOR GERADO NA FUNCAO CRAIDA ANTERIORMENTE
-                    usuario_login = usuario_temp_login.BuscaBinariaUsuarioPorCpf(usuarios, login);
+                    usuario_login = usuario_temp_login.BuscaCpfHash(usuariosHash, login);
 
                     if (usuario_login != nullptr)
                     {

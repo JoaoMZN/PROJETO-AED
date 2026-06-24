@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <iostream>
+#include <vector>
 #include <fstream>
 #include <string>
 #include <list>
@@ -14,6 +15,10 @@ class Usuario
 {
 private:
     string nome, cpf, email, senha;
+
+    int funcaoHash(const string &cpf);
+
+    void montagemTabelaHash(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash);
 
 protected:
     int pontos;
@@ -66,6 +71,8 @@ public:
     void OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios);
 
     Usuario *BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf);
+
+    Usuario *BuscaCpfHash(vector<list<Usuario*>> &usuariosHash, string &cpf);
 
     bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp);
 
