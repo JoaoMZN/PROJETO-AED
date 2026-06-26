@@ -18,18 +18,20 @@ private:
 
     int funcaoHash(const string &cpf);
 
-    void montagemTabelaHash(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash);
-
-protected:
+    
+    protected:
     int pontos;
-
+    
     int multas_leves, multas_medias, multas_graves, multas_gravissimas;
-public:
+
+    public:
     list<Carro> carros;
     list<Carro>::iterator carrosIT;
-
+    
+    void montagemTabelaHash(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash);
+    
     Usuario();
-
+    
     void setNome(string n);
     string getNome();
 
@@ -74,11 +76,11 @@ public:
 
     Usuario *BuscaCpfHash(vector<list<Usuario*>> &usuariosHash, string &cpf);
 
-    bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp);
+    bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp, vector<list<Usuario*>> &usuariosHash);
 
     void ExportarUsuario(Usuario &usuarios);
 
-    void LoadUsuario(list<Usuario> &usuarios);
+    void LoadUsuario(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash);
 
     void ChecagemCnh(list<Usuario> &usuarios);
 

@@ -95,7 +95,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
         }
         case 2:
         {
-            MenuCadastrarUsuario(usuarios, usuario_logado, carro_temp, carros, carrosHash);
+            MenuCadastrarUsuario(usuarios, usuario_logado, carro_temp, carros, carrosHash, usuariosHash);
             break;
         }
         case 3:
@@ -354,7 +354,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
     }
 }
 
-void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash)
+void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash, vector<list<Usuario*>> &usuariosHash)
 {
     Usuario usuario_temp;
     bool sair = false;
@@ -407,7 +407,7 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
         }
         case 5:
         {
-            if (usuario_temp.SalvarUsuario(usuarios, usuario_temp))
+            if (usuario_temp.SalvarUsuario(usuarios, usuario_temp, usuariosHash))
             {
                 usuario_temp.ExportarUsuario(usuario_temp);
                 cout << endl

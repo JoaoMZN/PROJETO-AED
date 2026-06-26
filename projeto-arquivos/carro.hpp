@@ -21,7 +21,7 @@ private:
 
     int funcaoHash(string &renavam);
 
-    void montagemRenvamHash(vector<list<Carro *>> &carroshash, list<Carro> &carros);
+    void montagemRenvamHash(vector<list<Carro *>> &carroshash, list<Carro> &carros, list<Usuario> &usuarios);
 
 public:
     Carro();
@@ -77,7 +77,7 @@ public:
 
     Carro *BuscarRenavamHash(vector<list<Carro*>> &carrosHash, string renavam);
 
-    bool SalvarCarro(Usuario *usuario_logado, Carro &carro_temp);
+    bool SalvarCarro(Usuario *usuario_logado, Carro &carro_temp, vector<list<Carro*>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios);
 
     void ExportarVeiculo(list<Usuario> &usuarios);
 

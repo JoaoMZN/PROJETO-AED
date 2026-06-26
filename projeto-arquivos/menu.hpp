@@ -14,7 +14,7 @@ void MenuSair(Usuario *&usuario_logado);
 
 void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash);
 
-void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash);
+void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash, vector<list<Usuario*>> &usuariosHash);
 
 void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash);
 

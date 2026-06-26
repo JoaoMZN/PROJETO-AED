@@ -18,7 +18,7 @@ int main()
     Carro carro_temp;
 
     Usuario usuario_load;
-    usuario_load.LoadUsuario(usuarios);
+    usuario_load.LoadUsuario(usuarios, usuariosHash);
 
     Usuario *policial_existe = usuario_load.BuscaBinariaUsuarioPorCpf(usuarios, "11111111111");
 
@@ -31,6 +31,7 @@ int main()
         policial.setSenha("policia");
         usuarios.push_back(policial);
         usuario_load.OdernaçãoPorInsercaoCpfUsuarios(usuarios);
+        usuario_load.montagemTabelaHash(usuarios, usuariosHash);
     }
 
     MenuInicial(usuarios, usuario_logado, carro_temp, carros, usuariosHash, carrosHash);

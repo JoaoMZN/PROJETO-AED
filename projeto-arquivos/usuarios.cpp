@@ -15,11 +15,16 @@ int Usuario::funcaoHash(const string &cpf)
         hash = hash * 31 + (c - '0'); // multiplica por 31 pois e algo comum a se fazer
     }
 
-    return hash % 101; // para dar mais usuarios por linha, esperado muitos usuarios
+    return abs((int)(hash % 101)); // para dar mais usuarios por linha, esperado muitos usuarios
 }
 
 void Usuario::montagemTabelaHash(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash)
 { // copia da lista de usuarios, para poder colocar hash de maneira mais simples e eficiente
+    for (auto &lista : usuariosHash) // evita duplicacao nao tabela hash
+    {
+        lista.clear();
+    }
+
     for (auto it = usuarios.begin(); it != usuarios.end(); it++)
     {
         int indice = funcaoHash(it->getCpf());
@@ -682,7 +687,7 @@ Usuario *Usuario::BuscaCpfHash(vector<list<Usuario*>> &usuariosHash, string &cpf
     return nullptr;
 }
 
-bool Usuario::SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp)
+bool Usuario::SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp, vector<list<Usuario*>> &usuariosHash)
 {
     bool valido = true;
 
@@ -730,6 +735,7 @@ bool Usuario::SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp)
 
     usuarios.push_back(usuario_temp);
     OdernaçãoPorInsercaoCpfUsuarios(usuarios); // Ordena nossa lista já incluindo o novo usuario.
+    usuario_temp.montagemTabelaHash(usuarios, usuariosHash);
     return true;
 }
 
@@ -767,7 +773,7 @@ void Usuario::ExportarUsuario(Usuario &usuarios)
     arquivoUsuarios.close();
 }
 
-void Usuario::LoadUsuario(list<Usuario> &usuarios)
+void Usuario::LoadUsuario(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash)
 {
     ifstream arquivosUsuarios("UsuarioCadastrados.txt");
 
@@ -848,6 +854,7 @@ void Usuario::LoadUsuario(list<Usuario> &usuarios)
         getline(arquivosUsuarios, linha);
 
         usuarios.push_back(ler_usuario_temp);
+        ler_usuario_temp.montagemTabelaHash(usuarios, usuariosHash);
     }
 
     arquivosUsuarios.close();

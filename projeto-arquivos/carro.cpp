@@ -21,13 +21,21 @@ int Carro::funcaoHash(string &renavam)
     return hash % 101;
 }
 
-void Carro::montagemRenvamHash(vector<list<Carro *>> &carrosHash, list<Carro> &carros)
+void Carro::montagemRenvamHash(vector<list<Carro *>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios)
 {
-    for (auto it = carros.begin(); it != carros.end(); it++)
+    for (auto &lista : carrosHash)
     {
-        int indice = funcaoHash(renavam);
+        lista.clear();
+    }
 
-        carrosHash[indice].push_back(&*it);
+    for (auto usuario = usuarios.begin(); usuario != usuarios.end(); usuario++)
+    {
+        for (auto carro = usuario->carros.begin(); carro != usuario->carros.end(); carro++)
+        {
+            string renavam = carro->getRenavam();
+            int indice = funcaoHash(renavam);
+            carrosHash[indice].push_back(&(*carro));
+        }
     }
 }
 
@@ -799,7 +807,7 @@ Carro *Carro::BuscarRenavamHash(vector<list<Carro *>> &carrosHash, string renava
     return nullptr;
 }
 
-bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp)
+bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp, vector<list<Carro*>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios)
 {
     bool valido = true;
 
@@ -872,6 +880,7 @@ bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp)
     }
 
     usuario_logado->carros.push_back(carro_temp);
+    carro_temp.montagemRenvamHash(carrosHash, carros, usuarios);
 
     this->OdernaçãoPorInsercaoRenavamCarro(usuario_logado->carros); // Ordena a lista carro, com o carro que acabei de salvar
     return true;
