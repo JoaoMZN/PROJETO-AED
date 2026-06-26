@@ -66,7 +66,7 @@ void MenuSair(Usuario *&usuario_logado)
     }
 }
 
-void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash)
+void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash)
 {
     while (true)
     {
@@ -90,12 +90,12 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
         {
         case 1:
         {
-            MenuLogin(usuarios, usuario_logado, carro_temp, carros, usuariosHash);
+            MenuLogin(usuarios, usuario_logado, carro_temp, carros, usuariosHash, carrosHash);
             break;
         }
         case 2:
         {
-            MenuCadastrarUsuario(usuarios, usuario_logado, carro_temp, carros);
+            MenuCadastrarUsuario(usuarios, usuario_logado, carro_temp, carros, carrosHash);
             break;
         }
         case 3:
@@ -115,7 +115,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
     }
 }
 
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros,vector<list<Usuario*>> &usuariosHash)
+void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros,vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash)
 {
     // LOGIN
 
@@ -310,7 +310,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
 
                         PAUSE;
 
-                        MenuPrincipal(usuarios, usuario_logado, carro_temp, carros);
+                        MenuPrincipal(usuarios, usuario_logado, carro_temp, carros, carrosHash);
 
                         break;
                     }
@@ -354,7 +354,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
     }
 }
 
-void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
+void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash)
 {
     Usuario usuario_temp;
     bool sair = false;
@@ -417,7 +417,7 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
                 usuario_logado = usuario_temp.BuscaBinariaUsuarioPorCpf(usuarios, usuario_temp.getCpf());
                 sair = true;
 
-                MenuPrincipal(usuarios, usuario_logado, carro_temp, carros);
+                MenuPrincipal(usuarios, usuario_logado, carro_temp, carros, carrosHash);
             }
             else
             {
@@ -443,7 +443,7 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
     }
 }
 
-void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
+void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash)
 {
     if (usuario_logado->getCpf() != "11111111111")
     {
@@ -451,7 +451,7 @@ void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &car
     }
     else
     {
-        MenuPolicial(usuario_logado, usuarios, carros, carro_temp);
+        MenuPolicial(usuario_logado, usuarios, carros, carro_temp, carrosHash);
     }
 }
 
@@ -520,7 +520,7 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
     }
 }
 
-void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro> &carros, Carro &carro_temp)
+void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro> &carros, Carro &carro_temp, vector<list<Carro*>> &carrosHash)
 {
     while (true)
     {
@@ -547,7 +547,7 @@ void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro>
         {
         case 1:
         {
-            MenuAplicarMulta(carros, usuario_logado, carro_temp, usuarios);
+            MenuAplicarMulta(carros, usuario_logado, carro_temp, usuarios, carrosHash);
             break;
         }
         case 2:
@@ -966,9 +966,9 @@ void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp)
     }
 }
 
-void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp, list<Usuario> &usuarios)
+void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp, list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash)
 {
-    carro_temp.MultaRenavam(carros, usuario_logado, usuarios);
+    carro_temp.MultaRenavam(carros, usuario_logado, usuarios, carrosHash);
 
     return;
 }

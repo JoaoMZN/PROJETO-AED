@@ -21,7 +21,7 @@ int Carro::funcaoHash(string &renavam)
     return hash % 101;
 }
 
-void Carro::montagemRenvamHash(vector<list<Carro*>> &carrosHash, list<Carro> &carros)
+void Carro::montagemRenvamHash(vector<list<Carro *>> &carrosHash, list<Carro> &carros)
 {
     for (auto it = carros.begin(); it != carros.end(); it++)
     {
@@ -37,7 +37,6 @@ Carro::Carro(string placa_cinza, string placa_mercosul, string ano, string cor,
              string modelo, string renavam, string status_crlv, float debitos)
     : placa_cinza(placa_cinza), placa_mercosul(placa_mercosul), ano(ano),
       cor(cor), modelo(modelo), renavam(renavam), status_crlv(status_crlv), debitos(debitos) {}
-
 
 void Carro::setPlacaCinza(string pc)
 {
@@ -785,7 +784,7 @@ void Carro::OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros) // Ordenaç�
     }
 }
 
-Carro *Carro::BuscarRenavamHash(vector<list<Carro*>> &carrosHash, string renavam)
+Carro *Carro::BuscarRenavamHash(vector<list<Carro *>> &carrosHash, string renavam)
 {
     int indice = funcaoHash(renavam);
 
@@ -1989,7 +1988,7 @@ void Carro::LoadVeiculosPolicia(Usuario *usuario_logado)
     }
 }
 
-void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios) // nao acabado
+void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash) // nao acabado
 {
     bool menu_multa_renavam = true;
 
@@ -2026,178 +2025,184 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usua
             }
         }
 
-        bool achou = false;
+        int indice = funcaoHash(multa_renavam);
 
-        auto renavam_multado = carros.end();
-
-        for (auto i = carros.begin(); i != carros.end(); ++i)
+        for (auto it = carrosHash[indice].begin(); it != carrosHash[indice].end(); it++)
         {
-            if (multa_renavam == i->getRenavam())
+            if ((*it)->getRenavam() == multa_renavam)
             {
-                renavam_multado = i;
-                achou = true;
-                break;
-            }
-        }
+                CLEAR;
 
-        if (achou)
-        {
-            CLEAR;
-
-            cout << endl;
-            cout << "Veiculo encontrado!" << endl;
-            cout << endl;
-
-            cout << "--------------------------------------------------" << endl;
-            cout << endl;
-            cout << "Nome: " << renavam_multado->nome_dono << endl;
-            cout << endl;
-            cout << "CPF: " << renavam_multado->cpf_dono << endl;
-            cout << endl;
-            if (renavam_multado->getPlacaCinza() != "")
-            {
-                cout << "Placa cinza: " << renavam_multado->getPlacaCinza() << endl;
-            }
-            else
-            {
-                cout << "Placa mercosul: " << renavam_multado->getPlacaMercosul() << endl;
-            }
-            cout << endl;
-            cout << "Modelo: " << renavam_multado->modelo << endl;
-            cout << endl;
-            cout << "Cor: " << renavam_multado->cor << endl;
-            cout << endl;
-            cout << "Ano: " << renavam_multado->ano << endl;
-            cout << endl;
-            cout << "Renavam: " << multa_renavam << endl;
-            cout << endl;
-            cout << "---------------------------------------------------" << endl;
-
-            bool veiculo_multa = true;
-
-            Usuario usuario_multado;
-
-            while (veiculo_multa)
-            {
-                cout << "-----------------------------------------" << endl;
-                cout << "Tipo de Multa: " << endl;
                 cout << endl;
-                cout << "1 - Leve" << endl;
+                cout << "Veiculo encontrado!" << endl;
                 cout << endl;
-                cout << "2 - Media" << endl;
-                cout << endl;
-                cout << "3 - Grave" << endl;
-                cout << endl;
-                cout << "4 - Gravissima" << endl;
-                cout << endl;
-                cout << "5 - Retornar ao Menu Principal" << endl;
-                cout << endl;
-                cout << "----------------------------------------------" << endl;
 
-                cout << "Tipo da multa: ";
-                int opcao_multa_placa = 0;
-                cin >> opcao_multa_placa;
-
-                switch (opcao_multa_placa)
+                cout << "--------------------------------------------------" << endl;
+                cout << endl;
+                cout << "Nome: " << (*it)->getNomeDono() << endl;
+                cout << endl;
+                cout << "CPF: " << (*it)->getCpfDono() << endl;
+                cout << endl;
+                if ((*it)->getPlacaCinza() != "")
                 {
-                case 1:
-                {
-                    usuario_multado.setPontos(usuario_multado.getPontos() + 3);
-
-                    usuario_multado.setMultasLeves(usuario_multado.getMultasLeves() + 1);
-
-                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 88.38);
-
-                    break;
+                    cout << "Placa cinza: " << (*it)->getPlacaCinza() << endl;
                 }
-
-                case 2:
+                else
                 {
-                    // media
-                    usuario_multado.setPontos(usuario_multado.getPontos() + 4);
-
-                    usuario_multado.setMultasMedias(usuario_multado.getMultasMedias() + 1);
-
-                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 130.16);
-
-                    break;
+                    cout << "Placa mercosul: " << (*it)->getPlacaMercosul() << endl;
                 }
+                cout << endl;
+                cout << "Modelo: " << (*it)->getModelo() << endl;
+                cout << endl;
+                cout << "Cor: " << (*it)->getCor() << endl;
+                cout << endl;
+                cout << "Ano: " << (*it)->getAno() << endl;
+                cout << endl;
+                cout << "Renavam: " << multa_renavam << endl;
+                cout << endl;
+                cout << "---------------------------------------------------" << endl;
 
-                case 3:
-                {
-                    // grave
+                bool veiculo_multa = true;
 
-                    usuario_multado.setPontos(usuario_multado.getPontos() + 5);
+                Usuario usuario_auxiliar;
 
-                    usuario_multado.setMultasGraves(usuario_multado.getMultasGraves() + 1);
+                Usuario *usuario_multado = usuario_auxiliar.BuscaBinariaUsuarioPorCpf(usuarios, (*it)->getCpfDono());
 
-                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 195.23);
-
-                    break;
-                }
-
-                case 4:
-                {
-                    // gravissima
-
-                    usuario_multado.setPontos(usuario_multado.getPontos() + 7);
-
-                    usuario_multado.setMultasGravissimas(usuario_multado.getMultasGravissimas() + 1);
-
-                    usuario_multado.setDebitos(usuario_multado.getDebitos() + 293.47);
-
-                    break;
-                }
-
-                case 5:
-                {
-                    if (RetornarAoMenuPrincipal_Multas())
-                    {
-                        veiculo_multa = false;
-
-                        return;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    break;
-                }
-
-                default:
+                if (usuario_multado == nullptr)
                 {
                     CLEAR;
 
-                    cout << "Opcao invalida" << endl;
+                    cout << endl;
+                    cout << "Usuario com esse CPF nao encontrado!" << endl;
+                    cout << endl;
 
                     PAUSE;
-                    break;
+
+                    continue;
                 }
+
+                while (veiculo_multa)
+                {
+                    cout << "-----------------------------------------" << endl;
+                    cout << "Tipo de Multa: " << endl;
+                    cout << endl;
+                    cout << "1 - Leve" << endl;
+                    cout << endl;
+                    cout << "2 - Media" << endl;
+                    cout << endl;
+                    cout << "3 - Grave" << endl;
+                    cout << endl;
+                    cout << "4 - Gravissima" << endl;
+                    cout << endl;
+                    cout << "5 - Retornar ao Menu Principal" << endl;
+                    cout << endl;
+                    cout << "----------------------------------------------" << endl;
+
+                    cout << "Tipo da multa: ";
+                    int opcao_multa_placa = 0;
+                    cin >> opcao_multa_placa;
+
+                    switch (opcao_multa_placa)
+                    {
+                    case 1:
+                    {
+                        usuario_multado->setPontos(usuario_multado->getPontos() + 3);
+
+                        usuario_multado->setMultasLeves(usuario_multado->getMultasLeves() + 1);
+
+                        (*it)->setDebitos((*it)->getDebitos() + 88.38);
+
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        // media
+                        usuario_multado->setPontos(usuario_multado->getPontos() + 4);
+
+                        usuario_multado->setMultasMedias(usuario_multado->getMultasMedias() + 1);
+
+                        (*it)->setDebitos((*it)->getDebitos() + 130.16);
+
+                        break;
+                    }
+
+                    case 3:
+                    {
+                        // grave
+
+                        usuario_multado->setPontos(usuario_multado->getPontos() + 5);
+
+                        usuario_multado->setMultasGraves(usuario_multado->getMultasGraves() + 1);
+
+                        (*it)->setDebitos((*it)->getDebitos() + 195.23);
+
+                        break;
+                    }
+
+                    case 4:
+                    {
+                        // gravissima
+
+                        usuario_multado->setPontos(usuario_multado->getPontos() + 7);
+
+                        usuario_multado->setMultasGravissimas(usuario_multado->getMultasGravissimas() + 1);
+
+                        (*it)->setDebitos((*it)->getDebitos() + 293.47);
+
+                        break;
+                    }
+
+                    case 5:
+                    {
+                        if (RetornarAoMenuPrincipal_Multas())
+                        {
+                            veiculo_multa = false;
+
+                            return;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    default:
+                    {
+                        CLEAR;
+
+                        cout << "Opcao invalida" << endl;
+
+                        PAUSE;
+                        break;
+                    }
+                    }
                 }
+
+                CLEAR;
+
+                cout << endl;
+                cout << "Multa registrada com sucesso" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                return;
             }
+            else
+            {
+                CLEAR;
 
-            CLEAR;
+                cout << endl;
+                cout << "Veiculo nao encontrado!" << endl;
+                cout << endl;
 
-            cout << endl;
-            cout << "Multa registrada com sucesso" << endl;
-            cout << endl;
+                PAUSE;
 
-            PAUSE;
-
-            return;
-        }
-        else
-        {
-            CLEAR;
-
-            cout << endl;
-            cout << "Veiculo nao encontrado!" << endl;
-            cout << endl;
-
-            PAUSE;
-
-            continue;
+                continue;
+            }
         }
     }
 }

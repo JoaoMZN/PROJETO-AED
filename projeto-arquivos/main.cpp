@@ -13,7 +13,7 @@ int main()
     list<Usuario> usuarios;
     vector<list<Usuario*>> usuariosHash(101);
     list<Carro> carros;
-    vector<list<Carro*>> carroshash(101);
+    vector<list<Carro*>> carrosHash(101);
     Usuario *usuario_logado = nullptr;
     Carro carro_temp;
 
@@ -33,7 +33,7 @@ int main()
         usuario_load.OdernaçãoPorInsercaoCpfUsuarios(usuarios);
     }
 
-    MenuInicial(usuarios, usuario_logado, carro_temp, carros, usuariosHash);
+    MenuInicial(usuarios, usuario_logado, carro_temp, carros, usuariosHash, carrosHash);
 
     return 0;
 }
