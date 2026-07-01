@@ -54,7 +54,7 @@ void MenuSair(Usuario *&usuario_logado)
         }
 
         arquivosVeiculosSistema.close();
-        
+
         // remove("ArquivoVeiculosTemp.txt");
 
         cout << "SAIR!" << endl;
@@ -66,7 +66,7 @@ void MenuSair(Usuario *&usuario_logado)
     }
 }
 
-void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash)
+void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario *>> &usuariosHash, vector<list<Carro *>> &carrosHash)
 {
     while (true)
     {
@@ -115,7 +115,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
     }
 }
 
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros,vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash)
+void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario *>> &usuariosHash, vector<list<Carro *>> &carrosHash)
 {
     // LOGIN
 
@@ -301,14 +301,12 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
 
                         if (usuario_logado->getCpf() != "11111111111")
                         {
-                            carro_temp.LoadVeiculos(usuarios);
+                            carro_temp.LoadVeiculos(usuarios, carrosHash);
                         }
                         else
                         {
                             carro_temp.LoadVeiculosPolicia(usuario_logado);
                         }
-
-                        PAUSE;
 
                         MenuPrincipal(usuarios, usuario_logado, carro_temp, carros, carrosHash);
 
@@ -354,7 +352,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
     }
 }
 
-void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash, vector<list<Usuario*>> &usuariosHash)
+void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro *>> &carrosHash, vector<list<Usuario *>> &usuariosHash)
 {
     Usuario usuario_temp;
     bool sair = false;
@@ -443,11 +441,11 @@ void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Car
     }
 }
 
-void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash)
+void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro *>> &carrosHash)
 {
     if (usuario_logado->getCpf() != "11111111111")
     {
-        MenuNormal(usuarios, usuario_logado, carro_temp);
+        MenuNormal(usuarios, usuario_logado, carro_temp, carrosHash, carros);
     }
     else
     {
@@ -455,7 +453,7 @@ void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &car
     }
 }
 
-void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, vector<list<Carro *>> &carrosHash, list<Carro> &carros)
 {
     bool menu_normal = true;
 
@@ -486,13 +484,13 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
         {
         case 1:
         {
-            MenuRegistroVeiculo(usuarios, usuario_logado, carro_temp);
+            MenuRegistroVeiculo(usuarios, usuario_logado, carro_temp, carrosHash, carros);
 
             break;
         }
         case 2:
         {
-            MenuChecarVeiculos(usuarios, usuario_logado, carro_temp);
+            MenuChecarVeiculos(usuarios, usuario_logado, carro_temp, carros);
 
             break;
         }
@@ -520,7 +518,7 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
     }
 }
 
-void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro> &carros, Carro &carro_temp, vector<list<Carro*>> &carrosHash)
+void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro> &carros, Carro &carro_temp, vector<list<Carro *>> &carrosHash)
 {
     while (true)
     {
@@ -570,7 +568,7 @@ void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro>
     }
 }
 
-void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, vector<list<Carro *>> &carrosHash, list<Carro> &carros)
 {
     bool sair_registro = false;
 
@@ -730,7 +728,7 @@ void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carr
         case 6:
         {
             // SALVAR
-            if (carro_temp.SalvarCarro(usuario_logado, carro_temp))
+            if (carro_temp.SalvarCarro(usuario_logado, carro_temp, carrosHash, carros, usuarios))
             {
                 carro_temp.ExportarVeiculo(usuarios);
 
@@ -781,7 +779,7 @@ void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carr
     }
 }
 
-void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp)
+void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros)
 {
     // CHECAR VEICULO (S)
     bool sair_checar_veiculos = false;
@@ -790,94 +788,162 @@ void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro
     {
         CLEAR;
 
-        cout << endl;
-        cout << "-----------------------------CHECAR VEICULO(S)------------------------------" << endl;
-        cout << endl;
-        cout << "               1 - Veiculo(s) Registrado(s)" << endl;
-        cout << endl;
-        cout << "               2 - Excluir Veiculo" << endl;
-        cout << endl;
-        cout << "               3 - Alterar Veiculo" << endl;
-        cout << endl;
-        cout << "               4 - Multas" << endl;
-        cout << endl;
-        cout << "               5 - Retornar ao MENU PRINCIPAL" << endl;
-        cout << endl;
-        cout << "---------------------------------------------------------------------------" << endl;
+        cout << "-------------------------CARRO(S) CADASTRADO(S)----------------------------------" << endl;
         cout << endl;
 
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_checar_veiculos = 0;
-        cin >> opcao_checar_veiculos;
-
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        switch (opcao_checar_veiculos)
+        if (carros.empty())
         {
-        case 1:
-        {
-            // VEICULOS REGISTRADOS
-            carro_temp.VeiculosRegistrados(usuario_logado->carros);
-
-            sair_checar_veiculos = true;
-
-            break;
-        }
-
-        case 2:
-        {
-            // EXCLUIR VEICULO
-            carro_temp.ExcluirVeiculos(usuario_logado->carros);
-
-            carro_temp.ExportarVeiculo(usuarios);
-
-            sair_checar_veiculos = true;
-
-            break;
-        }
-
-        case 3:
-        {
-            // ALTERAR VEICULO
-            carro_temp.AlterarVeiculo(usuario_logado->carros, usuario_logado, usuarios);
-
-            sair_checar_veiculos = true;
-
-            break;
-        }
-
-        case 4:
-        {
-            // Multas
-
-            carro_temp.Multas(usuario_logado->carros);
-
-            break;
-        }
-
-        case 5:
-        {
-            // RETORNAR AO MENU PRINCIPAL
-            if (RetornarAoMenuPrincipal_Checar())
-            {
-                sair_checar_veiculos = true;
-            }
-
-            break;
-        }
-
-        default:
-        {
+            cout << "Nenhum carro cadastrado!" << endl;
             cout << endl;
-            cout << "Opcao INVALIDA!" << endl;
+            cout << "Cadastre um carro primeiro!" << endl;
             cout << endl;
 
             PAUSE;
 
-            break;
+            sair_checar_veiculos = false;
         }
+
+        int contador = 1;
+
+        auto it = carros.begin();
+
+        for (; it != carros.end(); it++)
+        {
+            cout << contador << " - ";
+            if (!it->getPlacaCinza().empty())
+            {
+                cout << it->getPlacaCinza() << " | ";
+            }
+            else
+            {
+                cout << it->getPlacaMercosul() << " | ";
+            }
+            cout << it->getModelo() << endl;
+
+            contador++;
         }
+
+        it = carros.begin();
+
+        cout << "Escolha o carro que deseja alterar: ";
+        int escolha = 0;
+        cin >> escolha;
+        cout << endl;
+
+        for (int i = 1; i < escolha && it != carros.end(); i++)
+        {
+            it++;
+        }
+
+        if (it == carros.end())
+        {
+            cout << "Carro invalido!" << endl;
+
+            PAUSE;
+
+            continue;
+        }
+        else
+        {
+            cout << "---------------------------------------------------------------------------------------" << endl;
+            if (!it->getPlacaCinza().empty())
+            {
+                cout << "Placa cinza: " << it->getPlacaCinza() << endl;
+            }
+            else
+            {
+                cout << "Placa mercosul: " << it->getPlacaMercosul() << endl;
+            }
+            cout << endl;
+            cout << "Cor: " << it->getCor() << endl;
+            cout << endl;
+            cout << "Ano: " << it->getAno() << endl;
+            cout << endl;
+            cout << "Modelo: " << it->getModelo() << endl;
+            cout << endl;
+            cout << "Renavam: " << it->getRenavam() << endl;
+            cout << endl;
+            cout << "------------------------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            cout << endl;
+
+            cout << "------------------------------------------------------------------------" << endl;
+            cout << "               1 - Excluir Veiculo" << endl;
+            cout << endl;
+            cout << "               2 - Alterar Veiculo" << endl;
+            cout << endl;
+            cout << "               3 - Multas" << endl;
+            cout << endl;
+            cout << "               4 - Retornar ao MENU PRINCIPAL" << endl;
+            cout << endl;
+            cout << "---------------------------------------------------------------------------" << endl;
+            cout << endl;
+
+            cout << "Digite a OPCAO DESEJADA: " << endl;
+
+            int opcao_checar_veiculos = 0;
+            cin >> opcao_checar_veiculos;
+
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            switch (opcao_checar_veiculos)
+            {
+            case 1:
+            {
+                // EXCLUIR VEICULO
+                carro_temp.ExcluirVeiculos(usuario_logado->carros);
+
+                carro_temp.ExportarVeiculo(usuarios);
+
+                sair_checar_veiculos = true;
+
+                break;
+            }
+
+            case 2:
+            {
+                // ALTERAR VEICULO
+                carro_temp.AlterarVeiculo(usuario_logado->carros, usuario_logado, usuarios);
+
+                sair_checar_veiculos = true;
+
+                break;
+            }
+
+            case 3:
+            {
+                // Multas
+
+                carro_temp.Multas(usuario_logado->carros);
+
+                break;
+            }
+
+            case 4:
+            {
+                // RETORNAR AO MENU PRINCIPAL
+                if (RetornarAoMenuPrincipal_Checar())
+                {
+                    sair_checar_veiculos = true;
+                }
+
+                break;
+            }
+
+            default:
+            {
+                cout << endl;
+                cout << "Opcao INVALIDA!" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                break;
+            }
+            }
+        }
+
     }
 }
 
@@ -966,7 +1032,7 @@ void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp)
     }
 }
 
-void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp, list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash)
+void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp, list<Usuario> &usuarios, vector<list<Carro *>> &carrosHash)
 {
     carro_temp.MultaRenavam(carros, usuario_logado, usuarios, carrosHash);
 

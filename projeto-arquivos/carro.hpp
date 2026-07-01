@@ -21,7 +21,7 @@ private:
 
     int funcaoHash(string &renavam);
 
-    void montagemRenvamHash(vector<list<Carro *>> &carroshash, list<Carro> &carros, list<Usuario> &usuarios);
+    void montagemRenvamHash(vector<list<Carro*>> &carroshash, list<Carro> &carros, list<Usuario> &usuarios);
 
 public:
     Carro();
@@ -81,9 +81,7 @@ public:
 
     void ExportarVeiculo(list<Usuario> &usuarios);
 
-    void LoadVeiculos(list<Usuario> &usuarios);
-
-    void VeiculosRegistrados(list<Carro> &carros);
+    void LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash);
 
     void ExcluirVeiculos(list<Carro> &carros);
 

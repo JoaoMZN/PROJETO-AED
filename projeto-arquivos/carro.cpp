@@ -807,7 +807,7 @@ Carro *Carro::BuscarRenavamHash(vector<list<Carro *>> &carrosHash, string renava
     return nullptr;
 }
 
-bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp, vector<list<Carro*>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios)
+bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp, vector<list<Carro *>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios)
 {
     bool valido = true;
 
@@ -933,7 +933,7 @@ void Carro::ExportarVeiculo(list<Usuario> &usuarios)
     }
 }
 
-void Carro::LoadVeiculos(list<Usuario> &usuarios)
+void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash)
 {
     ifstream arquivoVeiculos("ArquivosVeiculos.txt");
 
@@ -975,6 +975,13 @@ void Carro::LoadVeiculos(list<Usuario> &usuarios)
                 if (usuario_encontrado != nullptr)
                 {
                     usuario_encontrado->carros.push_back(carro_temp);
+
+                    Carro *novoCarro = &usuario_encontrado->carros.back();
+
+                    string renavam = novoCarro->getRenavam();
+                    int indice = funcaoHash(renavam);
+
+                    carrosHash[indice].push_back(novoCarro);
                 }
             }
 
@@ -1052,74 +1059,17 @@ void Carro::LoadVeiculos(list<Usuario> &usuarios)
         if (usuario_encontrado != nullptr)
         {
             usuario_encontrado->carros.push_back(carro_temp);
+
+            Carro *novoCarro = &usuario_encontrado->carros.back();
+
+            string renavam = novoCarro->getRenavam();
+            int indice = funcaoHash(renavam);
+
+            carrosHash[indice].push_back(novoCarro);
         }
     }
 
     arquivoVeiculos.close();
-}
-
-void Carro::VeiculosRegistrados(list<Carro> &carros)
-{
-    bool sair_veiculos_registrados = false;
-
-    while (!sair_veiculos_registrados)
-    {
-        CLEAR;
-
-        cout << endl;
-        cout << "-------------------------------------------------VEICULOS REGISTRADOS-------------------------------------------------" << endl;
-        cout << endl;
-
-        // LOGICA DE CHECAR SE TEM ALGUM VEICULO
-        if (carros.empty())
-        {
-            cout << endl;
-            cout << "Nenhum VEICULO foi registrado!" << endl;
-            cout << endl;
-        }
-        else
-        {
-            // MOSTRAR TODOS OS CARROS
-            int contador = 1;
-            for (auto it = carros.begin(); it != carros.end(); it++)
-            {
-                cout << "--------------------------------------CARRO " << contador << "-----------------------------------------" << endl;
-                cout << endl;
-                cout << "Modelo: " << it->getModelo() << endl;
-                cout << endl;
-                cout << "Cor: " << it->getCor() << endl;
-                cout << endl;
-                cout << "Ano: " << it->getAno() << endl;
-                cout << endl;
-
-                // LOGICA DA PLACA
-                if (!it->getPlacaCinza().empty())
-                {
-                    cout << "Placa:  " << it->getPlacaCinza() << endl;
-                    cout << endl;
-                }
-                else if (!it->getPlacaMercosul().empty())
-                {
-                    cout << "Placa:  " << it->getPlacaMercosul() << endl;
-                    cout << endl;
-                }
-
-                cout << "Renavam:  " << it->getRenavam() << endl;
-                cout << endl;
-                contador++;
-            }
-        }
-
-        cout << "---------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Todos os carros REGISTRADOS!" << endl;
-        cout << endl;
-
-        PAUSE;
-
-        sair_veiculos_registrados = true;
-    }
 }
 
 void Carro::ExcluirVeiculos(list<Carro> &carros)
@@ -1997,7 +1947,7 @@ void Carro::LoadVeiculosPolicia(Usuario *usuario_logado)
     }
 }
 
-void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash) // nao acabado
+void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios, vector<list<Carro *>> &carrosHash) // nao acabado
 {
     bool menu_multa_renavam = true;
 
