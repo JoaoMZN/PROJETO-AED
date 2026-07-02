@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <list>
+#include "sistema.hpp"
 #include "carro.hpp"
 
 using namespace std;
@@ -80,7 +81,7 @@ private:
 
     void ExportarUsuario(Usuario &usuarios);
 
-    void LoadUsuario(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash);
+    void LoadUsuario(Sistema &sistema);
 
     void ChecagemCnh(list<Usuario> &usuarios);
 

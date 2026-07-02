@@ -2,6 +2,7 @@
 #include "utils.hpp"
 #include "usuarios.hpp"
 #include "carro.hpp"
+#include "sistema.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -66,7 +67,7 @@ void MenuSair(Usuario *&usuario_logado)
     }
 }
 
-void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario *>> &usuariosHash, vector<list<Carro *>> &carrosHash)
+void MenuInicial(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp)
 {
     while (true)
     {
@@ -90,7 +91,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
         {
         case 1:
         {
-            MenuLogin(usuarios, usuario_logado, carro_temp, carros, usuariosHash, carrosHash);
+            MenuLogin(usuario_logado, carro_temp, sistema);
             break;
         }
         case 2:
@@ -115,7 +116,7 @@ void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro
     }
 }
 
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario *>> &usuariosHash, vector<list<Carro *>> &carrosHash)
+void MenuLogin(Usuario *&usuario_logado, Carro &carro_temp, Sistema &sistema)
 {
     // LOGIN
 
@@ -276,7 +277,7 @@ void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_t
                     if (usuario_login == nullptr)
                     {
                         cout << endl;
-                        cout << "ERRO! Faca o login com CPF/EMAIL primeiro!" << endl;
+                        cout << "ERRO! Faca o login com CPF primeiro!" << endl;
                         cout << endl;
 
                         PAUSE;
@@ -490,7 +491,12 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
         }
         case 2:
         {
-            MenuChecarVeiculos(usuarios, usuario_logado, carro_temp, carros);
+            cout << "carros: " << carros.size() << endl;
+            cout << "usuario_logado->carros: " << usuario_logado->carros.size() << endl;
+
+            PAUSE;
+
+            MenuChecarVeiculos(usuarios, usuario_logado, carro_temp, usuario_logado->carros);
 
             break;
         }
@@ -506,12 +512,6 @@ void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_
         }
         default:
         {
-            CLEAR;
-
-            cout << "Opcao invalida!" << endl;
-
-            PAUSE;
-
             break;
         }
         }
@@ -791,7 +791,7 @@ void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro
         cout << "-------------------------CARRO(S) CADASTRADO(S)----------------------------------" << endl;
         cout << endl;
 
-        if (carros.empty())
+        if (usuario_logado->carros.empty())
         {
             cout << "Nenhum carro cadastrado!" << endl;
             cout << endl;
@@ -801,6 +801,7 @@ void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro
             PAUSE;
 
             sair_checar_veiculos = false;
+            break;
         }
 
         int contador = 1;
@@ -869,6 +870,7 @@ void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro
             cout << endl;
 
             cout << "------------------------------------------------------------------------" << endl;
+            cout << endl;
             cout << "               1 - Excluir Veiculo" << endl;
             cout << endl;
             cout << "               2 - Alterar Veiculo" << endl;
@@ -943,7 +945,6 @@ void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro
             }
             }
         }
-
     }
 }
 

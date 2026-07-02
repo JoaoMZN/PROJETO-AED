@@ -1,5 +1,6 @@
 #include "carro.hpp"
 #include "usuarios.hpp"
+#include "sistema.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <vector>
@@ -15,10 +16,10 @@ int Carro::funcaoHash(string &renavam)
 
     for (char c : renavam)
     {
-        hash = hash * 31 + (c - '0');
+        hash = (hash * 31 + (c - '0')) % 101;
     }
 
-    return hash % 101;
+    return hash;
 }
 
 void Carro::montagemRenvamHash(vector<list<Carro *>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios)
@@ -933,13 +934,13 @@ void Carro::ExportarVeiculo(list<Usuario> &usuarios)
     }
 }
 
-void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash)
+void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro *>> &carrosHash)
 {
-    ifstream arquivoVeiculos("ArquivosVeiculos.txt");
+    ifstream arquivo("ArquivosVeiculos.txt");
 
-    if (!arquivoVeiculos.is_open())
+    if (!arquivo.is_open())
     {
-        cout << "Arquivo de veiculos nao encontrado ou erro ao abrir." << endl;
+        cout << "Erro ao abrir arquivo de veiculos." << endl;
         cout << endl;
 
         PAUSE;
@@ -947,135 +948,81 @@ void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro*>> &carrosHa
         return;
     }
 
-    // Evitar duplicação
-    for (auto usuario = usuarios.begin(); usuario != usuarios.end(); usuario++)
+    for (auto &lista : carrosHash)
     {
-        usuario->carros.clear();
+        lista.clear();
     }
 
     string linha;
-    string cpf_arquivo = "";
-
+    string cpf = "";
     Carro carro_temp;
 
-    bool dados_preenchidos = false;
-
-    while (getline(arquivoVeiculos, linha))
+    while (getline(arquivo, linha))
     {
-        // Linha vazia indica fim dos dados de um carro
         if (linha.empty())
         {
-            // Se o carro foi preenchido corretamente
-            if (dados_preenchidos)
+            if (!cpf.empty())
             {
-                // Apenas para conseguir chamar a Busca binaria dentro da classe Carro, pois essa função foi declarada na classe Usuario
-                Usuario usuario_auxiliar;
-                Usuario *usuario_encontrado = usuario_auxiliar.BuscaBinariaUsuarioPorCpf(usuarios, cpf_arquivo);
-
-                if (usuario_encontrado != nullptr)
+                for (auto &usuario : usuarios)
                 {
-                    usuario_encontrado->carros.push_back(carro_temp);
+                    if (usuario.getCpf() == cpf)
+                    {
+                        usuario.carros.push_back(carro_temp);
 
-                    Carro *novoCarro = &usuario_encontrado->carros.back();
+                        Carro *carroNovo = &usuario.carros.back();
 
-                    string renavam = novoCarro->getRenavam();
-                    int indice = funcaoHash(renavam);
+                        string renavam = carro_temp.getRenavam();
 
-                    carrosHash[indice].push_back(novoCarro);
+                        int indice = funcaoHash(renavam);
+
+                        carrosHash[indice].push_back(carroNovo);
+
+                        break;
+                    }
                 }
             }
 
             carro_temp = Carro();
-
-            cpf_arquivo = "";
-
-            dados_preenchidos = false;
-
+            cpf = "";
             continue;
         }
 
-        if (linha.rfind("CPF: ", 0) == 0)
+        if (linha.rfind("CPF:", 0) == 0)
         {
-            cpf_arquivo = linha.substr(5);
+            cpf = linha.substr(5);
         }
-
-        else if (linha.rfind("PLACA CINZA: ", 0) == 0)
-        {
-            carro_temp.setPlacaCinza(linha.substr(13));
-
-            dados_preenchidos = true;
-        }
-
-        else if (linha.rfind("PLACA MERCOSUL: ", 0) == 0)
-        {
-            carro_temp.setPlacaMercosul(linha.substr(16));
-
-            dados_preenchidos = true;
-        }
-
-        else if (linha.rfind("ANO: ", 0) == 0)
-        {
-            carro_temp.setAno(linha.substr(5));
-
-            dados_preenchidos = true;
-        }
-
-        else if (linha.rfind("COR: ", 0) == 0)
-        {
-            carro_temp.setCor(linha.substr(5));
-
-            dados_preenchidos = true;
-        }
-
-        else if (linha.rfind("MODELO: ", 0) == 0)
-        {
-            carro_temp.setModelo(linha.substr(8));
-
-            dados_preenchidos = true;
-        }
-
-        else if (linha.rfind("RENAVAM: ", 0) == 0)
+        else if (linha.rfind("RENAVAM:", 0) == 0)
         {
             carro_temp.setRenavam(linha.substr(9));
-
-            dados_preenchidos = true;
         }
-
-        else if (linha.rfind("DEBITOS: ", 0) == 0)
+        else if (linha.rfind("PLACA CINZA:", 0) == 0)
         {
-            carro_temp.setDebitos(stof(linha.substr(9)));
-
-            dados_preenchidos = true;
+            carro_temp.setPlacaCinza(linha.substr(13));
+        }
+        else if (linha.rfind("PLACA MERCOSUL:", 0) == 0)
+        {
+            carro_temp.setPlacaMercosul(linha.substr(16));
+        }
+        else if (linha.rfind("ANO:", 0) == 0)
+        {
+            carro_temp.setAno(linha.substr(5));
+        }
+        else if (linha.rfind("COR:", 0) == 0)
+        {
+            carro_temp.setCor(linha.substr(5));
+        }
+        else if (linha.rfind("MODELO:", 0) == 0)
+        {
+            carro_temp.setModelo(linha.substr(8));
         }
     }
 
-    // último carro do arquivo
-    if (dados_preenchidos)
-    {
-        // Apenas para conseguir chamar a Busca binaria dentro da classe Carro, pois essa função foi declarada na classe Usuario
-        Usuario usuario_auxiliar;
-        Usuario *usuario_encontrado = usuario_auxiliar.BuscaBinariaUsuarioPorCpf(usuarios, cpf_arquivo);
-
-        if (usuario_encontrado != nullptr)
-        {
-            usuario_encontrado->carros.push_back(carro_temp);
-
-            Carro *novoCarro = &usuario_encontrado->carros.back();
-
-            string renavam = novoCarro->getRenavam();
-            int indice = funcaoHash(renavam);
-
-            carrosHash[indice].push_back(novoCarro);
-        }
-    }
-
-    arquivoVeiculos.close();
+    arquivo.close();
 }
 
 void Carro::ExcluirVeiculos(list<Carro> &carros)
 {
     bool sair_excluir_veiculo = false;
-
     while (!sair_excluir_veiculo)
     {
         CLEAR;

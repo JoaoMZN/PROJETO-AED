@@ -1,4 +1,5 @@
 #include "usuarios.hpp"
+#include "sistema.hpp"
 #include "utils.hpp"
 #include "carro.hpp"
 #include <iostream>
@@ -773,7 +774,7 @@ void Usuario::ExportarUsuario(Usuario &usuarios)
     arquivoUsuarios.close();
 }
 
-void Usuario::LoadUsuario(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash)
+void Usuario::LoadUsuario(Sistema &sistema)
 {
     ifstream arquivosUsuarios("UsuarioCadastrados.txt");
 
@@ -853,8 +854,7 @@ void Usuario::LoadUsuario(list<Usuario> &usuarios, vector<list<Usuario*>> &usuar
 
         getline(arquivosUsuarios, linha);
 
-        usuarios.push_back(ler_usuario_temp);
-        ler_usuario_temp.montagemTabelaHash(usuarios, usuariosHash);
+        sistema.usuarios.push_back(ler_usuario_temp);
     }
 
     arquivosUsuarios.close();

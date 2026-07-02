@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "usuarios.hpp"
+#include "sistema.hpp"
 #include "carro.hpp"
 
 // algoritmo dbj2 para tabela hash
@@ -12,11 +13,11 @@ using namespace std;
 
 void MenuSair(Usuario *&usuario_logado);
 
-void MenuInicial(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash);
+void MenuInicial(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp);
 
 void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash, vector<list<Usuario*>> &usuariosHash);
 
-void MenuLogin(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Usuario*>> &usuariosHash, vector<list<Carro*>> &carrosHash);
+void MenuLogin(Usuario *&usuario_logado, Carro &carro_temp, Sistema &sistema);
 
 void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash);
 

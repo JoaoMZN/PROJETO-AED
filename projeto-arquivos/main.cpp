@@ -1,3 +1,4 @@
+#include "sistema.hpp"
 #include <list>
 #include <clocale>
 #include <vector>
@@ -10,17 +11,14 @@ int main()
 {
     setlocale(LC_ALL, "Portuguese_Brazil.1252");
 
-    list<Usuario> usuarios;
-    vector<list<Usuario*>> usuariosHash(101);
-    list<Carro> carros;
-    vector<list<Carro*>> carrosHash(101);
+    Sistema sistema;
     Usuario *usuario_logado = nullptr;
     Carro carro_temp;
 
     Usuario usuario_load;
-    usuario_load.LoadUsuario(usuarios, usuariosHash);
+    usuario_load.LoadUsuario(sistema);
 
-    Usuario *policial_existe = usuario_load.BuscaBinariaUsuarioPorCpf(usuarios, "11111111111");
+    Usuario *policial_existe = usuario_load.BuscaBinariaUsuarioPorCpf(sistema.usuarios, "11111111111");
 
     if (policial_existe == nullptr)
     {
@@ -29,12 +27,11 @@ int main()
         policial.setCpf("11111111111");
         policial.setEmail("policiarodoviaria@detran.com");
         policial.setSenha("policia");
-        usuarios.push_back(policial);
-        usuario_load.OdernaçãoPorInsercaoCpfUsuarios(usuarios);
-        usuario_load.montagemTabelaHash(usuarios, usuariosHash);
+        sistema.usuarios.push_back(policial);
+        usuario_load.OdernaçãoPorInsercaoCpfUsuarios(sistema.usuarios);
     }
 
-    MenuInicial(usuarios, usuario_logado, carro_temp, carros, usuariosHash, carrosHash);
+    MenuInicial(sistema, usuario_logado, carro_temp);
 
     return 0;
 }

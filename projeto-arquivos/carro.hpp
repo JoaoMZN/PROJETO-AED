@@ -1,5 +1,6 @@
 #pragma once
 
+#include "sistema.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
