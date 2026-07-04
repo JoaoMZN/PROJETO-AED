@@ -1,6 +1,6 @@
+#include "sistema.hpp"
 #include "carro.hpp"
 #include "usuarios.hpp"
-#include "sistema.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <vector>
@@ -22,20 +22,20 @@ int Carro::funcaoHash(string &renavam)
     return hash;
 }
 
-void Carro::montagemRenvamHash(vector<list<Carro *>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios)
+void Carro::montagemRenvamHash(Sistema &sistema)
 {
-    for (auto &lista : carrosHash)
+    for (auto &lista : sistema.carrosHash)
     {
         lista.clear();
     }
 
-    for (auto usuario = usuarios.begin(); usuario != usuarios.end(); usuario++)
+    for (auto usuario = sistema.usuarios.begin(); usuario != sistema.usuarios.end(); usuario++)
     {
         for (auto carro = usuario->carros.begin(); carro != usuario->carros.end(); carro++)
         {
             string renavam = carro->getRenavam();
             int indice = funcaoHash(renavam);
-            carrosHash[indice].push_back(&(*carro));
+            sistema.carrosHash[indice].push_back(&(*carro));
         }
     }
 }
@@ -764,16 +764,16 @@ void Carro::cadastrarRenavam(Carro &carro_temp)
     }
 }
 
-void Carro::OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros) // Ordenação dos usuarios por inserção, com base na Renavam do carro
+void Carro::OdernacaoPorInsercaoRenavamCarro(Sistema &sistema) // Ordenação dos usuarios por inserção, com base na Renavam do carro
 {
-    if (carros.size() <= 1)
+    if (sistema.carros.size() <= 1)
     {
         return;
     }
 
-    auto it = next(carros.begin());
+    auto it = next(sistema.carros.begin());
 
-    while (it != carros.end())
+    while (it != sistema.carros.end())
     {
         Carro Copia = *it; // guarda todos os dados da posição do ponteiro
 
@@ -781,23 +781,23 @@ void Carro::OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros) // Ordenaç�
         it++;
         auto posTrocar = atual;
 
-        while (posTrocar != carros.begin() &&
+        while (posTrocar != sistema.carros.begin() &&
                prev(posTrocar)->getRenavam() > Copia.getRenavam()) // checa apenas o anterior para ver se troca.
         {
             posTrocar--;
         }
 
-        carros.erase(atual); // apaga tudo da posição
+        sistema.carros.erase(atual); // apaga tudo da posição
 
-        carros.insert(posTrocar, Copia); // coloca na posição, e como se trata de lista, depois de inserido os valores se reorganizam automaticamente
+        sistema.carros.insert(posTrocar, Copia); // coloca na posição, e como se trata de lista, depois de inserido os valores se reorganizam automaticamente
     }
 }
 
-Carro *Carro::BuscarRenavamHash(vector<list<Carro *>> &carrosHash, string renavam)
+Carro *Carro::BuscarRenavamHash(Sistema &sistema, string renavam)
 {
     int indice = funcaoHash(renavam);
 
-    for (auto it = carrosHash[indice].begin(); it != carrosHash[indice].end(); it++)
+    for (auto it = sistema.carrosHash[indice].begin(); it != sistema.carrosHash[indice].end(); it++)
     {
         if ((*it)->getRenavam() == renavam)
         {
@@ -808,7 +808,7 @@ Carro *Carro::BuscarRenavamHash(vector<list<Carro *>> &carrosHash, string renava
     return nullptr;
 }
 
-bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp, vector<list<Carro *>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios)
+bool Carro::SalvarCarro(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp)
 {
     bool valido = true;
 
@@ -881,13 +881,12 @@ bool Carro::SalvarCarro(Usuario *usuario_logado, Carro &carro_temp, vector<list<
     }
 
     usuario_logado->carros.push_back(carro_temp);
-    carro_temp.montagemRenvamHash(carrosHash, carros, usuarios);
 
-    this->OdernaçãoPorInsercaoRenavamCarro(usuario_logado->carros); // Ordena a lista carro, com o carro que acabei de salvar
+    this->OdernacaoPorInsercaoRenavamCarro(sistema); // Ordena a lista carro, com o carro que acabei de salvar
     return true;
 }
 
-void Carro::ExportarVeiculo(list<Usuario> &usuarios)
+void Carro::ExportarVeiculo(Sistema &sistema)
 {
     CLEAR;
 
@@ -906,7 +905,7 @@ void Carro::ExportarVeiculo(list<Usuario> &usuarios)
     }
     else
     { // Aqui vamos Rescrever todas as informações no arquivo, não tendo erro de duplicada e sobscrita.
-        for (auto usuario = usuarios.begin(); usuario != usuarios.end(); usuario++)
+        for (auto usuario = sistema.usuarios.begin(); usuario != sistema.usuarios.end(); usuario++)
         {
             for (auto carro = usuario->carros.begin(); carro != usuario->carros.end(); carro++)
             {
@@ -934,7 +933,7 @@ void Carro::ExportarVeiculo(list<Usuario> &usuarios)
     }
 }
 
-void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro *>> &carrosHash)
+void Carro::LoadVeiculos(Sistema &sistema)
 {
     ifstream arquivo("ArquivosVeiculos.txt");
 
@@ -948,7 +947,7 @@ void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro *>> &carrosH
         return;
     }
 
-    for (auto &lista : carrosHash)
+    for (auto &lista : sistema.carrosHash)
     {
         lista.clear();
     }
@@ -963,7 +962,7 @@ void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro *>> &carrosH
         {
             if (!cpf.empty())
             {
-                for (auto &usuario : usuarios)
+                for (auto &usuario : sistema.usuarios)
                 {
                     if (usuario.getCpf() == cpf)
                     {
@@ -975,7 +974,7 @@ void Carro::LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro *>> &carrosH
 
                         int indice = funcaoHash(renavam);
 
-                        carrosHash[indice].push_back(carroNovo);
+                        sistema.carrosHash[indice].push_back(carroNovo);
 
                         break;
                     }
@@ -1152,7 +1151,7 @@ void Carro::ExcluirVeiculos(list<Carro> &carros)
     }
 }
 
-void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios)
+void Carro::AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp)
 {
     bool sair_alterar_veiculo = false;
 
@@ -1192,7 +1191,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
             }
         }
 
-        for (auto it = carros.begin(); it != carros.end(); it++)
+        for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
         {
             if (alterar_veiculo == it->getPlacaCinza() ||
                 alterar_veiculo == it->getPlacaMercosul() ||
@@ -1239,7 +1238,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
                         cadastrarPlacaCinza(*it);
                         it->setPlacaMercosul("");
 
-                        ExportarVeiculo(usuarios);
+                        ExportarVeiculo(sistema);
 
                         cout << endl;
                         cout << "Nova PLACA CINZA registrada com sucesso!" << endl;
@@ -1258,7 +1257,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
                         cadastrarPlacaMercosul(*it);
                         it->setPlacaCinza("");
 
-                        ExportarVeiculo(usuarios);
+                        ExportarVeiculo(sistema);
 
                         cout << endl;
                         cout << "Nova PLACA MERCOSUL registrada com sucesso!" << endl;
@@ -1276,7 +1275,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
                     {
                         cadastrarAno(*it);
 
-                        ExportarVeiculo(usuarios);
+                        ExportarVeiculo(sistema);
 
                         cout << endl;
                         cout << "Novo ANO registrado com sucesso!" << endl;
@@ -1294,7 +1293,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
                     {
                         cadastrarCor(*it);
 
-                        ExportarVeiculo(usuarios);
+                        ExportarVeiculo(sistema);
 
                         cout << endl;
                         cout << "Nova COR registrada com sucesso!" << endl;
@@ -1312,7 +1311,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
                     {
                         cadastrarModelo(*it);
 
-                        ExportarVeiculo(usuarios);
+                        ExportarVeiculo(sistema);
 
                         cout << endl;
                         cout << "Novo MODELO registrado com sucesso!" << endl;
@@ -1370,7 +1369,7 @@ void Carro::AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Us
     }
 }
 
-void Carro::Multas(list<Carro> &carros) // nao acabado
+void Carro::Multas(Sistema &sistema) // nao acabado
 {
     bool menu_multas = true;
 
@@ -1430,9 +1429,9 @@ void Carro::Multas(list<Carro> &carros) // nao acabado
 
                 bool achou = false;
 
-                auto it = carros.begin();
+                auto it = sistema.carros.begin();
 
-                for (auto i = it; i != carros.end(); i++)
+                for (auto i = it; i != sistema.carros.end(); i++)
                 {
                     if (multa_placa_temp == it->getPlacaCinza() || multa_placa_temp == it->getPlacaMercosul())
                     {
@@ -1494,7 +1493,7 @@ void Carro::Multas(list<Carro> &carros) // nao acabado
     }
 }
 
-void Carro::GerarCrlv(list<Carro> &carros, Usuario *usuario_logado)
+void Carro::GerarCrlv(Sistema &sistema, Usuario *usuario_logado)
 {
     bool sair_gerar_crlv = false;
 
@@ -1544,7 +1543,7 @@ void Carro::GerarCrlv(list<Carro> &carros, Usuario *usuario_logado)
 
         bool encontrou_veiculo = false;
 
-        for (auto it = carros.begin(); it != carros.end(); it++)
+        for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
         {
             if (gerar_crlv == it->getPlacaCinza() ||
                 gerar_crlv == it->getPlacaMercosul() ||
@@ -1604,7 +1603,7 @@ void Carro::GerarCrlv(list<Carro> &carros, Usuario *usuario_logado)
     }
 }
 
-void Carro::ExportarCrlv(list<Carro> &carros, Usuario *usuario_logado)
+void Carro::ExportarCrlv(Sistema &sistema, Usuario *usuario_logado)
 {
     bool sair_exportar_crlv = false;
 
@@ -1654,7 +1653,7 @@ void Carro::ExportarCrlv(list<Carro> &carros, Usuario *usuario_logado)
 
         bool encontrou_veiculo = false;
 
-        for (auto it = carros.begin(); it != carros.end(); it++)
+        for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
         {
             if (exportar_crlv == it->getPlacaCinza() ||
                 exportar_crlv == it->getPlacaMercosul() ||
@@ -1742,7 +1741,7 @@ void Carro::ExportarCrlv(list<Carro> &carros, Usuario *usuario_logado)
     }
 }
 
-void Carro::ListarVeiculos_CRLV(list<Carro> &carros)
+void Carro::ListarVeiculos_CRLV(Sistema &sistema)
 {
     bool sair_listar_veiculos_crlv = false;
 
@@ -1755,7 +1754,7 @@ void Carro::ListarVeiculos_CRLV(list<Carro> &carros)
         cout << endl;
 
         // LOGICA DE CHECAR SE TEM ALGUM VEICULO
-        if (carros.empty())
+        if (sistema.carros.empty())
         {
             cout << endl;
             cout << "Nenhum VEICULO foi registrado!" << endl;
@@ -1772,7 +1771,7 @@ void Carro::ListarVeiculos_CRLV(list<Carro> &carros)
         {
             int contador = 1;
             // MOSTRAR TODOS OS CARROS
-            for (auto it = carros.begin(); it != carros.end(); it++)
+            for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
             {
                 cout << endl;
                 cout << "-----------------------------------CARRO " << contador << "--------------------------------------" << endl;
@@ -1894,7 +1893,7 @@ void Carro::LoadVeiculosPolicia(Usuario *usuario_logado)
     }
 }
 
-void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios, vector<list<Carro *>> &carrosHash) // nao acabado
+void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acabado
 {
     bool menu_multa_renavam = true;
 
@@ -1933,7 +1932,7 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usua
 
         int indice = funcaoHash(multa_renavam);
 
-        for (auto it = carrosHash[indice].begin(); it != carrosHash[indice].end(); it++)
+        for (auto it = sistema.carrosHash[indice].begin(); it != sistema.carrosHash[indice].end(); it++)
         {
             if ((*it)->getRenavam() == multa_renavam)
             {
@@ -1972,7 +1971,7 @@ void Carro::MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usua
 
                 Usuario usuario_auxiliar;
 
-                Usuario *usuario_multado = usuario_auxiliar.BuscaBinariaUsuarioPorCpf(usuarios, (*it)->getCpfDono());
+                Usuario *usuario_multado = usuario_auxiliar.BuscaBinariaUsuarioPorCpf(sistema, (*it)->getCpfDono());
 
                 if (usuario_multado == nullptr)
                 {

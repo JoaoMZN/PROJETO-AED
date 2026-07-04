@@ -15,22 +15,22 @@ void MenuSair(Usuario *&usuario_logado);
 
 void MenuInicial(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp);
 
-void MenuCadastrarUsuario(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash, vector<list<Usuario*>> &usuariosHash);
+void MenuCadastrarUsuario(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp);
 
 void MenuLogin(Usuario *&usuario_logado, Carro &carro_temp, Sistema &sistema);
 
-void MenuPrincipal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros, vector<list<Carro*>> &carrosHash);
+void MenuPrincipal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuNormal(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, vector<list<Carro*>> &carrosHash, list<Carro> &carros);
+void MenuNormal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuPolicial(Usuario *&usuario_logado, list<Usuario> &usuarios, list<Carro> &carros, Carro &carro_temp, vector<list<Carro*>> &carrosHash);
+void MenuPolicial(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuRegistroVeiculo(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, vector<list<Carro*>> &carrosHash, list<Carro> &carros);
+void MenuRegistroVeiculo(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuChecarVeiculos(list<Usuario> &usuarios, Usuario *&usuario_logado, Carro &carro_temp, list<Carro> &carros);
+void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuCRLV(Usuario *&usuario_logado, Carro &carro_temp);
+void MenuCRLV(Sistema &sistema ,Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuAplicarMulta(list<Carro> &carros, Usuario *usuario_logado, Carro &carro_temp, list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash);
+void MenuAplicarMulta(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp);
 
-void MenuChecarCnh(list<Usuario> &usuarios, Usuario *&usuario_logado);
+void MenuChecarCnh(Sistema &sistema, Usuario *&usuario_logado);

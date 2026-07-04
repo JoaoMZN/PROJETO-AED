@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -17,22 +17,17 @@ class Usuario
 private:
     string nome, cpf, email, senha;
 
-    int funcaoHash(const string &cpf);
-
-    
-    protected:
+protected:
     int pontos;
-    
+
     int multas_leves, multas_medias, multas_graves, multas_gravissimas;
 
-    public:
+public:
     list<Carro> carros;
     list<Carro>::iterator carrosIT;
-    
-    void montagemTabelaHash(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash);
-    
+
     Usuario();
-    
+
     void setNome(string n);
     string getNome();
 
@@ -63,26 +58,23 @@ private:
     void setDebitos(float d);
     float getDebitos() const;
 
-    void cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios);
+    void cadastrarCPF(Sistema &sistema, Usuario &usuario_temp);
 
     void cadastrarNome(Usuario &usuario_temp);
 
-    void cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios);
+    void cadastrarEmail(Sistema &sistema, Usuario &usuario_temp);
 
     void cadastrarSenha(Usuario &usuario_temp);
 
-    void OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios);
+    void OdernacaoPorInsercaoCpfUsuarios(Sistema &sistema);
 
-    Usuario *BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf);
+    Usuario *BuscaBinariaUsuarioPorCpf(Sistema &sistema, string cpf);
 
-    Usuario *BuscaCpfHash(vector<list<Usuario*>> &usuariosHash, string &cpf);
-
-    bool SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp, vector<list<Usuario*>> &usuariosHash);
+    bool SalvarUsuario(Sistema &sistema, Usuario &usuario_temp);
 
     void ExportarUsuario(Usuario &usuarios);
 
     void LoadUsuario(Sistema &sistema);
 
-    void ChecagemCnh(list<Usuario> &usuarios);
-
+    void ChecagemCnh(Sistema &sistema);
 };

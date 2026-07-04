@@ -18,11 +18,11 @@ private:
     string renavam, status_crlv;
     string nome_dono, cpf_dono;
     bool multa = false;
-    float debitos;
+    float debitos = 0.0;
 
     int funcaoHash(string &renavam);
 
-    void montagemRenvamHash(vector<list<Carro*>> &carroshash, list<Carro> &carros, list<Usuario> &usuarios);
+    void montagemRenvamHash(Sistema &sistema);
 
 public:
     Carro();
@@ -74,29 +74,29 @@ public:
 
     void cadastrarRenavam(Carro &carro_temp);
 
-    void OdernaçãoPorInsercaoRenavamCarro(list<Carro> &carros);
+    void OdernacaoPorInsercaoRenavamCarro(Sistema &sistema);
 
-    Carro *BuscarRenavamHash(vector<list<Carro*>> &carrosHash, string renavam);
+    Carro *BuscarRenavamHash(Sistema &sistema, string renavam);
 
-    bool SalvarCarro(Usuario *usuario_logado, Carro &carro_temp, vector<list<Carro*>> &carrosHash, list<Carro> &carros, list<Usuario> &usuarios);
+    bool SalvarCarro(Sistema &sistema ,Usuario *usuario_logado, Carro &carro_temp);
 
-    void ExportarVeiculo(list<Usuario> &usuarios);
+    void ExportarVeiculo(Sistema &sistema);
 
-    void LoadVeiculos(list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash);
+    void LoadVeiculos(Sistema &sistema);
 
     void ExcluirVeiculos(list<Carro> &carros);
 
-    void AlterarVeiculo(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios);
+    void AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp);
 
-    void Multas(list<Carro> &carros);
+    void Multas(Sistema &sistema);
 
-    void GerarCrlv(list<Carro> &carros, Usuario *usuario_logado);
+    void GerarCrlv(Sistema &sistema, Usuario *usuario_logado);
 
-    void ExportarCrlv(list<Carro> &carros, Usuario *usuario_logado);
+    void ExportarCrlv(Sistema &sistema, Usuario *usuario_logado);
 
-    void ListarVeiculos_CRLV(list<Carro> &carros);
+    void ListarVeiculos_CRLV(Sistema &sistema);
 
     void LoadVeiculosPolicia(Usuario *usuario_logado);
 
-    void MultaRenavam(list<Carro> &carros, Usuario *usuario_logado, list<Usuario> &usuarios, vector<list<Carro*>> &carrosHash);
+    void MultaRenavam(Sistema &sistema, Usuario *usuario_logado);
 };

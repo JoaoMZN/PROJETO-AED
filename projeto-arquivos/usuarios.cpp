@@ -6,33 +6,6 @@
 #include <list>
 #include <vector>
 
-int Usuario::funcaoHash(const string &cpf)
-{
-    int hash = 0;
-
-    for (char c : cpf)
-    {
-        // usado para transformar no codigo ASCII, ou seja, tranformar em um inteiro
-        hash = hash * 31 + (c - '0'); // multiplica por 31 pois e algo comum a se fazer
-    }
-
-    return abs((int)(hash % 101)); // para dar mais usuarios por linha, esperado muitos usuarios
-}
-
-void Usuario::montagemTabelaHash(list<Usuario> &usuarios, vector<list<Usuario*>> &usuariosHash)
-{ // copia da lista de usuarios, para poder colocar hash de maneira mais simples e eficiente
-    for (auto &lista : usuariosHash) // evita duplicacao nao tabela hash
-    {
-        lista.clear();
-    }
-
-    for (auto it = usuarios.begin(); it != usuarios.end(); it++)
-    {
-        int indice = funcaoHash(it->getCpf());
-
-        usuariosHash[indice].push_back(&*it);
-    }
-}
 
 Usuario::Usuario()
 { // construtor
@@ -125,7 +98,7 @@ int Usuario::getMultasGravissimas() const
     return this->multas_gravissimas;
 }
 
-void Usuario::cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
+void Usuario::cadastrarCPF(Sistema &sistema ,Usuario &usuario_temp)
 {
     CLEAR;
 
@@ -177,7 +150,7 @@ void Usuario::cadastrarCPF(Usuario &usuario_temp, list<Usuario> &usuarios)
         // CHECA SE O CPF JA ESTA CADASTRADO
         bool cpf_registrado = false;
 
-        for (auto it = usuarios.begin(); it != usuarios.end(); it++)
+        for (auto it = sistema.usuarios.begin(); it != sistema.usuarios.end(); it++)
         {
             if (it->getCpf() == cpf_novo_temp)
             {
@@ -359,7 +332,7 @@ void Usuario::cadastrarNome(Usuario &usuario_temp)
     }
 }
 
-void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
+void Usuario::cadastrarEmail(Sistema &sistema, Usuario &usuario_temp)
 {
     CLEAR;
 
@@ -417,7 +390,7 @@ void Usuario::cadastrarEmail(Usuario &usuario_temp, list<Usuario> &usuarios)
         // CHECA SE O EMAIL JA FOI REGISTRADO
         bool email_registrado = false;
 
-        for (auto it = usuarios.begin(); it != usuarios.end(); it++)
+        for (auto it = sistema.usuarios.begin(); it != sistema.usuarios.end(); it++)
         {
             if (it->getEmail() == email_novo_temp)
             {
@@ -613,16 +586,16 @@ void Usuario::cadastrarSenha(Usuario &usuario_temp)
     }
 }
 
-void Usuario::OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios) // Ordenação dos usuarios por inserção, com base no cpf de cada usuario
+void Usuario::OdernacaoPorInsercaoCpfUsuarios(Sistema &sistema) // Ordenação dos usuarios por inserção, com base no cpf de cada usuario
 {
-    if (usuarios.size() == 1)
+    if (sistema.usuarios.size() == 1)
     {
         return;
     }
 
-    auto it = next(usuarios.begin());
+    auto it = next(sistema.usuarios.begin());
 
-    while (it != usuarios.end())
+    while (it != sistema.usuarios.end())
     {
         Usuario Copia = *it; // guarda todos os dados da posição do ponteiro
 
@@ -630,30 +603,30 @@ void Usuario::OdernaçãoPorInsercaoCpfUsuarios(list<Usuario> &usuarios) // Orde
         it++;
         auto posTrocar = atual;
 
-        while (posTrocar != usuarios.begin() &&
+        while (posTrocar != sistema.usuarios.begin() &&
                prev(posTrocar)->getCpf() > Copia.getCpf()) // checa apenas o anterior para ver se troca.
         {
             posTrocar--;
         }
         if (posTrocar != atual) // Executa apenas se precisar de troca
         {
-            usuarios.erase(atual); // apaga tudo da posição
+            sistema.usuarios.erase(atual); // apaga tudo da posição
 
-            usuarios.insert(posTrocar, Copia); // coloca na posição, e como se trata de lista, depois de inserido os valores se reorganizam automaticamente
+            sistema.usuarios.insert(posTrocar, Copia); // coloca na posição, e como se trata de lista, depois de inserido os valores se reorganizam automaticamente
         }
     }
 }
 
-Usuario *Usuario::BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf) // Retorna um endereço que será convertido nos valores do usuario encontrado
+Usuario *Usuario::BuscaBinariaUsuarioPorCpf(Sistema &sistema, string cpf) // Retorna um endereço que será convertido nos valores do usuario encontrado
 {
     int inicio = 0;
-    int fim = usuarios.size() - 1;
+    int fim = sistema.usuarios.size() - 1;
 
     while (inicio <= fim)
     {
         int meio = (inicio + fim) / 2;
 
-        auto it = usuarios.begin();
+        auto it = sistema.usuarios.begin();
         advance(it, meio);
 
         if (it->getCpf() == cpf)
@@ -673,22 +646,7 @@ Usuario *Usuario::BuscaBinariaUsuarioPorCpf(list<Usuario> &usuarios, string cpf)
     return nullptr;
 }
 
-Usuario *Usuario::BuscaCpfHash(vector<list<Usuario*>> &usuariosHash, string &cpf)
-{
-    int indice = funcaoHash(cpf);
-
-    for (auto it = usuariosHash[indice].begin(); it != usuariosHash[indice].end(); it++)
-    {
-        if ((*it)->getCpf() == cpf)
-        {
-            return *it;
-        }
-    }
-
-    return nullptr;
-}
-
-bool Usuario::SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp, vector<list<Usuario*>> &usuariosHash)
+bool Usuario::SalvarUsuario(Sistema &sistema, Usuario &usuario_temp)
 {
     bool valido = true;
 
@@ -734,9 +692,8 @@ bool Usuario::SalvarUsuario(list<Usuario> &usuarios, Usuario &usuario_temp, vect
         return false;
     }
 
-    usuarios.push_back(usuario_temp);
-    OdernaçãoPorInsercaoCpfUsuarios(usuarios); // Ordena nossa lista já incluindo o novo usuario.
-    usuario_temp.montagemTabelaHash(usuarios, usuariosHash);
+    sistema.usuarios.push_back(usuario_temp);
+    OdernacaoPorInsercaoCpfUsuarios(sistema); // Ordena nossa lista já incluindo o novo usuario.
     return true;
 }
 
@@ -860,7 +817,7 @@ void Usuario::LoadUsuario(Sistema &sistema)
     arquivosUsuarios.close();
 }
 
-void Usuario::ChecagemCnh(list<Usuario> &usuarios)
+void Usuario::ChecagemCnh(Sistema &sistema)
 {
     bool menu_cnh = true;
 
@@ -889,7 +846,7 @@ void Usuario::ChecagemCnh(list<Usuario> &usuarios)
             }
         }
 
-        Usuario *usuarioEncontrado = BuscaBinariaUsuarioPorCpf(usuarios, cnh); // Ponteiro de classe usuario que retornara o endereço do atributo cpf, caso exista
+        Usuario *usuarioEncontrado = BuscaBinariaUsuarioPorCpf(sistema, cnh); // Ponteiro de classe usuario que retornara o endereço do atributo cpf, caso exista
 
         if (usuarioEncontrado != nullptr)
         {

@@ -18,7 +18,7 @@ int main()
     Usuario usuario_load;
     usuario_load.LoadUsuario(sistema);
 
-    Usuario *policial_existe = usuario_load.BuscaBinariaUsuarioPorCpf(sistema.usuarios, "11111111111");
+    Usuario *policial_existe = usuario_load.BuscaBinariaUsuarioPorCpf(sistema, "11111111111");
 
     if (policial_existe == nullptr)
     {
@@ -28,7 +28,7 @@ int main()
         policial.setEmail("policiarodoviaria@detran.com");
         policial.setSenha("policia");
         sistema.usuarios.push_back(policial);
-        usuario_load.OdernaçãoPorInsercaoCpfUsuarios(sistema.usuarios);
+        usuario_load.OdernacaoPorInsercaoCpfUsuarios(sistema);
     }
 
     MenuInicial(sistema, usuario_logado, carro_temp);
