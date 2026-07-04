@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void MenuSair(Usuario *&usuario_logado);
+void MenuSair();
 
 void MenuInicial(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp);
 

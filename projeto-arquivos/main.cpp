@@ -12,6 +12,8 @@ int main()
     setlocale(LC_ALL, "Portuguese_Brazil.1252");
 
     Sistema sistema;
+    sistema.carrosHash.resize(101);
+
     Usuario *usuario_logado = nullptr;
     Carro carro_temp;
 

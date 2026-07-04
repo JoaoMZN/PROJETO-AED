@@ -12,63 +12,21 @@
 
 using namespace std;
 
-void MenuSair(Usuario *&usuario_logado)
+void MenuSair()
 {
     CLEAR;
 
-    if (usuario_logado == nullptr)
-    {
-        cout << "SAIR!" << endl;
-        cout << endl;
-        PAUSE;
+    cout << "SAIR!" << endl;
+    cout << endl;
+    PAUSE;
 
-        return;
-    }
-    else
-    {
-        ofstream arquivosVeiculosSistema("ArquivosVeiculosSistema.txt", ios::app);
-
-        if (!arquivosVeiculosSistema.is_open())
-        {
-            cout << endl;
-            cout << "ERRO ao abrir o arquivo!" << endl;
-            cout << endl;
-            PAUSE;
-            return;
-        }
-
-        for (auto it = usuario_logado->carros.begin(); it != usuario_logado->carros.end(); it++)
-        {
-            arquivosVeiculosSistema << "NOME: " << usuario_logado->getNome() << endl;
-            arquivosVeiculosSistema << "CPF: " << usuario_logado->getCpf() << endl;
-
-            if (!it->getPlacaCinza().empty())
-                arquivosVeiculosSistema << "PLACA CINZA: " << it->getPlacaCinza() << endl;
-            else if (!it->getPlacaMercosul().empty())
-                arquivosVeiculosSistema << "PLACA MERCOSUL: " << it->getPlacaMercosul() << endl;
-
-            arquivosVeiculosSistema << "ANO: " << it->getAno() << endl;
-            arquivosVeiculosSistema << "COR: " << it->getCor() << endl;
-            arquivosVeiculosSistema << "MODELO: " << it->getModelo() << endl;
-            arquivosVeiculosSistema << "RENAVAM: " << it->getRenavam() << endl;
-            arquivosVeiculosSistema << endl;
-        }
-
-        arquivosVeiculosSistema.close();
-
-        // remove("ArquivoVeiculosTemp.txt");
-
-        cout << "SAIR!" << endl;
-        cout << endl;
-
-        PAUSE;
-
-        exit(0);
-    }
+    exit(0);
 }
 
 void MenuInicial(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp)
 {
+    carro_temp.LoadVeiculos(sistema);
+
     while (true)
     {
         CLEAR;
@@ -300,15 +258,6 @@ void MenuLogin(Usuario *&usuario_logado, Carro &carro_temp, Sistema &sistema)
 
                         usuario_logado = usuario_login;
 
-                        if (usuario_logado->getCpf() != "11111111111")
-                        {
-                            carro_temp.LoadVeiculos(sistema);
-                        }
-                        else
-                        {
-                            carro_temp.LoadVeiculosPolicia(usuario_logado);
-                        }
-
                         MenuPrincipal(sistema, usuario_logado, carro_temp);
 
                         break;
@@ -452,7 +401,7 @@ void MenuPrincipal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp
     }
     else
     {
-        MenuPolicial(sistema ,usuario_logado, carro_temp);
+        MenuPolicial(sistema, usuario_logado, carro_temp);
     }
 }
 
@@ -493,11 +442,6 @@ void MenuNormal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
         }
         case 2:
         {
-            cout << "carros: " << sistema.carros.size() << endl;
-            cout << "usuario_logado->carros: " << usuario_logado->carros.size() << endl;
-
-            PAUSE;
-
             MenuChecarVeiculos(sistema, usuario_logado, carro_temp);
 
             break;
@@ -808,9 +752,7 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
 
         int contador = 1;
 
-        auto it = sistema.carros.begin();
-
-        for (; it != sistema.carros.end(); it++)
+        for (auto it = usuario_logado->carros.begin(); it != usuario_logado->carros.end(); it++)
         {
             cout << contador << " - ";
             if (!it->getPlacaCinza().empty())
@@ -823,22 +765,28 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             }
             cout << it->getModelo() << endl;
 
+            cout << endl;
+
             contador++;
         }
 
-        it = sistema.carros.begin();
+        auto it = usuario_logado->carros.begin();
+
+        cout << endl;
 
         cout << "Escolha o carro que deseja alterar: ";
         int escolha = 0;
         cin >> escolha;
         cout << endl;
 
-        for (int i = 1; i < escolha && it != sistema.carros.end(); i++)
+        for (int i = 1; i < escolha && it != usuario_logado->carros.end(); i++)
         {
             it++;
         }
 
-        if (it == sistema.carros.end())
+        CLEAR;
+
+        if (it == usuario_logado->carros.end())
         {
             cout << "Carro invalido!" << endl;
 
@@ -950,7 +898,7 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
     }
 }
 
-void MenuCRLV(Sistema &sistema,Usuario *&usuario_logado, Carro &carro_temp)
+void MenuCRLV(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
 {
     // GERAR CRLV
     bool sair_crlv = false;

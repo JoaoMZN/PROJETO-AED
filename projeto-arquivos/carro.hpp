@@ -96,7 +96,5 @@ public:
 
     void ListarVeiculos_CRLV(Sistema &sistema);
 
-    void LoadVeiculosPolicia(Usuario *usuario_logado);
-
     void MultaRenavam(Sistema &sistema, Usuario *usuario_logado);
 };

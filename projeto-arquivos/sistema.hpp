@@ -1,4 +1,4 @@
-#pragma onde 
+#pragma once 
 #include <list> 
 #include <vector>
 

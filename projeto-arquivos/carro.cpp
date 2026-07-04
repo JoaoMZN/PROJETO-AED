@@ -888,8 +888,6 @@ bool Carro::SalvarCarro(Sistema &sistema, Usuario *usuario_logado, Carro &carro_
 
 void Carro::ExportarVeiculo(Sistema &sistema)
 {
-    CLEAR;
-
     // AQUI NAO PODE COLOCAR COMO APPEND, POIS CASO O USUARIOS MODIFIQUE ALGUMA COISA NO CARRO, ELE SALVA DOIS CARROS E NAO FAZ A ALTERACAO NESCESSARIA
     ofstream arquivoVeiculos("ArquivoVeiculos.txt");
 
@@ -935,17 +933,18 @@ void Carro::ExportarVeiculo(Sistema &sistema)
 
 void Carro::LoadVeiculos(Sistema &sistema)
 {
-    ifstream arquivo("ArquivosVeiculos.txt");
+    ifstream arquivo("ArquivoVeiculos.txt");
 
     if (!arquivo.is_open())
     {
         cout << "Erro ao abrir arquivo de veiculos." << endl;
         cout << endl;
-
         PAUSE;
-
         return;
     }
+
+    // Limpa os dados atuais
+    sistema.carros.clear();
 
     for (auto &lista : sistema.carrosHash)
     {
@@ -953,46 +952,31 @@ void Carro::LoadVeiculos(Sistema &sistema)
     }
 
     string linha;
-    string cpf = "";
     Carro carro_temp;
 
     while (getline(arquivo, linha))
     {
         if (linha.empty())
         {
-            if (!cpf.empty())
+            if (!carro_temp.getRenavam().empty())
             {
-                for (auto &usuario : sistema.usuarios)
-                {
-                    if (usuario.getCpf() == cpf)
-                    {
-                        usuario.carros.push_back(carro_temp);
+                sistema.carros.push_back(carro_temp);
 
-                        Carro *carroNovo = &usuario.carros.back();
+                Carro *novoCarro = &sistema.carros.back();
+                
+                string renavam = novoCarro->getRenavam();
 
-                        string renavam = carro_temp.getRenavam();
-
-                        int indice = funcaoHash(renavam);
-
-                        sistema.carrosHash[indice].push_back(carroNovo);
-
-                        break;
-                    }
-                }
+                int indice = funcaoHash(renavam);
+                sistema.carrosHash[indice].push_back(novoCarro);
             }
 
             carro_temp = Carro();
-            cpf = "";
             continue;
         }
 
         if (linha.rfind("CPF:", 0) == 0)
         {
-            cpf = linha.substr(5);
-        }
-        else if (linha.rfind("RENAVAM:", 0) == 0)
-        {
-            carro_temp.setRenavam(linha.substr(9));
+            carro_temp.setCpfDono(linha.substr(5));
         }
         else if (linha.rfind("PLACA CINZA:", 0) == 0)
         {
@@ -1014,6 +998,26 @@ void Carro::LoadVeiculos(Sistema &sistema)
         {
             carro_temp.setModelo(linha.substr(8));
         }
+        else if (linha.rfind("RENAVAM:", 0) == 0)
+        {
+            carro_temp.setRenavam(linha.substr(9));
+        }
+        else if (linha.rfind("DEBITOS:", 0) == 0)
+        {
+            carro_temp.setDebitos(stof(linha.substr(9)));
+        }
+    }
+
+    if (!carro_temp.getRenavam().empty())
+    {
+        sistema.carros.push_back(carro_temp);
+
+        Carro *novoCarro = &sistema.carros.back();
+
+        string renavam = novoCarro->getRenavam();
+        int indice = funcaoHash(renavam);
+
+        sistema.carrosHash[indice].push_back(novoCarro);
     }
 
     arquivo.close();
@@ -1809,87 +1813,6 @@ void Carro::ListarVeiculos_CRLV(Sistema &sistema)
         PAUSE;
 
         sair_listar_veiculos_crlv = true;
-    }
-}
-
-void Carro::LoadVeiculosPolicia(Usuario *usuario_logado)
-{
-    ifstream arquivosVeiculosSistema("arquivosVeiculosSistema.txt");
-
-    if (!arquivosVeiculosSistema.is_open())
-    {
-        cout << "Arquivo de veiculos nao encontrado ou erro ao abrir." << endl;
-        cout << endl;
-
-        PAUSE;
-
-        return;
-    }
-
-    usuario_logado->carros.clear();
-
-    string linha;
-
-    Carro carro_temp;
-
-    while (getline(arquivosVeiculosSistema, linha))
-    {
-        // SE A LINHA ESTIVER VAZIA INDICA O FIM DOS DADOS DE UM CARRO, LOGO TERA OUTRO CARRO
-        if (linha.empty())
-        {
-            usuario_logado->carros.push_back(carro_temp);
-
-            // RESETA AS VARIAVEIS PARA O PROXIMO CARRO DO ARQUIVO CASO NAO SEJA ESSE
-            carro_temp = Carro();
-
-            continue;
-        }
-
-        // VERIFICA O NOME
-        if (linha.rfind("NOME: ", 0) == 0)
-        {
-            carro_temp.setNomeDono(linha.substr(6));
-        }
-
-        else if (linha.rfind("CPF: ", 0) == 0)
-        {
-            carro_temp.setCpfDono(linha.substr(5));
-        }
-
-        else if (linha.rfind("PLACA CINZA: ", 0) == 0)
-        {
-            carro_temp.setPlacaCinza(linha.substr(13));
-        }
-
-        else if (linha.rfind("PLACA MERCOSUL: ", 0) == 0)
-        {
-            carro_temp.setPlacaMercosul(linha.substr(16));
-        }
-
-        else if (linha.rfind("ANO: ", 0) == 0)
-        {
-            carro_temp.setAno(linha.substr(5));
-        }
-
-        else if (linha.rfind("COR: ", 0) == 0)
-        {
-            carro_temp.setCor(linha.substr(5));
-        }
-
-        else if (linha.rfind("MODELO: ", 0) == 0)
-        {
-            carro_temp.setModelo(linha.substr(8));
-        }
-
-        else if (linha.rfind("RENAVAM: ", 0) == 0)
-        {
-            carro_temp.setRenavam(linha.substr(9));
-        }
-    }
-
-    if (carro_temp.getPlacaCinza() != "") // logica para ter certeza de que serao salvos todos os veiculos
-    {
-        usuario_logado->carros.push_back(carro_temp);
     }
 }
 
