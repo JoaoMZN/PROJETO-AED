@@ -59,7 +59,7 @@ void MenuInicial(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp)
         }
         case 3:
         {
-            MenuSair(usuario_logado);
+            MenuSair();
             return;
         }
         default:
@@ -454,7 +454,7 @@ void MenuNormal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
         }
         case 4:
         {
-            MenuSair(usuario_logado);
+            MenuSair();
         }
         default:
         {
@@ -501,7 +501,7 @@ void MenuPolicial(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
         }
         case 3:
         {
-            MenuSair(usuario_logado);
+            MenuSair();
             return;
         }
         default:
