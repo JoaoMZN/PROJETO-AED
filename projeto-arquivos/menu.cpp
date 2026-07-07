@@ -357,13 +357,13 @@ void MenuCadastrarUsuario(Sistema &sistema, Usuario *usuario_logado, Carro &carr
         {
             if (usuario_temp.SalvarUsuario(sistema, usuario_temp))
             {
-                usuario_temp.ExportarUsuario(usuario_temp);
+                usuario_temp.ExportarUsuario(sistema);
                 cout << endl
                      << "Usuario CADASTRADO com sucesso!" << endl;
 
                 PAUSE;
-                string cpf = usuario_logado->getCpf();
 
+                string cpf = usuario_temp.getCpf();
                 usuario_logado = usuario_temp.BuscaBinariaUsuarioPorCpf(sistema, cpf);
                 sair = true;
 

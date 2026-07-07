@@ -181,8 +181,6 @@ void Carro::cadastrarPlacaCinza(Carro &carro_temp)
         {
             if (RetornarAoMenuDeRegistro())
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                 placa_cinza_temp = "";
 
                 // SE ELE QUISER VOLTAR RETORNA, MAS NAO UM VALOR INTEIRO POR ESTAR EM UM VOID E OS VOIDS NAO RETORNAM NADA
@@ -190,8 +188,6 @@ void Carro::cadastrarPlacaCinza(Carro &carro_temp)
             }
             else
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
                 placa_cinza_temp = "";
 
                 // CONITNUA NA LOGICA DE ANO
@@ -986,7 +982,11 @@ void Carro::LoadVeiculos(Sistema &sistema)
             continue;
         }
 
-        if (linha.rfind("CPF:", 0) == 0)
+        if (linha.rfind("NOME: ", 0) == 0)
+        {
+            carro_temp.setNomeDono(linha.substr(6));
+        }
+        else if (linha.rfind("CPF:", 0) == 0)
         {
             carro_temp.setCpfDono(linha.substr(5));
         }
@@ -1099,7 +1099,14 @@ void Carro::ExcluirVeiculos(Sistema &sistema, Usuario *usuario_logado, list<Carr
         case 2:
         {
             // NAO
-            sair_excluir_veiculo = true;
+            if (RetornarAoMenuDeVeiculos())
+            {
+                sair_excluir_veiculo = false;
+            }
+            else
+            {
+                continue;
+            }
 
             break;
         }
@@ -1313,7 +1320,6 @@ void Carro::Multas(Sistema &sistema, Usuario *usuario_logado, list<Carro>::itera
         {
             // checar multas, colocar logica.
             // apaguei muita coisa, pois o carro já foi selecionado, então não é necessário digitar algo para encontrar o carro
-            bool menu_multa_placa = true;
             CLEAR;
 
             cout << "--------------------------------------------------------" << endl;
@@ -1355,7 +1361,7 @@ void Carro::GerarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>::it
 
     cout << endl;
     cout << "-----------------------------------------GERAR CRLV---------------------------------------------" << endl;
-    cout<<endl;
+    cout << endl;
     cout << "                                       1 - Gerar CRLV                                          " << endl;
     cout << endl;
     cout << "                                2 - Retornar ao menu de checagem                                " << endl;
@@ -1473,80 +1479,10 @@ void Carro::ExportarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>:
     arquivoCRLV << "-----------------------------------------------------------------" << endl;
 
     arquivoCRLV.close();
-    cout<<endl;
+    cout << endl;
     cout << "Crlv exportada com sucesso" << endl;
-    cout<<endl;
+    cout << endl;
     return;
-}
-void Carro::ListarVeiculos_CRLV(Sistema &sistema)
-{
-    bool sair_listar_veiculos_crlv = false;
-
-    while (!sair_listar_veiculos_crlv)
-    {
-        CLEAR;
-
-        cout << endl;
-        cout << "------------------------------------------VEICULOS REGISTRADOS----------------------------------------------------" << endl;
-        cout << endl;
-
-        // LOGICA DE CHECAR SE TEM ALGUM VEICULO
-        if (sistema.carros.empty())
-        {
-            cout << endl;
-            cout << "Nenhum VEICULO foi registrado!" << endl;
-            cout << endl;
-
-            if (RetornarAoMenuDeCrlv())
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                sair_listar_veiculos_crlv = true;
-            }
-        }
-        else
-        {
-            int contador = 1;
-            // MOSTRAR TODOS OS CARROS
-            for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
-            {
-                cout << endl;
-                cout << "-----------------------------------CARRO " << contador << "--------------------------------------" << endl;
-                cout << endl;
-                cout << "Modelo:  " << it->getModelo() << endl;
-                cout << endl;
-                cout << "Cor:  " << it->getCor() << endl;
-                cout << endl;
-                cout << "Ano:  " << it->getAno() << endl;
-                cout << endl;
-
-                // LOGICA DA PLACA
-                if (!it->getPlacaCinza().empty())
-                {
-                    cout << "Placa:  " << it->getPlacaCinza() << endl;
-                    cout << endl;
-                }
-                else if (!it->getPlacaMercosul().empty())
-                {
-                    cout << "Placa:  " << it->getPlacaMercosul() << endl;
-                    cout << endl;
-                }
-
-                cout << "Renavam:  " << it->getRenavam() << endl;
-                cout << endl;
-                cout << "-----------------------------------------------------------------------------------------" << endl;
-            }
-        }
-
-        cout << endl;
-
-        cout << "Todos os VEICULOS registrados!" << endl;
-        cout << endl;
-
-        PAUSE;
-
-        sair_listar_veiculos_crlv = true;
-    }
 }
 
 void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acabado
@@ -1623,6 +1559,8 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
                 cout << endl;
                 cout << "---------------------------------------------------" << endl;
 
+                PAUSE;
+
                 bool veiculo_multa = true;
 
                 Usuario usuario_auxiliar;
@@ -1644,6 +1582,7 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
 
                 while (veiculo_multa)
                 {
+                    CLEAR;
                     cout << "-----------------------------------------" << endl;
                     cout << "Tipo de Multa: " << endl;
                     cout << endl;
@@ -1659,7 +1598,7 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
                     cout << endl;
                     cout << "----------------------------------------------" << endl;
 
-                    cout << "Tipo da multa: ";
+                    cout << "Escolha a multa: ";
                     int opcao_multa_placa = 0;
                     cin >> opcao_multa_placa;
 
@@ -1671,7 +1610,17 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
 
                         usuario_multado->setMultasLeves(usuario_multado->getMultasLeves() + 1);
 
+                        usuario_multado->ExportarUsuario(sistema);
+
                         (*it)->setDebitos((*it)->getDebitos() + 88.38);
+
+                        (*it)->ExportarVeiculo(sistema);
+
+                        cout << "Multa cadastrada com sucesso" << endl;
+
+                        cout << endl;
+
+                        PAUSE;
 
                         break;
                     }
@@ -1685,6 +1634,15 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
 
                         (*it)->setDebitos((*it)->getDebitos() + 130.16);
 
+                        usuario_multado->ExportarUsuario(sistema);
+
+                        (*it)->ExportarVeiculo(sistema);
+
+                        cout << "Multa cadastrada com sucesso" << endl;
+
+                        cout << endl;
+
+                        PAUSE;
                         break;
                     }
 
@@ -1698,6 +1656,16 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
 
                         (*it)->setDebitos((*it)->getDebitos() + 195.23);
 
+                        usuario_multado->ExportarUsuario(sistema);
+
+                        (*it)->ExportarVeiculo(sistema);
+
+                        cout << "Multa cadastrada com sucesso" << endl;
+
+                        cout << endl;
+
+                        PAUSE;
+
                         break;
                     }
 
@@ -1710,6 +1678,16 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
                         usuario_multado->setMultasGravissimas(usuario_multado->getMultasGravissimas() + 1);
 
                         (*it)->setDebitos((*it)->getDebitos() + 293.47);
+
+                        usuario_multado->ExportarUsuario(sistema);
+
+                        (*it)->ExportarVeiculo(sistema);
+
+                        cout << "Multa cadastrada com sucesso" << endl;
+
+                        cout << endl;
+
+                        PAUSE;
 
                         break;
                     }

@@ -631,61 +631,6 @@ inline bool RetornarAoMenuDeVeiculos()
     return false;
 }
 
-inline bool RetornarAoMenuDeCrlv()
-{
-    CLEAR;
-
-    bool retornar_ao_menu_de_crlv = false;
-
-    while (!retornar_ao_menu_de_crlv)
-    {
-        CLEAR;
-
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-        cout << "           Tem certeza que deseja retornar ao MENU DO CRLV?" << endl;
-        cout << endl;
-        cout << "               1 - SIM, retornar ao MENU DO CRLV" << endl;
-        cout << endl;
-        cout << "               2 - NAO, continuar" << endl;
-        cout << endl;
-        cout << "--------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA: " << endl;
-
-        int opcao_menu_veiculos = 0;
-        cin >> opcao_menu_veiculos;
-
-        switch (opcao_menu_veiculos)
-        {
-        case 1:
-        {
-            return true;
-        }
-
-        case 2:
-        {
-            return false;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "OPCAO INVALIDA!" << endl;
-            cout << endl;
-
-            PAUSE;
-
-            break;
-        }
-        }
-    }
-
-    return false;
-}
-
 inline bool RetornarAoMenuDeMultas()
 {
     CLEAR;

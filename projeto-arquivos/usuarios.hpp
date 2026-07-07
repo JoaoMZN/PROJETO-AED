@@ -72,7 +72,7 @@ public:
 
     bool SalvarUsuario(Sistema &sistema, Usuario &usuario_temp);
 
-    void ExportarUsuario(Usuario &usuarios);
+    void ExportarUsuario(Sistema &sistema);
 
     void LoadUsuario(Sistema &sistema);
 

@@ -6,7 +6,6 @@
 #include <list>
 #include <vector>
 
-
 Usuario::Usuario()
 { // construtor
     carrosIT = carros.end();
@@ -98,7 +97,7 @@ int Usuario::getMultasGravissimas() const
     return this->multas_gravissimas;
 }
 
-void Usuario::cadastrarCPF(Sistema &sistema ,Usuario &usuario_temp)
+void Usuario::cadastrarCPF(Sistema &sistema, Usuario &usuario_temp)
 {
     CLEAR;
 
@@ -697,14 +696,9 @@ bool Usuario::SalvarUsuario(Sistema &sistema, Usuario &usuario_temp)
     return true;
 }
 
-void Usuario::ExportarUsuario(Usuario &usuarios)
+void Usuario::ExportarUsuario(Sistema &sistema)
 {
-    if (usuarios.getCpf() == "11111111111")
-    {
-        return;
-    }
-
-    ofstream arquivoUsuarios("UsuarioCadastrados.txt", ios::app);
+    ofstream arquivoUsuarios("UsuarioCadastrados.txt");
 
     if (!arquivoUsuarios.is_open())
     {
@@ -717,16 +711,24 @@ void Usuario::ExportarUsuario(Usuario &usuarios)
         PAUSE;
     }
 
-    arquivoUsuarios << "NOME: " << usuarios.getNome() << endl;
-    arquivoUsuarios << "CPF: " << usuarios.getCpf() << endl;
-    arquivoUsuarios << "EMAIL: " << usuarios.getEmail() << endl;
-    arquivoUsuarios << "SENHA: " << usuarios.getSenha() << endl;
-    arquivoUsuarios << "LEVES: " << usuarios.getMultasLeves() << endl;
-    arquivoUsuarios << "MEDIAS: " << usuarios.getMultasMedias() << endl;
-    arquivoUsuarios << "GRAVES: " << usuarios.getMultasGraves() << endl;
-    arquivoUsuarios << "GRAVISSIMAS: " << usuarios.getMultasGravissimas() << endl;
+    for (auto &usuario : sistema.usuarios)
+    {
+        if (usuario.getCpf() == "11111111111")
+        {
+            return;
+        }
 
-    arquivoUsuarios << endl;
+        arquivoUsuarios << "NOME: " << usuario.getNome() << endl;
+        arquivoUsuarios << "CPF: " << usuario.getCpf() << endl;
+        arquivoUsuarios << "EMAIL: " << usuario.getEmail() << endl;
+        arquivoUsuarios << "SENHA: " << usuario.getSenha() << endl;
+        arquivoUsuarios << "LEVES: " << usuario.getMultasLeves() << endl;
+        arquivoUsuarios << "MEDIAS: " << usuario.getMultasMedias() << endl;
+        arquivoUsuarios << "GRAVES: " << usuario.getMultasGraves() << endl;
+        arquivoUsuarios << "GRAVISSIMAS: " << usuario.getMultasGravissimas() << endl;
+
+        arquivoUsuarios << endl;
+    }
 
     arquivoUsuarios.close();
 }
@@ -801,7 +803,7 @@ void Usuario::LoadUsuario(Sistema &sistema)
         {
             ler_usuario_temp.setMultasGraves(stoi(linha.substr(8)));
         }
-        
+
         getline(arquivosUsuarios, linha);
 
         if (linha.rfind("GRAVISSIMAS: ", 0) == 0)
