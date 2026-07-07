@@ -421,9 +421,7 @@ void MenuNormal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
         cout << endl;
         cout << "                              2 - Checar Veiculo(s)" << endl;
         cout << endl;
-        cout << "                                   3 - CRLV" << endl;
-        cout << endl;
-        cout << "                                   4 - Sair" << endl;
+        cout << "                                   3 - Sair" << endl;
         cout << endl;
         cout << "-------------------------------------------------------------------------------------" << endl;
         cout << endl;
@@ -447,12 +445,6 @@ void MenuNormal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
             break;
         }
         case 3:
-        {
-            MenuCRLV(sistema, usuario_logado, carro_temp);
-
-            break;
-        }
-        case 4:
         {
             MenuSair();
         }
@@ -757,13 +749,13 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             cout << contador << " - ";
             if (!it->getPlacaCinza().empty())
             {
-                cout << it->getPlacaCinza() << " | ";
+                cout << "Placa: " << it->getPlacaCinza() << " | ";
             }
             else
             {
-                cout << it->getPlacaMercosul() << " | ";
+                cout << "Placa: " << it->getPlacaMercosul() << " | ";
             }
-            cout << it->getModelo() << endl;
+            cout << "Modelo: " << it->getModelo() << endl;
 
             cout << endl;
 
@@ -774,7 +766,7 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
 
         cout << endl;
 
-        cout << "Escolha o carro que deseja alterar: ";
+        cout << "Escolha o carro que deseja checar: ";
         int escolha = 0;
         cin >> escolha;
         cout << endl;
@@ -795,7 +787,8 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             continue;
         }
         else
-        {
+        {   cout<< "Informacoes do Carro: "<<endl;
+            cout<< endl;
             cout << "---------------------------------------------------------------------------------------" << endl;
             if (!it->getPlacaCinza().empty())
             {
@@ -827,7 +820,9 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             cout << endl;
             cout << "               3 - Multas" << endl;
             cout << endl;
-            cout << "               4 - Retornar ao MENU PRINCIPAL" << endl;
+            cout<< "               4 - Gerar CRLV"<< endl;
+            cout<< endl;
+            cout << "               5 - Retornar ao MENU PRINCIPAL" << endl;
             cout << endl;
             cout << "---------------------------------------------------------------------------" << endl;
             cout << endl;
@@ -844,7 +839,7 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             case 1:
             {
                 // EXCLUIR VEICULO
-                carro_temp.ExcluirVeiculos(usuario_logado->carros);
+                carro_temp.ExcluirVeiculos(sistema, usuario_logado, it);
 
                 carro_temp.ExportarVeiculo(sistema);
 
@@ -856,7 +851,7 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             case 2:
             {
                 // ALTERAR VEICULO
-                carro_temp.AlterarVeiculo(sistema, usuario_logado, carro_temp);
+                carro_temp.AlterarVeiculo(sistema, usuario_logado, it);
 
                 sair_checar_veiculos = true;
 
@@ -867,12 +862,19 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             {
                 // Multas
 
-                carro_temp.Multas(sistema);
+                carro_temp.Multas(sistema, usuario_logado, it);
 
                 break;
             }
-
+            
             case 4:
+            {
+                carro_temp.GerarCrlv(sistema, usuario_logado, it);
+
+                break;
+            }
+            
+            case 5:
             {
                 // RETORNAR AO MENU PRINCIPAL
                 if (RetornarAoMenuPrincipal_Checar())
@@ -894,91 +896,6 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
                 break;
             }
             }
-        }
-    }
-}
-
-void MenuCRLV(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
-{
-    // GERAR CRLV
-    bool sair_crlv = false;
-
-    while (!sair_crlv)
-    {
-        CLEAR;
-
-        cout << endl;
-        cout << "--------------------------CRLV------------------------------" << endl;
-        cout << endl;
-        cout << "               1 - Gerar CRLV" << endl;
-        cout << endl;
-        cout << "               2 - Exportar CRLV" << endl;
-        cout << endl;
-        cout << "               3 - Listar Veiculos" << endl;
-        cout << endl;
-        cout << "               4 - Retornar ao MENU PRINCIPAL" << endl;
-        cout << endl;
-        cout << "------------------------------------------------------------" << endl;
-        cout << endl;
-
-        cout << "Digite a OPCAO DESEJADA:  ";
-
-        int opcao_crlv = 0;
-        cin >> opcao_crlv;
-
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        switch (opcao_crlv)
-        {
-        case 1:
-        {
-            // GERAR CRLV
-            carro_temp.GerarCrlv(sistema, usuario_logado);
-
-            break;
-        }
-
-        case 2:
-        {
-            // EXPORTAR CRLV
-            carro_temp.ExportarCrlv(sistema, usuario_logado);
-
-            break;
-        }
-
-        case 3:
-        {
-            // LISTAR VEICULOS
-            carro_temp.ListarVeiculos_CRLV(sistema);
-
-            break;
-        }
-
-        case 4:
-        {
-            // RETORNAR AO MENU PRINCIPAL
-            if (RetornarAoMenuPrincipal_Crlv())
-            {
-                sair_crlv = true;
-            }
-            else
-            {
-                continue;
-            }
-
-            break;
-        }
-
-        default:
-        {
-            cout << endl;
-            cout << "Opcao INVALIDA!" << endl;
-            cout << endl;
-
-            PAUSE;
-
-            break;
-        }
         }
     }
 }

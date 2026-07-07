@@ -84,15 +84,15 @@ public:
 
     void LoadVeiculos(Sistema &sistema);
 
-    void ExcluirVeiculos(list<Carro> &carros);
+    void ExcluirVeiculos(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
 
-    void AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp);
+    void AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
 
-    void Multas(Sistema &sistema);
+    void Multas(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
 
-    void GerarCrlv(Sistema &sistema, Usuario *usuario_logado);
+    void GerarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
 
-    void ExportarCrlv(Sistema &sistema, Usuario *usuario_logado);
+    void ExportarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
 
     void ListarVeiculos_CRLV(Sistema &sistema);
 

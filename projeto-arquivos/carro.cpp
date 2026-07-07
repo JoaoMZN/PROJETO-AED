@@ -962,8 +962,20 @@ void Carro::LoadVeiculos(Sistema &sistema)
             {
                 sistema.carros.push_back(carro_temp);
 
+                // Associa o carro ao dono
+                for (auto usuario = sistema.usuarios.begin();
+                     usuario != sistema.usuarios.end();
+                     usuario++)
+                {
+                    if (usuario->getCpf() == carro_temp.getCpfDono())
+                    {
+                        usuario->carros.push_back(carro_temp);
+                        break;
+                    }
+                }
+
                 Carro *novoCarro = &sistema.carros.back();
-                
+
                 string renavam = novoCarro->getRenavam();
 
                 int indice = funcaoHash(renavam);
@@ -1012,6 +1024,18 @@ void Carro::LoadVeiculos(Sistema &sistema)
     {
         sistema.carros.push_back(carro_temp);
 
+        // Adiciona o veículo ao dono
+        for (auto usuario = sistema.usuarios.begin();
+             usuario != sistema.usuarios.end();
+             usuario++)
+        {
+            if (usuario->getCpf() == carro_temp.getCpfDono())
+            {
+                usuario->carros.push_back(carro_temp);
+                break;
+            }
+        }
+
         Carro *novoCarro = &sistema.carros.back();
 
         string renavam = novoCarro->getRenavam();
@@ -1019,11 +1043,10 @@ void Carro::LoadVeiculos(Sistema &sistema)
 
         sistema.carrosHash[indice].push_back(novoCarro);
     }
-
     arquivo.close();
 }
 
-void Carro::ExcluirVeiculos(list<Carro> &carros)
+void Carro::ExcluirVeiculos(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it)
 {
     bool sair_excluir_veiculo = false;
     while (!sair_excluir_veiculo)
@@ -1033,129 +1056,71 @@ void Carro::ExcluirVeiculos(list<Carro> &carros)
         cout << endl;
         cout << "------------------------------------------------------------------------------EXCLUIR VEICULOS-----------------------------------------------------------------------" << endl;
         cout << endl;
-        cout << "Digite algum componente dele para excluir (ou digite MENU para voltar ao MENU DE VEICULOS):  ";
-
-        string excluir_veiculo;
-        getline(cin, excluir_veiculo);
 
         cout << endl;
-        cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+        cout << "-------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "       Tem certeza que deseja excluir o veiculo" << endl;
+        cout << endl;
+        cout << "                1 - SIM, EXCLUIR veiculo" << endl;
+        cout << endl;
+        cout << "            2 - NAO, voltar ao MENU DE VEICULOS" << endl;
+        cout << endl;
+        cout << "-------------------------------------------------------" << endl;
         cout << endl;
 
-        // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (size_t i = 0; i < excluir_veiculo.length(); i++)
+        cout << "Digite a OPCAO DESEJADA:  ";
+
+        int opcao_excluir_carro = 0;
+        cin >> opcao_excluir_carro;
+
+        switch (opcao_excluir_carro)
         {
-            excluir_veiculo[i] = toupper((unsigned char)excluir_veiculo[i]);
-        }
-
-        if (excluir_veiculo == "MENU")
+        case 1:
         {
-            if (RetornarAoMenuDeVeiculos())
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            // SIM
 
-                return;
-            }
-            else
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                continue;
-            }
-        }
-
-        // CHECAR A COMPONENTE COM O STRUCT CARRO
-        bool encontrado = false;
-
-        for (auto it = carros.begin(); it != carros.end(); it++)
-        {
-            if (excluir_veiculo == it->getPlacaCinza() ||
-                excluir_veiculo == it->getPlacaMercosul() ||
-                excluir_veiculo == it->getAno() ||
-                excluir_veiculo == it->getCor() ||
-                excluir_veiculo == it->getModelo() ||
-                excluir_veiculo == it->getRenavam())
-            {
-                CLEAR;
-
-                encontrado = true;
-                cout << endl;
-                cout << "-------------------------------------------------------" << endl;
-                cout << endl;
-                cout << "       Tem certeza que deseja excluir o veiculo" << endl;
-                cout << endl;
-                cout << "                1 - SIM, EXCLUIR veiculo" << endl;
-                cout << endl;
-                cout << "            2 - NAO, voltar ao MENU DE VEICULOS" << endl;
-                cout << endl;
-                cout << "-------------------------------------------------------" << endl;
-                cout << endl;
-
-                cout << "Digite a OPCAO DESEJADA:  ";
-
-                int opcao_excluir_carro = 0;
-                cin >> opcao_excluir_carro;
-
-                switch (opcao_excluir_carro)
-                {
-                case 1:
-                {
-                    // SIM
-
-                    CLEAR;
-
-                    carros.erase(it);
-
-                    cout << endl;
-                    cout << "Veiculo EXCLUIDO com sucesso!" << endl;
-                    cout << endl;
-
-                    PAUSE;
-
-                    sair_excluir_veiculo = true;
-
-                    break;
-                }
-
-                case 2:
-                {
-                    // NAO
-                    sair_excluir_veiculo = true;
-
-                    break;
-                }
-
-                default:
-                {
-                    cout << endl;
-                    cout << "Opcao INVALIDA!" << endl;
-                    cout << endl;
-
-                    PAUSE;
-
-                    break;
-                }
-                }
-
-                break;
-            }
-        }
-
-        if (!encontrado)
-        {
             CLEAR;
 
-            cout << "NENHUM veiculo foi encontrado!" << endl;
+            usuario_logado->carros.erase(it);
+            ExportarVeiculo(sistema);
+
+            cout << endl;
+            cout << "Veiculo EXCLUIDO com sucesso!" << endl;
             cout << endl;
 
             PAUSE;
 
-            continue;
+            sair_excluir_veiculo = true;
+
+            break;
         }
+
+        case 2:
+        {
+            // NAO
+            sair_excluir_veiculo = true;
+
+            break;
+        }
+
+        default:
+        {
+            cout << endl;
+            cout << "Opcao INVALIDA!" << endl;
+            cout << endl;
+
+            PAUSE;
+
+            break;
+        }
+        }
+
+        break;
     }
 }
 
-void Carro::AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp)
+void Carro::AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it)
 {
     bool sair_alterar_veiculo = false;
 
@@ -1165,215 +1130,165 @@ void Carro::AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, Carro &car
 
         cout << endl;
         cout << "-----------------------------------------------------ALTERAR VEICULO(S)-------------------------------------------------" << endl;
-        cout << "Digite algum DADO do veiculo(ou digite MENU para voltar ao MENU DE VEICULO):  ";
 
-        string alterar_veiculo;
-        getline(cin, alterar_veiculo);
+        bool sair_encontrou_alterar_veiculo = false;
 
-        cout << endl;
-        cout << "------------------------------------------------------------------------------------------------------------------------" << endl;
-        cout << endl;
-
-        for (size_t i = 0; i < alterar_veiculo.length(); i++)
+        while (!sair_encontrou_alterar_veiculo)
         {
-            alterar_veiculo[i] = toupper((unsigned char)alterar_veiculo[i]);
-        }
+            CLEAR;
 
-        if (alterar_veiculo == "MENU")
-        {
-            if (RetornarAoMenuDeVeiculos())
+            cout << endl;
+            cout << "-----------------------------------------------------" << endl;
+            cout << endl;
+            cout << "           1 - Alterar PLACA CINZA" << endl;
+            cout << endl;
+            cout << "           2 - Alterar PLACA MERCOSUL" << endl;
+            cout << endl;
+            cout << "           3 - Alterar ANO" << endl;
+            cout << endl;
+            cout << "           4 - Alterar COR" << endl;
+            cout << endl;
+            cout << "           5 - Alterar MODELO" << endl;
+            cout << endl;
+            cout << "           6 - Retornar ao MENU DE VEICULOS" << endl;
+            cout << endl;
+            cout << "------------------------------------------------------" << endl;
+            cout << endl;
+
+            cout << "Digite a OPCAO DESEJADA:  ";
+
+            int opcao_encontrou_alterar_veiculo = 0;
+            cin >> opcao_encontrou_alterar_veiculo;
+
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            switch (opcao_encontrou_alterar_veiculo)
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            case 1:
+            {
+                cadastrarPlacaCinza(*it);
+                it->setPlacaMercosul("");
 
-                return;
+                ExportarVeiculo(sistema);
+
+                cout << endl;
+                cout << "Nova PLACA CINZA registrada com sucesso!" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                sair_encontrou_alterar_veiculo = true;
+                sair_alterar_veiculo = true;
+
+                break;
             }
-            else
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                continue;
+            case 2:
+            {
+                cadastrarPlacaMercosul(*it);
+                it->setPlacaCinza("");
+
+                ExportarVeiculo(sistema);
+
+                cout << endl;
+                cout << "Nova PLACA MERCOSUL registrada com sucesso!" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                sair_encontrou_alterar_veiculo = true;
+                sair_alterar_veiculo = true;
+
+                break;
             }
-        }
 
-        for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
-        {
-            if (alterar_veiculo == it->getPlacaCinza() ||
-                alterar_veiculo == it->getPlacaMercosul() ||
-                alterar_veiculo == it->getAno() ||
-                alterar_veiculo == it->getCor() ||
-                alterar_veiculo == it->getModelo() ||
-                alterar_veiculo == it->getRenavam())
+            case 3:
             {
-                bool sair_encontrou_alterar_veiculo = false;
+                cadastrarAno(*it);
 
-                while (!sair_encontrou_alterar_veiculo)
+                ExportarVeiculo(sistema);
+
+                cout << endl;
+                cout << "Novo ANO registrado com sucesso!" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                sair_encontrou_alterar_veiculo = true;
+                sair_alterar_veiculo = true;
+
+                break;
+            }
+
+            case 4:
+            {
+                cadastrarCor(*it);
+
+                ExportarVeiculo(sistema);
+
+                cout << endl;
+                cout << "Nova COR registrada com sucesso!" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                sair_encontrou_alterar_veiculo = true;
+                sair_alterar_veiculo = true;
+
+                break;
+            }
+
+            case 5:
+            {
+                cadastrarModelo(*it);
+
+                ExportarVeiculo(sistema);
+
+                cout << endl;
+                cout << "Novo MODELO registrado com sucesso!" << endl;
+                cout << endl;
+
+                PAUSE;
+
+                sair_encontrou_alterar_veiculo = true;
+                sair_alterar_veiculo = true;
+                break;
+            }
+
+            case 6:
+            {
+                // RETORNAR AO MENU DE VEICULO
+
+                if (RetornarAoMenuDeVeiculos())
                 {
-                    CLEAR;
+                    sair_encontrou_alterar_veiculo = true;
 
-                    cout << endl;
-                    cout << "-----------------------------------------------------" << endl;
-                    cout << endl;
-                    cout << "           1 - Alterar PLACA CINZA" << endl;
-                    cout << endl;
-                    cout << "           2 - Alterar PLACA MERCOSUL" << endl;
-                    cout << endl;
-                    cout << "           3 - Alterar ANO" << endl;
-                    cout << endl;
-                    cout << "           4 - Alterar COR" << endl;
-                    cout << endl;
-                    cout << "           5 - Alterar MODELO" << endl;
-                    cout << endl;
-                    cout << "           6 - Retornar ao MENU DE VEICULOS" << endl;
-                    cout << endl;
-                    cout << "------------------------------------------------------" << endl;
-                    cout << endl;
-
-                    cout << "Digite a OPCAO DESEJADA:  ";
-
-                    int opcao_encontrou_alterar_veiculo = 0;
-                    cin >> opcao_encontrou_alterar_veiculo;
-
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                    switch (opcao_encontrou_alterar_veiculo)
-                    {
-                    case 1:
-                    {
-                        cadastrarPlacaCinza(*it);
-                        it->setPlacaMercosul("");
-
-                        ExportarVeiculo(sistema);
-
-                        cout << endl;
-                        cout << "Nova PLACA CINZA registrada com sucesso!" << endl;
-                        cout << endl;
-
-                        PAUSE;
-
-                        sair_encontrou_alterar_veiculo = true;
-                        sair_alterar_veiculo = true;
-
-                        break;
-                    }
-
-                    case 2:
-                    {
-                        cadastrarPlacaMercosul(*it);
-                        it->setPlacaCinza("");
-
-                        ExportarVeiculo(sistema);
-
-                        cout << endl;
-                        cout << "Nova PLACA MERCOSUL registrada com sucesso!" << endl;
-                        cout << endl;
-
-                        PAUSE;
-
-                        sair_encontrou_alterar_veiculo = true;
-                        sair_alterar_veiculo = true;
-
-                        break;
-                    }
-
-                    case 3:
-                    {
-                        cadastrarAno(*it);
-
-                        ExportarVeiculo(sistema);
-
-                        cout << endl;
-                        cout << "Novo ANO registrado com sucesso!" << endl;
-                        cout << endl;
-
-                        PAUSE;
-
-                        sair_encontrou_alterar_veiculo = true;
-                        sair_alterar_veiculo = true;
-
-                        break;
-                    }
-
-                    case 4:
-                    {
-                        cadastrarCor(*it);
-
-                        ExportarVeiculo(sistema);
-
-                        cout << endl;
-                        cout << "Nova COR registrada com sucesso!" << endl;
-                        cout << endl;
-
-                        PAUSE;
-
-                        sair_encontrou_alterar_veiculo = true;
-                        sair_alterar_veiculo = true;
-
-                        break;
-                    }
-
-                    case 5:
-                    {
-                        cadastrarModelo(*it);
-
-                        ExportarVeiculo(sistema);
-
-                        cout << endl;
-                        cout << "Novo MODELO registrado com sucesso!" << endl;
-                        cout << endl;
-
-                        PAUSE;
-
-                        sair_encontrou_alterar_veiculo = true;
-                        sair_alterar_veiculo = true;
-                        break;
-                    }
-
-                    case 6:
-                    {
-                        // RETORNAR AO MENU DE VEICULO
-
-                        if (RetornarAoMenuDeVeiculos())
-                        {
-                            sair_encontrou_alterar_veiculo = true;
-
-                            sair_alterar_veiculo = true;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-
-                        break;
-                    }
-
-                    default:
-                    {
-                        cout << endl;
-                        cout << "Opcao INVALIDA!" << endl;
-                        cout << endl;
-
-                        PAUSE;
-
-                        break;
-                    }
-                    }
+                    sair_alterar_veiculo = true;
                 }
+                else
+                {
+                    continue;
+                }
+
+                break;
             }
-            else
+
+            default:
             {
                 cout << endl;
-                cout << "NENHUM veiculo encontrado!" << endl;
+                cout << "Opcao INVALIDA!" << endl;
                 cout << endl;
 
                 PAUSE;
 
                 break;
             }
+            }
         }
     }
 }
 
-void Carro::Multas(Sistema &sistema) // nao acabado
+void Carro::Multas(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it) // nao acabado
 {
     bool menu_multas = true;
 
@@ -1396,77 +1311,13 @@ void Carro::Multas(Sistema &sistema) // nao acabado
         {
         case 1:
         {
-            // checar multas
-
+            // checar multas, colocar logica.
+            // apaguei muita coisa, pois o carro já foi selecionado, então não é necessário digitar algo para encontrar o carro
             bool menu_multa_placa = true;
+            CLEAR;
 
-            while (menu_multa_placa)
-            {
-                CLEAR;
-
-                cout << "--------------------------------------------------------" << endl;
-                cout << endl;
-                cout << "Informe a Placa que deseja procurar (ou digite MENU): ";
-
-                string multa_placa_temp;
-                getline(cin >> ws, multa_placa_temp);
-                cout << endl;
-                cout << "---------------------------------------------------------" << endl;
-                cout << endl;
-
-                for (size_t i = 0; i < multa_placa_temp.length(); i++)
-                {
-                    multa_placa_temp[i] = toupper((unsigned char)multa_placa_temp[i]);
-                }
-
-                if (multa_placa_temp == "MENU")
-                {
-                    if (RetornarAoMenuDeMultas())
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-
-                bool achou = false;
-
-                auto it = sistema.carros.begin();
-
-                for (auto i = it; i != sistema.carros.end(); i++)
-                {
-                    if (multa_placa_temp == it->getPlacaCinza() || multa_placa_temp == it->getPlacaMercosul())
-                    {
-                        it = i;
-                        achou = true;
-                    }
-                }
-
-                if (achou)
-                {
-                    CLEAR;
-
-                    cout << "Veiculo encontrado!" << endl;
-
-                    // arrumar logica de multa, como vai mostrar que tem multa
-
-                    PAUSE;
-
-                    return;
-                }
-                else
-                {
-                    CLEAR;
-
-                    cout << "Veiculo nao encontrado!" << endl;
-
-                    PAUSE;
-
-                    return;
-                }
-            }
+            cout << "--------------------------------------------------------" << endl;
+            cout << endl;
 
             break;
         }
@@ -1497,254 +1348,136 @@ void Carro::Multas(Sistema &sistema) // nao acabado
     }
 }
 
-void Carro::GerarCrlv(Sistema &sistema, Usuario *usuario_logado)
+void Carro::GerarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it)
 {
-    bool sair_gerar_crlv = false;
 
-    while (!sair_gerar_crlv)
+    CLEAR;
+
+    cout << endl;
+    cout << "-----------------------------------------GERAR CRLV---------------------------------------------" << endl;
+    cout<<endl;
+    cout << "                                       1 - Gerar CRLV                                          " << endl;
+    cout << endl;
+    cout << "                                2 - Retornar ao menu de checagem                                " << endl;
+    cout << endl;
+    cout << "------------------------------------------------------------------------------------------------" << endl;
+    cout << endl;
+    cout << "Digite a opcao desejada: ";
+
+    int opcao = 0;
+    cin >> opcao;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    switch (opcao)
+    {
+    case 1:
     {
         CLEAR;
 
-        cout << endl;
-        cout << "-----------------------------------------GERAR CRLV---------------------------------------------" << endl;
-        cout << endl;
-        cout << "Digite um dos componentes do VEICULO para gerar o CRLV do mesmo!" << endl;
-        cout << endl;
-        cout << "Ou digite MENU para voltar ao MENU CRLV!" << endl;
+        cout << "----------------------------------------CRLV---------------------------------------" << endl;
         cout << endl;
 
-        cout << "Digite o DADO do carro:  ";
+        cout << "Proprietario: " << usuario_logado->getNome() << endl;
+        cout << endl;
+        cout << "Modelo: " << it->getModelo() << endl;
+        cout << endl;
+        cout << "Ano: " << it->getAno() << endl;
+        cout << endl;
+        cout << "Cor: " << it->getCor() << endl;
+        cout << endl;
 
-        string gerar_crlv;
-        getline(cin, gerar_crlv);
+        if (!it->getPlacaCinza().empty())
+            cout << "Placa: " << it->getPlacaCinza() << endl;
+        else
+            cout << "Placa: " << it->getPlacaMercosul() << endl;
 
         cout << endl;
-        cout << "-----------------------------------------------------------------------------------------------" << endl;
+        cout << "Renavam: " << it->getRenavam() << endl;
         cout << endl;
-
-        // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (size_t i = 0; i < gerar_crlv.length(); i++)
-        {
-            gerar_crlv[i] = toupper((unsigned char)gerar_crlv[i]);
-        }
-
-        // RETORNA AO MENU DE REGISTRO DE PLACA
-        if (gerar_crlv == "MENU")
-        {
-            if (RetornarAoMenuDeCrlv())
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                // SE ELE QUISER VOLTAR RETORNA, MAS NAO UM VALOR INTEIRO POR ESTAR EM UM VOID E OS VOIDS NAO RETORNAM NADA
-                return;
-            }
-            else
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                // CONITNUA NA LOGICA DE ANO
-                continue;
-            }
-        }
-
-        bool encontrou_veiculo = false;
-
-        for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
-        {
-            if (gerar_crlv == it->getPlacaCinza() ||
-                gerar_crlv == it->getPlacaMercosul() ||
-                gerar_crlv == it->getAno() ||
-                gerar_crlv == it->getCor() ||
-                gerar_crlv == it->getModelo() ||
-                gerar_crlv == it->getRenavam())
-            {
-                CLEAR;
-
-                cout << endl;
-                cout << "----------------------------------------CRLV---------------------------------------" << endl;
-                cout << endl;
-                // A SETA PASSA O PONTEIRO PELO STRUCT USUARIO E SALVA O NOME DELE
-                cout << "Propietario: " << usuario_logado->getNome() << endl;
-                cout << endl;
-                cout << "Modelo: " << it->getModelo() << endl;
-                cout << endl;
-                cout << "Ano: " << it->getAno() << endl;
-                cout << endl;
-                cout << "Cor: " << it->getCor() << endl;
-                cout << endl;
-                if (!it->getPlacaCinza().empty())
-                {
-                    cout << "Placa: " << it->getPlacaCinza() << endl;
-                    cout << endl;
-                }
-                else if (!it->getPlacaMercosul().empty())
-                {
-                    cout << "Placa: " << it->getPlacaMercosul() << endl;
-                    cout << endl;
-                }
-
-                cout << "Renavam: " << it->getRenavam() << endl;
-                cout << endl;
-                cout << "----------------------------------------------------------------------------------" << endl;
-                cout << endl;
-
-                PAUSE;
-
-                encontrou_veiculo = true;
-
-                sair_gerar_crlv = true;
-
-                break;
-            }
-        }
-
-        if (!encontrou_veiculo)
-        {
-            cout << endl;
-            cout << "Nenhum VEICULO foi encontrado com esse dado!" << endl;
-            cout << endl;
-
-            PAUSE;
-        }
+        cout << "--------------------------------------------------------" << endl;
+        ExportarCrlv(sistema, usuario_logado, it);
+        PAUSE;
+        return;
     }
-}
 
-void Carro::ExportarCrlv(Sistema &sistema, Usuario *usuario_logado)
-{
-    bool sair_exportar_crlv = false;
-
-    while (!sair_exportar_crlv)
+    case 2:
     {
-        CLEAR;
+        return;
+    }
 
+    default:
+    {
         cout << endl;
-        cout << "------------------------------------------------EXPORTAR CRLV----------------------------------------------" << endl;
-        cout << endl;
-        cout << "Digite um dos componentes do VEICULO para exportar o CRLV do mesmo!" << endl;
-        cout << endl;
-        cout << "Ou digite MENU para voltar ao MENU CRLV!" << endl;
-        cout << endl;
-
-        cout << "Digite o DADO do veiculo: ";
-
-        string exportar_crlv;
-        getline(cin >> ws, exportar_crlv);
-
-        cout << endl;
-        cout << "----------------------------------------------------------------------------------------------------------" << endl;
+        cout << "Opcao invalida!" << endl;
         cout << endl;
 
-        // TRANSFORMA TODAS AS LETRAS PARA MAIUSCULO
-        for (size_t i = 0; i < exportar_crlv.length(); i++)
-        {
-            exportar_crlv[i] = toupper((unsigned char)exportar_crlv[i]);
-        }
+        PAUSE;
 
-        // RETORNA AO MENU DE REGISTRO DE PLACA
-        if (exportar_crlv == "MENU")
-        {
-            if (RetornarAoMenuDeCrlv())
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                // SE ELE QUISER VOLTAR RETORNA, MAS NAO UM VALOR INTEIRO POR ESTAR EM UM VOID E OS VOIDS NAO RETORNAM NADA
-                return;
-            }
-            else
-            {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                // CONITNUA NA LOGICA DE ANO
-                continue;
-            }
-        }
-
-        bool encontrou_veiculo = false;
-
-        for (auto it = sistema.carros.begin(); it != sistema.carros.end(); it++)
-        {
-            if (exportar_crlv == it->getPlacaCinza() ||
-                exportar_crlv == it->getPlacaMercosul() ||
-                exportar_crlv == it->getAno() ||
-                exportar_crlv == it->getCor() ||
-                exportar_crlv == it->getModelo() ||
-                exportar_crlv == it->getRenavam())
-            {
-
-                encontrou_veiculo = true;
-
-                string nome_exportar_crlv = "CRLV_";
-
-                if (!it->getPlacaCinza().empty())
-                {
-                    nome_exportar_crlv += it->getPlacaCinza();
-                }
-                else
-                {
-                    nome_exportar_crlv += it->getPlacaMercosul();
-                }
-
-                nome_exportar_crlv += ".txt";
-
-                ofstream arquivoCRLV(nome_exportar_crlv);
-
-                if (!arquivoCRLV.is_open())
-                {
-                    cout << endl;
-                    cout << "ERRO ao abrir o arquivo!" << endl;
-                    cout << endl;
-
-                    PAUSE;
-
-                    return;
-                }
-
-                arquivoCRLV << "-----------------------------CRLV----------------------------" << endl;
-                arquivoCRLV << endl;
-                arquivoCRLV << "Propietario:  " << usuario_logado->getNome() << endl;
-                arquivoCRLV << endl;
-                arquivoCRLV << "Modelo:  " << it->getModelo() << endl;
-                arquivoCRLV << endl;
-                arquivoCRLV << "Ano:  " << it->getAno() << endl;
-                arquivoCRLV << endl;
-                arquivoCRLV << "Cor: " << it->getCor() << endl;
-                arquivoCRLV << endl;
-                if (!it->getPlacaCinza().empty())
-                {
-                    arquivoCRLV << "Placa:  " << it->getPlacaCinza() << endl;
-                    arquivoCRLV << endl;
-                }
-                else if (!it->getPlacaMercosul().empty())
-                {
-                    arquivoCRLV << "Placa:  " << it->getPlacaMercosul() << endl;
-                    arquivoCRLV << endl;
-                }
-                arquivoCRLV << "Renvam:  " << it->getRenavam() << endl;
-                arquivoCRLV << endl;
-                arquivoCRLV << "-----------------------------------------------------------------" << endl;
-
-                arquivoCRLV.close();
-
-                cout << endl;
-                cout << "CRLV exportado com sucesso!" << endl;
-
-                PAUSE;
-
-                sair_exportar_crlv = true;
-
-                break;
-            }
-        }
-
-        if (!encontrou_veiculo)
-        {
-            cout << endl;
-            cout << "Nenhum VEICULO foi encontrado com esse dado!" << endl;
-            cout << endl;
-
-            PAUSE;
-
-            continue;
-        }
+        break;
+    }
     }
 }
 
+void Carro::ExportarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it)
+{
+
+    string nome_exportar_crlv = "CRLV_";
+
+    if (!it->getPlacaCinza().empty())
+    {
+        nome_exportar_crlv += it->getPlacaCinza();
+    }
+    else
+    {
+        nome_exportar_crlv += it->getPlacaMercosul();
+    }
+
+    nome_exportar_crlv += ".txt";
+
+    ofstream arquivoCRLV(nome_exportar_crlv);
+
+    if (!arquivoCRLV.is_open())
+    {
+        cout << endl;
+        cout << "ERRO ao abrir o arquivo!" << endl;
+        cout << endl;
+
+        PAUSE;
+
+        return;
+    }
+
+    arquivoCRLV << "-----------------------------CRLV----------------------------" << endl;
+    arquivoCRLV << endl;
+    arquivoCRLV << "Propietario:  " << usuario_logado->getNome() << endl;
+    arquivoCRLV << endl;
+    arquivoCRLV << "Modelo:  " << it->getModelo() << endl;
+    arquivoCRLV << endl;
+    arquivoCRLV << "Ano:  " << it->getAno() << endl;
+    arquivoCRLV << endl;
+    arquivoCRLV << "Cor: " << it->getCor() << endl;
+    arquivoCRLV << endl;
+    if (!it->getPlacaCinza().empty())
+    {
+        arquivoCRLV << "Placa:  " << it->getPlacaCinza() << endl;
+        arquivoCRLV << endl;
+    }
+    else if (!it->getPlacaMercosul().empty())
+    {
+        arquivoCRLV << "Placa:  " << it->getPlacaMercosul() << endl;
+        arquivoCRLV << endl;
+    }
+    arquivoCRLV << "Renavam:  " << it->getRenavam() << endl;
+    arquivoCRLV << endl;
+    arquivoCRLV << "-----------------------------------------------------------------" << endl;
+
+    arquivoCRLV.close();
+    cout<<endl;
+    cout << "Crlv exportada com sucesso" << endl;
+    cout<<endl;
+    return;
+}
 void Carro::ListarVeiculos_CRLV(Sistema &sistema)
 {
     bool sair_listar_veiculos_crlv = false;
