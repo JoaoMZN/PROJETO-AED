@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <iomanip>
 
 using namespace std;
 
@@ -1295,7 +1296,7 @@ void Carro::AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, list<Carro
     }
 }
 
-void Carro::Multas(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it) // nao acabado
+void Carro::Multas(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it)
 {
     bool menu_multas = true;
 
@@ -1314,16 +1315,312 @@ void Carro::Multas(Sistema &sistema, Usuario *usuario_logado, list<Carro>::itera
         int opcao = 0;
         cin >> opcao;
 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         switch (opcao)
         {
         case 1:
         {
-            // checar multas, colocar logica.
-            // apaguei muita coisa, pois o carro já foi selecionado, então não é necessário digitar algo para encontrar o carro
             CLEAR;
 
-            cout << "--------------------------------------------------------" << endl;
-            cout << endl;
+            while (true)
+            {
+                cout << "---------------------------------MULTAS PENDENTES------------------------------------" << endl;
+                cout << endl;
+
+                int leves = usuario_logado->getMultasLeves();
+                int medias = usuario_logado->getMultasMedias();
+                int graves = usuario_logado->getMultasGraves();
+                int gravissimas = usuario_logado->getMultasGravissimas();
+
+                if (leves == 0 && medias == 0 && graves == 0 && gravissimas == 0)
+                {
+                    cout << "Nenhuma multa registrada" << endl;
+                    cout << endl;
+
+                    PAUSE;
+
+                    break;
+                }
+
+                if (leves != 0)
+                {
+                    cout << "Multas Leves: " << leves << endl;
+                    cout << endl;
+                }
+                if (medias != 0)
+                {
+                    cout << "Multas medias: " << medias << endl;
+                    cout << endl;
+                }
+                if (graves != 0)
+                {
+                    cout << "Multas graves: " << graves << endl;
+                    cout << endl;
+                }
+                if (gravissimas != 0)
+                {
+                    cout << "Multas gravissimas: " << gravissimas << endl;
+                    cout << endl;
+                }
+
+                int pontos = usuario_logado->getPontos();
+
+                cout << "Pontos registrados na carteira: " << pontos << endl;
+                cout << endl;
+
+                float debitos = it->getDebitos();
+
+                cout << "Debitos totais acumulados: " << debitos << endl;
+                cout << endl;
+                cout << "--------------------------------------------------------------------------" << endl;
+
+                PAUSE;
+
+                cout << "--------------------------------------------------------------------------" << endl;
+                cout << endl;
+                cout << "                       1 - Pagar multa(s)" << endl;
+                cout << endl;
+                cout << "                   2 - Retornar ao Menu de Multas" << endl;
+                cout << endl;
+                cout << "---------------------------------------------------------------------------" << endl;
+
+                cout << "Digite a opcao desejada: ";
+                int opcao = 0;
+                cin >> opcao;
+
+                switch (opcao)
+                {
+                case 1:
+                {
+                    cout << "Qual tipo de multa deseja pagar: ";
+                    string multa_escolha;
+                    getline(cin >> ws, multa_escolha);
+
+                    for (size_t i = 0; i < multa_escolha.length(); i++)
+                    {
+                        multa_escolha[i] = toupper((unsigned char)multa_escolha[i]);
+                    }
+
+                    if (multa_escolha == "MENU")
+                    {
+                        break;
+                    }
+
+                    if (multa_escolha == "LEVE" || multa_escolha == "LEVES")
+                    {
+                        if (leves == 0)
+                        {
+                            break;
+                        }
+
+                        cout << "Quantas multas leves deseja pagar (RS 88,38): ";
+                        int qtd = 0;
+                        cin >> qtd;
+
+                        if (qtd > leves || qtd <= 0)
+                        {
+                            cout << "Voce so possui " << leves << " multas leves" << endl;
+                            PAUSE;
+                            continue;
+                        }
+
+                        float pix = qtd * (88.38);
+                        cout << fixed << setprecision(2);
+                        cout << "Valor: R$ " << pix << endl;
+                        cout << R"(
+    
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||)"
+                             << endl;
+
+                        usuario_logado->setMultasLeves(usuario_logado->getMultasLeves() - qtd);
+                        it->setDebitos(it->getDebitos() - pix);
+
+                        cout << endl;
+                        cout << "Multa(s) paga(s) com sucesso!" << endl;
+                        cout << endl;
+
+                        usuario_logado->ExportarUsuario(sistema);
+                        ExportarVeiculo(sistema);
+
+                        PAUSE;
+
+                        break;
+                    }
+
+                    else if (multa_escolha == "MEDIA" || multa_escolha == "MEDIAS")
+                    {
+                        if (medias == 0)
+                        {
+                            break;
+                        }
+
+                        cout << "Quantas multas medias deseja pagar (RS 130,16): ";
+                        int qtd = 0;
+                        cin >> qtd;
+
+                        if (qtd > medias || qtd <= 0)
+                        {
+                            cout << "Voce so possui " << medias << " multas medias" << endl;
+                            PAUSE;
+                            continue;
+                        }
+
+                        float pix = qtd * (130.16);
+                        cout << fixed << setprecision(2);
+                        cout << "Valor: R$ " << pix << endl;
+                        cout << R"(
+    
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||)"
+                             << endl;
+
+                        usuario_logado->setMultasMedias(usuario_logado->getMultasMedias() - qtd);
+                        it->setDebitos(it->getDebitos() - pix);
+
+                        cout << endl;
+                        cout << "Multa(s) paga(s) com sucesso!" << endl;
+                        cout << endl;
+
+                        usuario_logado->ExportarUsuario(sistema);
+                        ExportarVeiculo(sistema);
+
+                        PAUSE;
+
+                        break;
+                    }
+
+                    else if (multa_escolha == "GRAVE" || multa_escolha == "GRAVES")
+                    {
+                        if (graves == 0)
+                        {
+                            break;
+                        }
+
+                        cout << "Quantas multas graves deseja pagar (RS 195,23): ";
+                        int qtd = 0;
+                        cin >> qtd;
+
+                        if (qtd > graves || qtd <= 0)
+                        {
+                            cout << "Voce so possui " << graves << " multas graves" << endl;
+                            PAUSE;
+                            continue;
+                        }
+
+                        float pix = qtd * (195.23);
+                        cout << fixed << setprecision(2);
+                        cout << "Valor: R$ " << pix << endl;
+                        cout << R"(
+    
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||)"
+                             << endl;
+
+                        usuario_logado->setMultasGraves(usuario_logado->getMultasGraves() - qtd);
+                        it->setDebitos(it->getDebitos() - pix);
+
+                        cout << endl;
+                        cout << "Multa(s) paga(s) com sucesso!" << endl;
+                        cout << endl;
+
+                        usuario_logado->ExportarUsuario(sistema);
+                        ExportarVeiculo(sistema);
+
+                        PAUSE;
+
+                        break;
+                    }
+
+                    else if (multa_escolha == "GRAVISSIMA" || multa_escolha == "GRAVISSIMAS")
+                    {
+                        if (gravissimas == 0)
+                        {
+                            break;
+                        }
+
+                        cout << "Quantas multas Gravissimas deseja pagar (RS 293.47): ";
+                        int qtd = 0;
+                        cin >> qtd;
+
+                        if (qtd > gravissimas || qtd <= 0)
+                        {
+                            cout << "Voce so possui " << gravissimas << " multas gravissimas" << endl;
+                            PAUSE;
+                            continue;
+                        }
+
+                        float pix = qtd * (293.47);
+                        cout << fixed << setprecision(2);
+                        cout << "Valor: R$ " << pix << endl;
+                        cout << R"(
+    
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||
+                        |||| ||| || ||||| || ||| ||||| || || |||||| ||| || |||||| || || ||||)"
+                             << endl;
+
+                        usuario_logado->setMultasGravissimas(usuario_logado->getMultasGravissimas() - qtd);
+                        it->setDebitos(it->getDebitos() - pix);
+
+                        cout << endl;
+                        cout << "Multa(s) paga(s) com sucesso!" << endl;
+                        cout << endl;
+
+                        usuario_logado->ExportarUsuario(sistema);
+                        ExportarVeiculo(sistema);
+
+                        PAUSE;
+
+                        break;
+                    }
+                    else
+                    {
+                        cout << "Tipo invalido" << endl;
+                        cout << endl;
+
+                        PAUSE;
+
+                        continue;
+                    }
+
+                    break;
+                }
+                case 2:
+                {
+                    if (RetornarAoMenuDeMultas())
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                default:
+                {
+                    CLEAR;
+
+                    cout << "Opcao invalida" << endl;
+
+                    PAUSE;
+
+                    break;
+                }
+                }
+            }
 
             break;
         }
@@ -1485,7 +1782,7 @@ void Carro::ExportarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>:
     return;
 }
 
-void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acabado
+void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado)
 {
     bool menu_multa_renavam = true;
 
@@ -1610,9 +1907,9 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
 
                         usuario_multado->setMultasLeves(usuario_multado->getMultasLeves() + 1);
 
-                        usuario_multado->ExportarUsuario(sistema);
-
                         (*it)->setDebitos((*it)->getDebitos() + 88.38);
+
+                        usuario_multado->ExportarUsuario(sistema);
 
                         (*it)->ExportarVeiculo(sistema);
 
@@ -1730,18 +2027,16 @@ void Carro::MultaRenavam(Sistema &sistema, Usuario *usuario_logado) // nao acaba
 
                 return;
             }
-            else
-            {
-                CLEAR;
-
-                cout << endl;
-                cout << "Veiculo nao encontrado!" << endl;
-                cout << endl;
-
-                PAUSE;
-
-                continue;
-            }
         }
+
+        CLEAR;
+
+        cout << endl;
+        cout << "Veiculo nao encontrado!" << endl;
+        cout << endl;
+
+        PAUSE;
+
+        continue;
     }
 }

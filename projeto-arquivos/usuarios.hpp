@@ -55,9 +55,6 @@ public:
     void setMultasGravissimas(int mgravissima);
     int getMultasGravissimas() const;
 
-    void setDebitos(float d);
-    float getDebitos() const;
-
     void cadastrarCPF(Sistema &sistema, Usuario &usuario_temp);
 
     void cadastrarNome(Usuario &usuario_temp);

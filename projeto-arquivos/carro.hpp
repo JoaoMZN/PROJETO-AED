@@ -89,7 +89,7 @@ public:
     void AlterarVeiculo(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
 
     void Multas(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
-
+    
     void GerarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);
 
     void ExportarCrlv(Sistema &sistema, Usuario *usuario_logado, list<Carro>::iterator it);

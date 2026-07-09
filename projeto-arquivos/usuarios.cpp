@@ -726,6 +726,7 @@ void Usuario::ExportarUsuario(Sistema &sistema)
         arquivoUsuarios << "MEDIAS: " << usuario.getMultasMedias() << endl;
         arquivoUsuarios << "GRAVES: " << usuario.getMultasGraves() << endl;
         arquivoUsuarios << "GRAVISSIMAS: " << usuario.getMultasGravissimas() << endl;
+        arquivoUsuarios << "PONTOS: " << usuario.getPontos() << endl;
 
         arquivoUsuarios << endl;
     }
@@ -813,6 +814,13 @@ void Usuario::LoadUsuario(Sistema &sistema)
 
         getline(arquivosUsuarios, linha);
 
+        if (linha.rfind("PONTOS: ", 0) == 0)
+        {
+            ler_usuario_temp.setPontos(stoi(linha.substr(8)));
+        }
+
+        getline(arquivosUsuarios, linha);
+
         sistema.usuarios.push_back(ler_usuario_temp);
     }
 
@@ -821,9 +829,7 @@ void Usuario::LoadUsuario(Sistema &sistema)
 
 void Usuario::ChecagemCnh(Sistema &sistema)
 {
-    bool menu_cnh = true;
-
-    while (menu_cnh)
+    while (true)
     {
         cout << "Informe o CPF que deseja procurar (ou digite MENU): ";
 
@@ -871,20 +877,20 @@ void Usuario::ChecagemCnh(Sistema &sistema)
             cout << endl;
             cout << "CPF: " << usuarioEncontrado->getCpf() << endl;
             cout << endl;
-            cout << "Pontos na CNH: " << usuarioEncontrado->getPontos() << endl;
+            cout << "Pontos na CNH: " << pontos_multa << endl;
             cout << endl;
-            cout << "Multas Leves: " << getMultasLeves() << endl;
+            cout << "Multas Leves: " << usuarioEncontrado->getMultasLeves() << endl;
             cout << endl;
-            cout << "Multas Medias: " << getMultasMedias() << endl;
+            cout << "Multas Medias: " << usuarioEncontrado->getMultasMedias() << endl;
             cout << endl;
-            cout << "Multas Graves: " << getMultasGraves() << endl;
+            cout << "Multas Graves: " << usuarioEncontrado->getMultasGraves() << endl;
             cout << endl;
-            cout << "Multas Gravissimas: " << getMultasGravissimas() << endl;
+            cout << "Multas Gravissimas: " << usuarioEncontrado->getMultasGravissimas() << endl;
             cout << endl;
 
             PAUSE;
 
-            if (pontos_multa >= 40 && getMultasGravissimas() != 0)
+            if (pontos_multa >= 40 && usuarioEncontrado->getMultasGravissimas() != 0)
             {
                 cout << endl;
                 cout << "Retirar carteira" << endl;
@@ -892,7 +898,7 @@ void Usuario::ChecagemCnh(Sistema &sistema)
 
                 PAUSE;
             }
-            else if (pontos_multa >= 30 && getMultasGravissimas() >= 1)
+            else if (pontos_multa >= 30 && usuarioEncontrado->getMultasGravissimas() >= 1)
             {
                 cout << endl;
                 cout << "Retirar carteira" << endl;
@@ -900,7 +906,7 @@ void Usuario::ChecagemCnh(Sistema &sistema)
 
                 PAUSE;
             }
-            else if (pontos_multa >= 20 && getMultasGravissimas() >= 2)
+            else if (pontos_multa >= 20 && usuarioEncontrado->getMultasGravissimas() >= 2)
             {
                 cout << endl;
                 cout << "Retirar carteira" << endl;
@@ -919,7 +925,7 @@ void Usuario::ChecagemCnh(Sistema &sistema)
 
             PAUSE;
 
-            return;
+            break;
         }
         else
         {

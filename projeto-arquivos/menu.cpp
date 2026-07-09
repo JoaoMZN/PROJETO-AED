@@ -45,6 +45,8 @@ void MenuInicial(Sistema &sistema, Usuario *usuario_logado, Carro &carro_temp)
         int opcao = 0;
         cin >> opcao;
 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         switch (opcao)
         {
         case 1:
@@ -407,15 +409,15 @@ void MenuPrincipal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp
 
 void MenuNormal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
 {
-    bool menu_normal = true;
-
-    while (menu_normal)
+    while (true)
     {
         CLEAR;
 
         cout << "--------------------------------------DETRAN-DF----------------------------------------" << endl;
         cout << endl;
         cout << usuario_logado->getNome() << " seja bem-vindo!" << endl;
+        cout << endl;
+        cout << "Pontos na carteira: " << usuario_logado->getPontos() << endl;
         cout << endl;
         cout << "                              1 - Registrar Veiculo" << endl;
         cout << endl;
@@ -429,6 +431,8 @@ void MenuNormal(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
         cout << "Digite a OPCAO desejada: ";
         int opcao = 0;
         cin >> opcao;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (opcao)
         {
@@ -478,6 +482,8 @@ void MenuPolicial(Sistema &sistema, Usuario *&usuario_logado, Carro &carro_temp)
         cout << "Digite a OPCAO desejada: ";
         int opcao = 0;
         cin >> opcao;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (opcao)
         {
@@ -771,11 +777,13 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
         cin >> escolha;
         cout << endl;
 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        
         for (int i = 1; i < escolha && it != usuario_logado->carros.end(); i++)
         {
             it++;
         }
-
+        
         CLEAR;
 
         if (it == usuario_logado->carros.end())
@@ -787,8 +795,9 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             continue;
         }
         else
-        {   cout<< "Informacoes do Carro: "<<endl;
-            cout<< endl;
+        {
+            cout << "Informacoes do Carro: " << endl;
+            cout << endl;
             cout << "---------------------------------------------------------------------------------------" << endl;
             if (!it->getPlacaCinza().empty())
             {
@@ -820,8 +829,8 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
             cout << endl;
             cout << "               3 - Multas" << endl;
             cout << endl;
-            cout<< "               4 - Gerar CRLV"<< endl;
-            cout<< endl;
+            cout << "               4 - Gerar CRLV" << endl;
+            cout << endl;
             cout << "               5 - Retornar ao MENU PRINCIPAL" << endl;
             cout << endl;
             cout << "---------------------------------------------------------------------------" << endl;
@@ -866,14 +875,14 @@ void MenuChecarVeiculos(Sistema &sistema, Usuario *&usuario_logado, Carro &carro
 
                 break;
             }
-            
+
             case 4:
             {
                 carro_temp.GerarCrlv(sistema, usuario_logado, it);
 
                 break;
             }
-            
+
             case 5:
             {
                 // RETORNAR AO MENU PRINCIPAL
