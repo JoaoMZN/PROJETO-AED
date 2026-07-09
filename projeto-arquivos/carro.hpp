@@ -18,7 +18,6 @@ private:
     string renavam, status_crlv;
     string nome_dono, cpf_dono;
     bool multa = false;
-    float debitos = 0.0;
 
     int funcaoHash(string &renavam);
 
@@ -27,7 +26,7 @@ private:
 public:
     Carro();
     Carro(string placa_cinza, string placa_mercosul, string ano, string cor,
-          string modelo, string renavam, string status_crlv, float debitos);
+          string modelo, string renavam, string status_crlv);
 
     void setPlacaCinza(string pc);
     string getPlacaCinza() const;
@@ -58,9 +57,6 @@ public:
 
     void setMulta(bool m);
     bool getMulta() const;
-
-    void setDebitos(float d);
-    float getDebitos() const;
 
     void cadastrarPlacaCinza(Carro &carro_temp);
 
